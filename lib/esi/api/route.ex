@@ -1,9 +1,9 @@
-defmodule Esi.Api.Routes do
+defmodule Esi.Api.Route do
   @moduledoc """
-  Provides API endpoint related to routes
+  Provides API endpoint related to route
   """
 
-  @default_client Esi.Api.Client
+  @default_client Esi.Client
 
   @doc """
   Get route
@@ -17,14 +17,14 @@ defmodule Esi.Api.Routes do
     * `flag`
 
   """
-  @spec route(integer, integer, keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
-  def route(destination, origin, opts \\ []) do
+  @spec get_get(integer, integer, keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  def get_get(destination, origin, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:avoid, :connections, :flag])
 
     client.request(%{
       args: [destination: destination, origin: origin],
-      call: {Esi.Api.Routes, :route},
+      call: {Esi.Api.Route, :get_get},
       url: "/route/#{origin}/#{destination}",
       method: :get,
       query: query,

@@ -3,7 +3,7 @@ defmodule Esi.Api.Dogma do
   Provides API endpoints related to dogma
   """
 
-  @default_client Esi.Api.Client
+  @default_client Esi.Client
 
   @doc """
   Get attributes
@@ -12,14 +12,35 @@ defmodule Esi.Api.Dogma do
 
   This route expires daily at 11:05
   """
-  @spec attributes(keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
-  def attributes(opts \\ []) do
+  @spec get_attributes(keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  def get_attributes(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Dogma, :attributes},
+      call: {Esi.Api.Dogma, :get_attributes},
       url: "/dogma/attributes",
+      method: :get,
+      response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
+      opts: opts
+    })
+  end
+
+  @doc """
+  Get effects
+
+  Get a list of dogma effect ids
+
+  This route expires daily at 11:05
+  """
+  @spec get_effects(keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  def get_effects(opts \\ []) do
+    client = opts[:client] || @default_client
+
+    client.request(%{
+      args: [],
+      call: {Esi.Api.Dogma, :get_effects},
+      url: "/dogma/effects",
       method: :get,
       response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
       opts: opts
@@ -33,60 +54,17 @@ defmodule Esi.Api.Dogma do
 
   This route expires daily at 11:05
   """
-  @spec attributes(integer, keyword) ::
+  @spec get_get_attributes(integer, keyword) ::
           {:ok, Esi.Api.DogmaAttributesAttributeIdGet.t()} | {:error, Esi.Api.Error.t()}
-  def attributes(attribute_id, opts \\ []) do
+  def get_get_attributes(attribute_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [attribute_id: attribute_id],
-      call: {Esi.Api.Dogma, :attributes},
+      call: {Esi.Api.Dogma, :get_get_attributes},
       url: "/dogma/attributes/#{attribute_id}",
       method: :get,
       response: [{200, {Esi.Api.DogmaAttributesAttributeIdGet, :t}}, default: {Esi.Api.Error, :t}],
-      opts: opts
-    })
-  end
-
-  @doc """
-  Get effect information
-
-  Get information on a dogma effect
-
-  This route expires daily at 11:05
-  """
-  @spec effects(integer, keyword) ::
-          {:ok, Esi.Api.DogmaEffectsEffectIdGet.t()} | {:error, Esi.Api.Error.t()}
-  def effects(effect_id, opts \\ []) do
-    client = opts[:client] || @default_client
-
-    client.request(%{
-      args: [effect_id: effect_id],
-      call: {Esi.Api.Dogma, :effects},
-      url: "/dogma/effects/#{effect_id}",
-      method: :get,
-      response: [{200, {Esi.Api.DogmaEffectsEffectIdGet, :t}}, default: {Esi.Api.Error, :t}],
-      opts: opts
-    })
-  end
-
-  @doc """
-  Get effects
-
-  Get a list of dogma effect ids
-
-  This route expires daily at 11:05
-  """
-  @spec effects(keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
-  def effects(opts \\ []) do
-    client = opts[:client] || @default_client
-
-    client.request(%{
-      args: [],
-      call: {Esi.Api.Dogma, :effects},
-      url: "/dogma/effects",
-      method: :get,
-      response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
       opts: opts
     })
   end
@@ -98,20 +76,42 @@ defmodule Esi.Api.Dogma do
 
   This route expires daily at 11:05
   """
-  @spec items(integer, integer, keyword) ::
+  @spec get_get_dynamic_items(integer, integer, keyword) ::
           {:ok, Esi.Api.DogmaDynamicItemsTypeIdItemIdGet.t()} | {:error, Esi.Api.Error.t()}
-  def items(item_id, type_id, opts \\ []) do
+  def get_get_dynamic_items(item_id, type_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [item_id: item_id, type_id: type_id],
-      call: {Esi.Api.Dogma, :items},
+      call: {Esi.Api.Dogma, :get_get_dynamic_items},
       url: "/dogma/dynamic/items/#{type_id}/#{item_id}",
       method: :get,
       response: [
         {200, {Esi.Api.DogmaDynamicItemsTypeIdItemIdGet, :t}},
         default: {Esi.Api.Error, :t}
       ],
+      opts: opts
+    })
+  end
+
+  @doc """
+  Get effect information
+
+  Get information on a dogma effect
+
+  This route expires daily at 11:05
+  """
+  @spec get_get_effects(integer, keyword) ::
+          {:ok, Esi.Api.DogmaEffectsEffectIdGet.t()} | {:error, Esi.Api.Error.t()}
+  def get_get_effects(effect_id, opts \\ []) do
+    client = opts[:client] || @default_client
+
+    client.request(%{
+      args: [effect_id: effect_id],
+      call: {Esi.Api.Dogma, :get_get_effects},
+      url: "/dogma/effects/#{effect_id}",
+      method: :get,
+      response: [{200, {Esi.Api.DogmaEffectsEffectIdGet, :t}}, default: {Esi.Api.Error, :t}],
       opts: opts
     })
   end

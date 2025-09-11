@@ -1,22 +1,22 @@
-defmodule Esi.Api.Status do
+defmodule Esi.Api.Statu do
   @moduledoc """
-  Provides API endpoint related to status
+  Provides API endpoint related to statu
   """
 
-  @default_client Esi.Api.Client
+  @default_client Esi.Client
 
   @doc """
   Retrieve the uptime and player counts
 
   EVE Server status
   """
-  @spec status(keyword) :: {:ok, Esi.Api.StatusGet.t()} | {:error, Esi.Api.Error.t()}
-  def status(opts \\ []) do
+  @spec get_list(keyword) :: {:ok, Esi.Api.StatusGet.t()} | {:error, Esi.Api.Error.t()}
+  def get_list(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Status, :status},
+      call: {Esi.Api.Statu, :get_list},
       url: "/status",
       method: :get,
       response: [{200, {Esi.Api.StatusGet, :t}}, default: {Esi.Api.Error, :t}],
