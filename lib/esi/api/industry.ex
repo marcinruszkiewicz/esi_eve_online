@@ -10,14 +10,14 @@ defmodule Esi.Api.Industry do
 
   Return a list of industry facilities
   """
-  @spec get_facilities(keyword) ::
+  @spec facilities(keyword) ::
           {:ok, [Esi.Api.IndustryFacilitiesGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_facilities(opts \\ []) do
+  def facilities(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Industry, :get_facilities},
+      call: {Esi.Api.Industry, :facilities},
       url: "/industry/facilities",
       method: :get,
       response: [{200, [{Esi.Api.IndustryFacilitiesGet, :t}]}, default: {Esi.Api.Error, :t}],
@@ -30,14 +30,13 @@ defmodule Esi.Api.Industry do
 
   Return cost indices for solar systems
   """
-  @spec get_systems(keyword) ::
-          {:ok, [Esi.Api.IndustrySystemsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_systems(opts \\ []) do
+  @spec systems(keyword) :: {:ok, [Esi.Api.IndustrySystemsGet.t()]} | {:error, Esi.Api.Error.t()}
+  def systems(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Industry, :get_systems},
+      call: {Esi.Api.Industry, :systems},
       url: "/industry/systems",
       method: :get,
       response: [{200, [{Esi.Api.IndustrySystemsGet, :t}]}, default: {Esi.Api.Error, :t}],

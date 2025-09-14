@@ -12,14 +12,14 @@ defmodule Esi.Api.Fw do
 
   This route expires daily at 11:05
   """
-  @spec get_leaderboards(keyword) ::
+  @spec leaderboards(keyword) ::
           {:ok, Esi.Api.FwLeaderboardsGet.t()} | {:error, Esi.Api.Error.t()}
-  def get_leaderboards(opts \\ []) do
+  def leaderboards(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Fw, :get_leaderboards},
+      call: {Esi.Api.Fw, :leaderboards},
       url: "/fw/leaderboards",
       method: :get,
       response: [{200, {Esi.Api.FwLeaderboardsGet, :t}}, default: {Esi.Api.Error, :t}],
@@ -34,14 +34,14 @@ defmodule Esi.Api.Fw do
 
   This route expires daily at 11:05
   """
-  @spec get_leaderboards_characters(keyword) ::
+  @spec leaderboards_characters(keyword) ::
           {:ok, Esi.Api.FwLeaderboardsCharactersGet.t()} | {:error, Esi.Api.Error.t()}
-  def get_leaderboards_characters(opts \\ []) do
+  def leaderboards_characters(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Fw, :get_leaderboards_characters},
+      call: {Esi.Api.Fw, :leaderboards_characters},
       url: "/fw/leaderboards/characters",
       method: :get,
       response: [{200, {Esi.Api.FwLeaderboardsCharactersGet, :t}}, default: {Esi.Api.Error, :t}],
@@ -56,14 +56,14 @@ defmodule Esi.Api.Fw do
 
   This route expires daily at 11:05
   """
-  @spec get_leaderboards_corporations(keyword) ::
+  @spec leaderboards_corporations(keyword) ::
           {:ok, Esi.Api.FwLeaderboardsCorporationsGet.t()} | {:error, Esi.Api.Error.t()}
-  def get_leaderboards_corporations(opts \\ []) do
+  def leaderboards_corporations(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Fw, :get_leaderboards_corporations},
+      call: {Esi.Api.Fw, :leaderboards_corporations},
       url: "/fw/leaderboards/corporations",
       method: :get,
       response: [{200, {Esi.Api.FwLeaderboardsCorporationsGet, :t}}, default: {Esi.Api.Error, :t}],
@@ -78,13 +78,13 @@ defmodule Esi.Api.Fw do
 
   This route expires daily at 11:05
   """
-  @spec get_stats(keyword) :: {:ok, [Esi.Api.FwStatsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_stats(opts \\ []) do
+  @spec stats(keyword) :: {:ok, [Esi.Api.FwStatsGet.t()]} | {:error, Esi.Api.Error.t()}
+  def stats(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Fw, :get_stats},
+      call: {Esi.Api.Fw, :stats},
       url: "/fw/stats",
       method: :get,
       response: [{200, [{Esi.Api.FwStatsGet, :t}]}, default: {Esi.Api.Error, :t}],
@@ -97,13 +97,13 @@ defmodule Esi.Api.Fw do
 
   An overview of the current ownership of faction warfare solar systems
   """
-  @spec get_systems(keyword) :: {:ok, [Esi.Api.FwSystemsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_systems(opts \\ []) do
+  @spec systems(keyword) :: {:ok, [Esi.Api.FwSystemsGet.t()]} | {:error, Esi.Api.Error.t()}
+  def systems(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Fw, :get_systems},
+      call: {Esi.Api.Fw, :systems},
       url: "/fw/systems",
       method: :get,
       response: [{200, [{Esi.Api.FwSystemsGet, :t}]}, default: {Esi.Api.Error, :t}],
@@ -118,13 +118,13 @@ defmodule Esi.Api.Fw do
 
   This route expires daily at 11:05
   """
-  @spec get_wars(keyword) :: {:ok, [Esi.Api.FwWarsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_wars(opts \\ []) do
+  @spec wars(keyword) :: {:ok, [Esi.Api.FwWarsGet.t()]} | {:error, Esi.Api.Error.t()}
+  def wars(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Fw, :get_wars},
+      call: {Esi.Api.Fw, :wars},
       url: "/fw/wars",
       method: :get,
       response: [{200, [{Esi.Api.FwWarsGet, :t}]}, default: {Esi.Api.Error, :t}],

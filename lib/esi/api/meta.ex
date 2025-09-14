@@ -10,13 +10,13 @@ defmodule Esi.Api.Meta do
 
   Get the changelog of this API.
   """
-  @spec get_changelog(keyword) :: {:ok, Esi.Api.MetaChangelog.t()} | {:error, Esi.Api.Error.t()}
-  def get_changelog(opts \\ []) do
+  @spec changelog(keyword) :: {:ok, Esi.Api.MetaChangelog.t()} | {:error, Esi.Api.Error.t()}
+  def changelog(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Meta, :get_changelog},
+      call: {Esi.Api.Meta, :changelog},
       url: "/meta/changelog",
       method: :get,
       response: [{200, {Esi.Api.MetaChangelog, :t}}, default: {Esi.Api.Error, :t}],
@@ -29,14 +29,14 @@ defmodule Esi.Api.Meta do
 
   Get a list of compatibility dates.
   """
-  @spec get_compatibility_dates(keyword) ::
+  @spec compatibility_dates(keyword) ::
           {:ok, Esi.Api.MetaCompatibilityDates.t()} | {:error, Esi.Api.Error.t()}
-  def get_compatibility_dates(opts \\ []) do
+  def compatibility_dates(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Meta, :get_compatibility_dates},
+      call: {Esi.Api.Meta, :compatibility_dates},
       url: "/meta/compatibility-dates",
       method: :get,
       response: [{200, {Esi.Api.MetaCompatibilityDates, :t}}, default: {Esi.Api.Error, :t}],

@@ -15,15 +15,15 @@ defmodule Esi.Api.Contract do
     * `page`
 
   """
-  @spec get_get_public(integer, keyword) ::
+  @spec public(integer, keyword) ::
           {:ok, [Esi.Api.ContractsPublicRegionIdGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_get_public(region_id, opts \\ []) do
+  def public(region_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [region_id: region_id],
-      call: {Esi.Api.Contract, :get_get_public},
+      call: {Esi.Api.Contract, :public},
       url: "/contracts/public/#{region_id}",
       method: :get,
       query: query,
@@ -42,15 +42,15 @@ defmodule Esi.Api.Contract do
     * `page`
 
   """
-  @spec get_get_public_bids(integer, keyword) ::
+  @spec public_bid(integer, keyword) ::
           {:ok, map | [Esi.Api.ContractsPublicBidsContractIdGet.t()]} | :error
-  def get_get_public_bids(contract_id, opts \\ []) do
+  def public_bid(contract_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [contract_id: contract_id],
-      call: {Esi.Api.Contract, :get_get_public_bids},
+      call: {Esi.Api.Contract, :public_bid},
       url: "/contracts/public/bids/#{contract_id}",
       method: :get,
       query: query,
@@ -69,15 +69,15 @@ defmodule Esi.Api.Contract do
     * `page`
 
   """
-  @spec get_get_public_items(integer, keyword) ::
+  @spec public_item(integer, keyword) ::
           {:ok, map | [Esi.Api.ContractsPublicItemsContractIdGet.t()]} | :error
-  def get_get_public_items(contract_id, opts \\ []) do
+  def public_item(contract_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [contract_id: contract_id],
-      call: {Esi.Api.Contract, :get_get_public_items},
+      call: {Esi.Api.Contract, :public_item},
       url: "/contracts/public/items/#{contract_id}",
       method: :get,
       query: query,

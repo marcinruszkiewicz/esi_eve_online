@@ -17,14 +17,14 @@ defmodule Esi.Api.Route do
     * `flag`
 
   """
-  @spec get_get(integer, integer, keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
-  def get_get(destination, origin, opts \\ []) do
+  @spec route(integer, integer, keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  def route(destination, origin, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:avoid, :connections, :flag])
 
     client.request(%{
       args: [destination: destination, origin: origin],
-      call: {Esi.Api.Route, :get_get},
+      call: {Esi.Api.Route, :route},
       url: "/route/#{origin}/#{destination}",
       method: :get,
       query: query,

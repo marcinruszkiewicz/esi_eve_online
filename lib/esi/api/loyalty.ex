@@ -12,14 +12,14 @@ defmodule Esi.Api.Loyalty do
 
   This route expires daily at 11:05
   """
-  @spec get_stores_offers(integer, keyword) ::
+  @spec stores_offers(integer, keyword) ::
           {:ok, [Esi.Api.LoyaltyStoresCorporationIdOffersGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_stores_offers(corporation_id, opts \\ []) do
+  def stores_offers(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Loyalty, :get_stores_offers},
+      call: {Esi.Api.Loyalty, :stores_offers},
       url: "/loyalty/stores/#{corporation_id}/offers",
       method: :get,
       response: [

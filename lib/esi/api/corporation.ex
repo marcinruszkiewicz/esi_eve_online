@@ -10,15 +10,15 @@ defmodule Esi.Api.Corporation do
 
   Get a list of all the alliances a corporation has been a member of
   """
-  @spec get_alliancehistory(integer, keyword) ::
+  @spec alliancehistory(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdAlliancehistoryGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_alliancehistory(corporation_id, opts \\ []) do
+  def alliancehistory(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_alliancehistory},
+      call: {Esi.Api.Corporation, :alliancehistory},
       url: "/corporations/#{corporation_id}/alliancehistory",
       method: :get,
       response: [
@@ -39,20 +39,72 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_assets(integer, keyword) ::
+  @spec assets(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdAssetsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_assets(corporation_id, opts \\ []) do
+  def assets(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_assets},
+      call: {Esi.Api.Corporation, :assets},
       url: "/corporations/#{corporation_id}/assets",
       method: :get,
       query: query,
       response: [
         {200, [{Esi.Api.CorporationsCorporationIdAssetsGet, :t}]},
+        default: {Esi.Api.Error, :t}
+      ],
+      opts: opts
+    })
+  end
+
+  @doc """
+  Get corporation asset locations
+
+  Return locations for a set of item ids, which you can get from corporation assets endpoint. Coordinates for items in hangars or stations are set to (0,0,0)
+  """
+  @spec assets_locations(integer, [integer], keyword) ::
+          {:ok, [Esi.Api.CorporationsCorporationIdAssetsLocationsPost.t()]}
+          | {:error, Esi.Api.Error.t()}
+  def assets_locations(corporation_id, body, opts \\ []) do
+    client = opts[:client] || @default_client
+
+    client.request(%{
+      args: [corporation_id: corporation_id, body: body],
+      call: {Esi.Api.Corporation, :assets_locations},
+      url: "/corporations/#{corporation_id}/assets/locations",
+      body: body,
+      method: :post,
+      request: [{"application/json", [:integer]}],
+      response: [
+        {200, [{Esi.Api.CorporationsCorporationIdAssetsLocationsPost, :t}]},
+        default: {Esi.Api.Error, :t}
+      ],
+      opts: opts
+    })
+  end
+
+  @doc """
+  Get corporation asset names
+
+  Return names for a set of item ids, which you can get from corporation assets endpoint. Only valid for items that can customize names, like containers or ships
+  """
+  @spec assets_names(integer, [integer], keyword) ::
+          {:ok, [Esi.Api.CorporationsCorporationIdAssetsNamesPost.t()]}
+          | {:error, Esi.Api.Error.t()}
+  def assets_names(corporation_id, body, opts \\ []) do
+    client = opts[:client] || @default_client
+
+    client.request(%{
+      args: [corporation_id: corporation_id, body: body],
+      call: {Esi.Api.Corporation, :assets_names},
+      url: "/corporations/#{corporation_id}/assets/names",
+      body: body,
+      method: :post,
+      request: [{"application/json", [:integer]}],
+      response: [
+        {200, [{Esi.Api.CorporationsCorporationIdAssetsNamesPost, :t}]},
         default: {Esi.Api.Error, :t}
       ],
       opts: opts
@@ -69,16 +121,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_blueprints(integer, keyword) ::
+  @spec blueprints(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdBlueprintsGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_blueprints(corporation_id, opts \\ []) do
+  def blueprints(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_blueprints},
+      call: {Esi.Api.Corporation, :blueprints},
       url: "/corporations/#{corporation_id}/blueprints",
       method: :get,
       query: query,
@@ -100,15 +152,15 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_contacts(integer, keyword) ::
+  @spec contacts(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdContactsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_contacts(corporation_id, opts \\ []) do
+  def contacts(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_contacts},
+      call: {Esi.Api.Corporation, :contacts},
       url: "/corporations/#{corporation_id}/contacts",
       method: :get,
       query: query,
@@ -125,15 +177,15 @@ defmodule Esi.Api.Corporation do
 
   Return custom labels for a corporation's contacts
   """
-  @spec get_contacts_labels(integer, keyword) ::
+  @spec contacts_labels(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdContactsLabelsGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_contacts_labels(corporation_id, opts \\ []) do
+  def contacts_labels(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_contacts_labels},
+      call: {Esi.Api.Corporation, :contacts_labels},
       url: "/corporations/#{corporation_id}/contacts/labels",
       method: :get,
       response: [
@@ -154,16 +206,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_containers_logs(integer, keyword) ::
+  @spec containers_logs(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdContainersLogsGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_containers_logs(corporation_id, opts \\ []) do
+  def containers_logs(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_containers_logs},
+      call: {Esi.Api.Corporation, :containers_logs},
       url: "/corporations/#{corporation_id}/containers/logs",
       method: :get,
       query: query,
@@ -185,15 +237,15 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_contracts(integer, keyword) ::
+  @spec contracts(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdContractsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_contracts(corporation_id, opts \\ []) do
+  def contracts(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_contracts},
+      call: {Esi.Api.Corporation, :contracts},
       url: "/corporations/#{corporation_id}/contracts",
       method: :get,
       query: query,
@@ -215,16 +267,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_contracts_bids(integer, integer, keyword) ::
+  @spec contracts_bids(integer, integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdContractsContractIdBidsGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_contracts_bids(contract_id, corporation_id, opts \\ []) do
+  def contracts_bids(contract_id, corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [contract_id: contract_id, corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_contracts_bids},
+      call: {Esi.Api.Corporation, :contracts_bids},
       url: "/corporations/#{corporation_id}/contracts/#{contract_id}/bids",
       method: :get,
       query: query,
@@ -241,21 +293,41 @@ defmodule Esi.Api.Corporation do
 
   Lists items of a particular contract
   """
-  @spec get_contracts_items(integer, integer, keyword) ::
+  @spec contracts_items(integer, integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdContractsContractIdItemsGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_contracts_items(contract_id, corporation_id, opts \\ []) do
+  def contracts_items(contract_id, corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [contract_id: contract_id, corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_contracts_items},
+      call: {Esi.Api.Corporation, :contracts_items},
       url: "/corporations/#{corporation_id}/contracts/#{contract_id}/items",
       method: :get,
       response: [
         {200, [{Esi.Api.CorporationsCorporationIdContractsContractIdItemsGet, :t}]},
         default: {Esi.Api.Error, :t}
       ],
+      opts: opts
+    })
+  end
+
+  @doc """
+  Get corporation information
+
+  Public information about a corporation
+  """
+  @spec corporation(integer, keyword) ::
+          {:ok, Esi.Api.CorporationsCorporationIdGet.t()} | {:error, Esi.Api.Error.t()}
+  def corporation(corporation_id, opts \\ []) do
+    client = opts[:client] || @default_client
+
+    client.request(%{
+      args: [corporation_id: corporation_id],
+      call: {Esi.Api.Corporation, :corporation},
+      url: "/corporations/#{corporation_id}",
+      method: :get,
+      response: [{200, {Esi.Api.CorporationsCorporationIdGet, :t}}, default: {Esi.Api.Error, :t}],
       opts: opts
     })
   end
@@ -270,16 +342,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_customs_offices(integer, keyword) ::
+  @spec customs_offices(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdCustomsOfficesGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_customs_offices(corporation_id, opts \\ []) do
+  def customs_offices(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_customs_offices},
+      call: {Esi.Api.Corporation, :customs_offices},
       url: "/corporations/#{corporation_id}/customs_offices",
       method: :get,
       query: query,
@@ -296,14 +368,14 @@ defmodule Esi.Api.Corporation do
 
   Return corporation hangar and wallet division names, only show if a division is not using the default name
   """
-  @spec get_divisions(integer, keyword) ::
+  @spec divisions(integer, keyword) ::
           {:ok, Esi.Api.CorporationsCorporationIdDivisionsGet.t()} | {:error, Esi.Api.Error.t()}
-  def get_divisions(corporation_id, opts \\ []) do
+  def divisions(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_divisions},
+      call: {Esi.Api.Corporation, :divisions},
       url: "/corporations/#{corporation_id}/divisions",
       method: :get,
       response: [
@@ -319,15 +391,15 @@ defmodule Esi.Api.Corporation do
 
   Return a corporation's facilities
   """
-  @spec get_facilities(integer, keyword) ::
+  @spec facilities(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdFacilitiesGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_facilities(corporation_id, opts \\ []) do
+  def facilities(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_facilities},
+      call: {Esi.Api.Corporation, :facilities},
       url: "/corporations/#{corporation_id}/facilities",
       method: :get,
       response: [
@@ -345,14 +417,14 @@ defmodule Esi.Api.Corporation do
 
   This route expires daily at 11:05
   """
-  @spec get_fw_stats(integer, keyword) ::
+  @spec fw_stats(integer, keyword) ::
           {:ok, Esi.Api.CorporationsCorporationIdFwStatsGet.t()} | {:error, Esi.Api.Error.t()}
-  def get_fw_stats(corporation_id, opts \\ []) do
+  def fw_stats(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_fw_stats},
+      call: {Esi.Api.Corporation, :fw_stats},
       url: "/corporations/#{corporation_id}/fw/stats",
       method: :get,
       response: [
@@ -364,143 +436,18 @@ defmodule Esi.Api.Corporation do
   end
 
   @doc """
-  Get corporation information
-
-  Public information about a corporation
-  """
-  @spec get_get(integer, keyword) ::
-          {:ok, Esi.Api.CorporationsCorporationIdGet.t()} | {:error, Esi.Api.Error.t()}
-  def get_get(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_get},
-      url: "/corporations/#{corporation_id}",
-      method: :get,
-      response: [{200, {Esi.Api.CorporationsCorporationIdGet, :t}}, default: {Esi.Api.Error, :t}],
-      opts: opts
-    })
-  end
-
-  @doc """
-  Observed corporation mining
-
-  Paginated record of all mining seen by an observer
-
-  ## Options
-
-    * `page`
-
-  """
-  @spec get_get_mining_observers(integer, integer, keyword) ::
-          {:ok, [Esi.Api.CorporationCorporationIdMiningObserversObserverIdGet.t()]}
-          | {:error, Esi.Api.Error.t()}
-  def get_get_mining_observers(corporation_id, observer_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id, observer_id: observer_id],
-      call: {Esi.Api.Corporation, :get_get_mining_observers},
-      url: "/corporation/#{corporation_id}/mining/observers/#{observer_id}",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationCorporationIdMiningObserversObserverIdGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
-  end
-
-  @doc """
-  Get project details
-
-  Get the details of a corporation project.
-  """
-  @spec get_get_projects(integer, String.t(), keyword) ::
-          {:ok, Esi.Api.CorporationsProjectsDetail.t()} | {:error, Esi.Api.Error.t()}
-  def get_get_projects(corporation_id, project_id, opts \\ []) do
-    client = opts[:client] || @default_client
-
-    client.request(%{
-      args: [corporation_id: corporation_id, project_id: project_id],
-      call: {Esi.Api.Corporation, :get_get_projects},
-      url: "/corporations/#{corporation_id}/projects/#{project_id}",
-      method: :get,
-      response: [{200, {Esi.Api.CorporationsProjectsDetail, :t}}, default: {Esi.Api.Error, :t}],
-      opts: opts
-    })
-  end
-
-  @doc """
-  Get your project contribution
-
-  Show your contribution to a corporation project.
-  """
-  @spec get_get_projects_contribution(integer, String.t(), integer, keyword) ::
-          {:ok, Esi.Api.CorporationsProjectsContribution.t()} | {:error, Esi.Api.Error.t()}
-  def get_get_projects_contribution(corporation_id, project_id, character_id, opts \\ []) do
-    client = opts[:client] || @default_client
-
-    client.request(%{
-      args: [corporation_id: corporation_id, project_id: project_id, character_id: character_id],
-      call: {Esi.Api.Corporation, :get_get_projects_contribution},
-      url: "/corporations/#{corporation_id}/projects/#{project_id}/contribution/#{character_id}",
-      method: :get,
-      response: [
-        {200, {Esi.Api.CorporationsProjectsContribution, :t}},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
-  end
-
-  @doc """
-  Get starbase (POS) detail
-
-  Returns various settings and fuels of a starbase (POS)
-
-  ## Options
-
-    * `system_id`
-
-  """
-  @spec get_get_starbases(integer, integer, keyword) ::
-          {:ok, Esi.Api.CorporationsCorporationIdStarbasesStarbaseIdGet.t()}
-          | {:error, Esi.Api.Error.t()}
-  def get_get_starbases(corporation_id, starbase_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:system_id])
-
-    client.request(%{
-      args: [corporation_id: corporation_id, starbase_id: starbase_id],
-      call: {Esi.Api.Corporation, :get_get_starbases},
-      url: "/corporations/#{corporation_id}/starbases/#{starbase_id}",
-      method: :get,
-      query: query,
-      response: [
-        {200, {Esi.Api.CorporationsCorporationIdStarbasesStarbaseIdGet, :t}},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
-  end
-
-  @doc """
   Get corporation icon
 
   Get the icon urls for a corporation
   """
-  @spec get_icons(integer, keyword) ::
+  @spec icons(integer, keyword) ::
           {:ok, Esi.Api.CorporationsCorporationIdIconsGet.t()} | {:error, Esi.Api.Error.t()}
-  def get_icons(corporation_id, opts \\ []) do
+  def icons(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_icons},
+      call: {Esi.Api.Corporation, :icons},
       url: "/corporations/#{corporation_id}/icons",
       method: :get,
       response: [
@@ -522,16 +469,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_industry_jobs(integer, keyword) ::
+  @spec industry_jobs(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdIndustryJobsGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_industry_jobs(corporation_id, opts \\ []) do
+  def industry_jobs(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:include_completed, :page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_industry_jobs},
+      call: {Esi.Api.Corporation, :industry_jobs},
       url: "/corporations/#{corporation_id}/industry/jobs",
       method: :get,
       query: query,
@@ -553,16 +500,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_killmails_recent(integer, keyword) ::
+  @spec killmails_recent(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdKillmailsRecentGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_killmails_recent(corporation_id, opts \\ []) do
+  def killmails_recent(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_killmails_recent},
+      call: {Esi.Api.Corporation, :killmails_recent},
       url: "/corporations/#{corporation_id}/killmails/recent",
       method: :get,
       query: query,
@@ -584,15 +531,15 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_medals(integer, keyword) ::
+  @spec medals(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdMedalsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_medals(corporation_id, opts \\ []) do
+  def medals(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_medals},
+      call: {Esi.Api.Corporation, :medals},
       url: "/corporations/#{corporation_id}/medals",
       method: :get,
       query: query,
@@ -614,16 +561,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_medals_issued(integer, keyword) ::
+  @spec medals_issued(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdMedalsIssuedGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_medals_issued(corporation_id, opts \\ []) do
+  def medals_issued(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_medals_issued},
+      call: {Esi.Api.Corporation, :medals_issued},
       url: "/corporations/#{corporation_id}/medals/issued",
       method: :get,
       query: query,
@@ -640,13 +587,13 @@ defmodule Esi.Api.Corporation do
 
   Return the current member list of a corporation, the token's character need to be a member of the corporation.
   """
-  @spec get_members(integer, keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
-  def get_members(corporation_id, opts \\ []) do
+  @spec members(integer, keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  def members(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_members},
+      call: {Esi.Api.Corporation, :members},
       url: "/corporations/#{corporation_id}/members",
       method: :get,
       response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
@@ -659,13 +606,13 @@ defmodule Esi.Api.Corporation do
 
   Return a corporation's member limit, not including CEO himself
   """
-  @spec get_members_limit(integer, keyword) :: {:ok, integer} | {:error, Esi.Api.Error.t()}
-  def get_members_limit(corporation_id, opts \\ []) do
+  @spec members_limit(integer, keyword) :: {:ok, integer} | {:error, Esi.Api.Error.t()}
+  def members_limit(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_members_limit},
+      call: {Esi.Api.Corporation, :members_limit},
       url: "/corporations/#{corporation_id}/members/limit",
       method: :get,
       response: [{200, :integer}, default: {Esi.Api.Error, :t}],
@@ -678,15 +625,15 @@ defmodule Esi.Api.Corporation do
 
   Returns a corporation's members' titles
   """
-  @spec get_members_titles(integer, keyword) ::
+  @spec members_titles(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdMembersTitlesGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_members_titles(corporation_id, opts \\ []) do
+  def members_titles(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_members_titles},
+      call: {Esi.Api.Corporation, :members_titles},
       url: "/corporations/#{corporation_id}/members/titles",
       method: :get,
       response: [
@@ -702,15 +649,15 @@ defmodule Esi.Api.Corporation do
 
   Returns additional information about a corporation's members which helps tracking their activities
   """
-  @spec get_membertracking(integer, keyword) ::
+  @spec membertracking(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdMembertrackingGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_membertracking(corporation_id, opts \\ []) do
+  def membertracking(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_membertracking},
+      call: {Esi.Api.Corporation, :membertracking},
       url: "/corporations/#{corporation_id}/membertracking",
       method: :get,
       response: [
@@ -731,21 +678,52 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_mining_extractions(integer, keyword) ::
+  @spec mining_extractions(integer, keyword) ::
           {:ok, [Esi.Api.CorporationCorporationIdMiningExtractionsGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_mining_extractions(corporation_id, opts \\ []) do
+  def mining_extractions(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_mining_extractions},
+      call: {Esi.Api.Corporation, :mining_extractions},
       url: "/corporation/#{corporation_id}/mining/extractions",
       method: :get,
       query: query,
       response: [
         {200, [{Esi.Api.CorporationCorporationIdMiningExtractionsGet, :t}]},
+        default: {Esi.Api.Error, :t}
+      ],
+      opts: opts
+    })
+  end
+
+  @doc """
+  Observed corporation mining
+
+  Paginated record of all mining seen by an observer
+
+  ## Options
+
+    * `page`
+
+  """
+  @spec mining_observer(integer, integer, keyword) ::
+          {:ok, [Esi.Api.CorporationCorporationIdMiningObserversObserverIdGet.t()]}
+          | {:error, Esi.Api.Error.t()}
+  def mining_observer(corporation_id, observer_id, opts \\ []) do
+    client = opts[:client] || @default_client
+    query = Keyword.take(opts, [:page])
+
+    client.request(%{
+      args: [corporation_id: corporation_id, observer_id: observer_id],
+      call: {Esi.Api.Corporation, :mining_observer},
+      url: "/corporation/#{corporation_id}/mining/observers/#{observer_id}",
+      method: :get,
+      query: query,
+      response: [
+        {200, [{Esi.Api.CorporationCorporationIdMiningObserversObserverIdGet, :t}]},
         default: {Esi.Api.Error, :t}
       ],
       opts: opts
@@ -762,16 +740,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_mining_observers(integer, keyword) ::
+  @spec mining_observers(integer, keyword) ::
           {:ok, [Esi.Api.CorporationCorporationIdMiningObserversGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_mining_observers(corporation_id, opts \\ []) do
+  def mining_observers(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_mining_observers},
+      call: {Esi.Api.Corporation, :mining_observers},
       url: "/corporation/#{corporation_id}/mining/observers",
       method: :get,
       query: query,
@@ -790,13 +768,13 @@ defmodule Esi.Api.Corporation do
 
   This route expires daily at 11:05
   """
-  @spec get_npccorps(keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
-  def get_npccorps(opts \\ []) do
+  @spec npccorps(keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  def npccorps(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Corporation, :get_npccorps},
+      call: {Esi.Api.Corporation, :npccorps},
       url: "/corporations/npccorps",
       method: :get,
       response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
@@ -814,15 +792,15 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_orders(integer, keyword) ::
+  @spec orders(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdOrdersGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_orders(corporation_id, opts \\ []) do
+  def orders(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_orders},
+      call: {Esi.Api.Corporation, :orders},
       url: "/corporations/#{corporation_id}/orders",
       method: :get,
       query: query,
@@ -844,16 +822,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_orders_history(integer, keyword) ::
+  @spec orders_history(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdOrdersHistoryGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_orders_history(corporation_id, opts \\ []) do
+  def orders_history(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_orders_history},
+      call: {Esi.Api.Corporation, :orders_history},
       url: "/corporations/#{corporation_id}/orders/history",
       method: :get,
       query: query,
@@ -861,6 +839,26 @@ defmodule Esi.Api.Corporation do
         {200, [{Esi.Api.CorporationsCorporationIdOrdersHistoryGet, :t}]},
         default: {Esi.Api.Error, :t}
       ],
+      opts: opts
+    })
+  end
+
+  @doc """
+  Get project details
+
+  Get the details of a corporation project.
+  """
+  @spec project(integer, String.t(), keyword) ::
+          {:ok, Esi.Api.CorporationsProjectsDetail.t()} | {:error, Esi.Api.Error.t()}
+  def project(corporation_id, project_id, opts \\ []) do
+    client = opts[:client] || @default_client
+
+    client.request(%{
+      args: [corporation_id: corporation_id, project_id: project_id],
+      call: {Esi.Api.Corporation, :project},
+      url: "/corporations/#{corporation_id}/projects/#{project_id}",
+      method: :get,
+      response: [{200, {Esi.Api.CorporationsProjectsDetail, :t}}, default: {Esi.Api.Error, :t}],
       opts: opts
     })
   end
@@ -878,19 +876,42 @@ defmodule Esi.Api.Corporation do
     * `state`: Filter by state
 
   """
-  @spec get_projects(integer, keyword) ::
+  @spec projects(integer, keyword) ::
           {:ok, Esi.Api.CorporationsProjectsListing.t()} | {:error, Esi.Api.Error.t()}
-  def get_projects(corporation_id, opts \\ []) do
+  def projects(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:after, :before, :limit, :state])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_projects},
+      call: {Esi.Api.Corporation, :projects},
       url: "/corporations/#{corporation_id}/projects",
       method: :get,
       query: query,
       response: [{200, {Esi.Api.CorporationsProjectsListing, :t}}, default: {Esi.Api.Error, :t}],
+      opts: opts
+    })
+  end
+
+  @doc """
+  Get your project contribution
+
+  Show your contribution to a corporation project.
+  """
+  @spec projects_contribution_item(integer, String.t(), integer, keyword) ::
+          {:ok, Esi.Api.CorporationsProjectsContribution.t()} | {:error, Esi.Api.Error.t()}
+  def projects_contribution_item(corporation_id, project_id, character_id, opts \\ []) do
+    client = opts[:client] || @default_client
+
+    client.request(%{
+      args: [corporation_id: corporation_id, project_id: project_id, character_id: character_id],
+      call: {Esi.Api.Corporation, :projects_contribution_item},
+      url: "/corporations/#{corporation_id}/projects/#{project_id}/contribution/#{character_id}",
+      method: :get,
+      response: [
+        {200, {Esi.Api.CorporationsProjectsContribution, :t}},
+        default: {Esi.Api.Error, :t}
+      ],
       opts: opts
     })
   end
@@ -907,15 +928,15 @@ defmodule Esi.Api.Corporation do
     * `limit`: The amount of records to retrieve per request.
 
   """
-  @spec get_projects_contributors(integer, String.t(), keyword) ::
+  @spec projects_contributors(integer, String.t(), keyword) ::
           {:ok, Esi.Api.CorporationsProjectsContributors.t()} | {:error, Esi.Api.Error.t()}
-  def get_projects_contributors(corporation_id, project_id, opts \\ []) do
+  def projects_contributors(corporation_id, project_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:after, :before, :limit])
 
     client.request(%{
       args: [corporation_id: corporation_id, project_id: project_id],
-      call: {Esi.Api.Corporation, :get_projects_contributors},
+      call: {Esi.Api.Corporation, :projects_contributors},
       url: "/corporations/#{corporation_id}/projects/#{project_id}/contributors",
       method: :get,
       query: query,
@@ -932,14 +953,14 @@ defmodule Esi.Api.Corporation do
 
   Return the roles of all members if the character has the personnel manager role or any grantable role.
   """
-  @spec get_roles(integer, keyword) ::
+  @spec roles(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdRolesGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_roles(corporation_id, opts \\ []) do
+  def roles(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_roles},
+      call: {Esi.Api.Corporation, :roles},
       url: "/corporations/#{corporation_id}/roles",
       method: :get,
       response: [
@@ -960,16 +981,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_roles_history(integer, keyword) ::
+  @spec roles_history(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdRolesHistoryGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_roles_history(corporation_id, opts \\ []) do
+  def roles_history(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_roles_history},
+      call: {Esi.Api.Corporation, :roles_history},
       url: "/corporations/#{corporation_id}/roles/history",
       method: :get,
       query: query,
@@ -991,16 +1012,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_shareholders(integer, keyword) ::
+  @spec shareholders(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdShareholdersGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_shareholders(corporation_id, opts \\ []) do
+  def shareholders(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_shareholders},
+      call: {Esi.Api.Corporation, :shareholders},
       url: "/corporations/#{corporation_id}/shareholders",
       method: :get,
       query: query,
@@ -1022,20 +1043,51 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_standings(integer, keyword) ::
+  @spec standings(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdStandingsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_standings(corporation_id, opts \\ []) do
+  def standings(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_standings},
+      call: {Esi.Api.Corporation, :standings},
       url: "/corporations/#{corporation_id}/standings",
       method: :get,
       query: query,
       response: [
         {200, [{Esi.Api.CorporationsCorporationIdStandingsGet, :t}]},
+        default: {Esi.Api.Error, :t}
+      ],
+      opts: opts
+    })
+  end
+
+  @doc """
+  Get starbase (POS) detail
+
+  Returns various settings and fuels of a starbase (POS)
+
+  ## Options
+
+    * `system_id`
+
+  """
+  @spec starbas(integer, integer, keyword) ::
+          {:ok, Esi.Api.CorporationsCorporationIdStarbasesStarbaseIdGet.t()}
+          | {:error, Esi.Api.Error.t()}
+  def starbas(corporation_id, starbase_id, opts \\ []) do
+    client = opts[:client] || @default_client
+    query = Keyword.take(opts, [:system_id])
+
+    client.request(%{
+      args: [corporation_id: corporation_id, starbase_id: starbase_id],
+      call: {Esi.Api.Corporation, :starbas},
+      url: "/corporations/#{corporation_id}/starbases/#{starbase_id}",
+      method: :get,
+      query: query,
+      response: [
+        {200, {Esi.Api.CorporationsCorporationIdStarbasesStarbaseIdGet, :t}},
         default: {Esi.Api.Error, :t}
       ],
       opts: opts
@@ -1052,15 +1104,15 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_starbases(integer, keyword) ::
+  @spec starbases(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdStarbasesGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_starbases(corporation_id, opts \\ []) do
+  def starbases(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_starbases},
+      call: {Esi.Api.Corporation, :starbases},
       url: "/corporations/#{corporation_id}/starbases",
       method: :get,
       query: query,
@@ -1082,16 +1134,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_structures(integer, keyword) ::
+  @spec structures(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdStructuresGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_structures(corporation_id, opts \\ []) do
+  def structures(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_structures},
+      call: {Esi.Api.Corporation, :structures},
       url: "/corporations/#{corporation_id}/structures",
       method: :get,
       query: query,
@@ -1108,14 +1160,14 @@ defmodule Esi.Api.Corporation do
 
   Returns a corporation's titles
   """
-  @spec get_titles(integer, keyword) ::
+  @spec titles(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdTitlesGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_titles(corporation_id, opts \\ []) do
+  def titles(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_titles},
+      call: {Esi.Api.Corporation, :titles},
       url: "/corporations/#{corporation_id}/titles",
       method: :get,
       response: [
@@ -1131,14 +1183,14 @@ defmodule Esi.Api.Corporation do
 
   Get a corporation's wallets
   """
-  @spec get_wallets(integer, keyword) ::
+  @spec wallets(integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdWalletsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_wallets(corporation_id, opts \\ []) do
+  def wallets(corporation_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :get_wallets},
+      call: {Esi.Api.Corporation, :wallets},
       url: "/corporations/#{corporation_id}/wallets",
       method: :get,
       response: [
@@ -1159,16 +1211,16 @@ defmodule Esi.Api.Corporation do
     * `page`
 
   """
-  @spec get_wallets_journal(integer, integer, keyword) ::
+  @spec wallets_journal(integer, integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdWalletsDivisionJournalGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_wallets_journal(corporation_id, division, opts \\ []) do
+  def wallets_journal(corporation_id, division, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [corporation_id: corporation_id, division: division],
-      call: {Esi.Api.Corporation, :get_wallets_journal},
+      call: {Esi.Api.Corporation, :wallets_journal},
       url: "/corporations/#{corporation_id}/wallets/#{division}/journal",
       method: :get,
       query: query,
@@ -1190,73 +1242,21 @@ defmodule Esi.Api.Corporation do
     * `from_id`
 
   """
-  @spec get_wallets_transactions(integer, integer, keyword) ::
+  @spec wallets_transactions(integer, integer, keyword) ::
           {:ok, [Esi.Api.CorporationsCorporationIdWalletsDivisionTransactionsGet.t()]}
           | {:error, Esi.Api.Error.t()}
-  def get_wallets_transactions(corporation_id, division, opts \\ []) do
+  def wallets_transactions(corporation_id, division, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:from_id])
 
     client.request(%{
       args: [corporation_id: corporation_id, division: division],
-      call: {Esi.Api.Corporation, :get_wallets_transactions},
+      call: {Esi.Api.Corporation, :wallets_transactions},
       url: "/corporations/#{corporation_id}/wallets/#{division}/transactions",
       method: :get,
       query: query,
       response: [
         {200, [{Esi.Api.CorporationsCorporationIdWalletsDivisionTransactionsGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
-  end
-
-  @doc """
-  Get corporation asset locations
-
-  Return locations for a set of item ids, which you can get from corporation assets endpoint. Coordinates for items in hangars or stations are set to (0,0,0)
-  """
-  @spec post_assets_locations(integer, [integer], keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdAssetsLocationsPost.t()]}
-          | {:error, Esi.Api.Error.t()}
-  def post_assets_locations(corporation_id, body, opts \\ []) do
-    client = opts[:client] || @default_client
-
-    client.request(%{
-      args: [corporation_id: corporation_id, body: body],
-      call: {Esi.Api.Corporation, :post_assets_locations},
-      url: "/corporations/#{corporation_id}/assets/locations",
-      body: body,
-      method: :post,
-      request: [{"application/json", [:integer]}],
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdAssetsLocationsPost, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
-  end
-
-  @doc """
-  Get corporation asset names
-
-  Return names for a set of item ids, which you can get from corporation assets endpoint. Only valid for items that can customize names, like containers or ships
-  """
-  @spec post_assets_names(integer, [integer], keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdAssetsNamesPost.t()]}
-          | {:error, Esi.Api.Error.t()}
-  def post_assets_names(corporation_id, body, opts \\ []) do
-    client = opts[:client] || @default_client
-
-    client.request(%{
-      args: [corporation_id: corporation_id, body: body],
-      call: {Esi.Api.Corporation, :post_assets_names},
-      url: "/corporations/#{corporation_id}/assets/names",
-      body: body,
-      method: :post,
-      request: [{"application/json", [:integer]}],
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdAssetsNamesPost, :t}]},
         default: {Esi.Api.Error, :t}
       ],
       opts: opts

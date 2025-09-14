@@ -17,14 +17,14 @@ defmodule Esi.Api.Ui do
     * `destination_id`
 
   """
-  @spec post_autopilot_waypoint(keyword) :: :ok | {:error, Esi.Api.Error.t()}
-  def post_autopilot_waypoint(opts \\ []) do
+  @spec autopilot_waypoint(keyword) :: :ok | {:error, Esi.Api.Error.t()}
+  def autopilot_waypoint(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:add_to_beginning, :clear_other_waypoints, :destination_id])
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Ui, :post_autopilot_waypoint},
+      call: {Esi.Api.Ui, :autopilot_waypoint},
       url: "/ui/autopilot/waypoint",
       method: :post,
       query: query,
@@ -43,14 +43,14 @@ defmodule Esi.Api.Ui do
     * `contract_id`
 
   """
-  @spec post_openwindow_contract(keyword) :: :ok | {:error, Esi.Api.Error.t()}
-  def post_openwindow_contract(opts \\ []) do
+  @spec open_contract_window(keyword) :: :ok | {:error, Esi.Api.Error.t()}
+  def open_contract_window(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:contract_id])
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Ui, :post_openwindow_contract},
+      call: {Esi.Api.Ui, :open_contract_window},
       url: "/ui/openwindow/contract",
       method: :post,
       query: query,
@@ -69,14 +69,14 @@ defmodule Esi.Api.Ui do
     * `target_id`
 
   """
-  @spec post_openwindow_information(keyword) :: :ok | {:error, Esi.Api.Error.t()}
-  def post_openwindow_information(opts \\ []) do
+  @spec open_information_window(keyword) :: :ok | {:error, Esi.Api.Error.t()}
+  def open_information_window(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:target_id])
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Ui, :post_openwindow_information},
+      call: {Esi.Api.Ui, :open_information_window},
       url: "/ui/openwindow/information",
       method: :post,
       query: query,
@@ -95,14 +95,14 @@ defmodule Esi.Api.Ui do
     * `type_id`
 
   """
-  @spec post_openwindow_marketdetails(keyword) :: :ok | {:error, Esi.Api.Error.t()}
-  def post_openwindow_marketdetails(opts \\ []) do
+  @spec open_marketdetails_window(keyword) :: :ok | {:error, Esi.Api.Error.t()}
+  def open_marketdetails_window(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:type_id])
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Ui, :post_openwindow_marketdetails},
+      call: {Esi.Api.Ui, :open_marketdetails_window},
       url: "/ui/openwindow/marketdetails",
       method: :post,
       query: query,
@@ -116,13 +116,13 @@ defmodule Esi.Api.Ui do
 
   Open the New Mail window, according to settings from the request if applicable
   """
-  @spec post_openwindow_newmail(map, keyword) :: :ok | {:error, Esi.Api.Error.t()}
-  def post_openwindow_newmail(body, opts \\ []) do
+  @spec open_newmail_window(map, keyword) :: :ok | {:error, Esi.Api.Error.t()}
+  def open_newmail_window(body, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [body: body],
-      call: {Esi.Api.Ui, :post_openwindow_newmail},
+      call: {Esi.Api.Ui, :open_newmail_window},
       url: "/ui/openwindow/newmail",
       body: body,
       method: :post,

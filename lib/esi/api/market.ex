@@ -12,47 +12,17 @@ defmodule Esi.Api.Market do
 
   This route expires daily at 11:05
   """
-  @spec get_get_groups(integer, keyword) ::
+  @spec group(integer, keyword) ::
           {:ok, Esi.Api.MarketsGroupsMarketGroupIdGet.t()} | {:error, Esi.Api.Error.t()}
-  def get_get_groups(market_group_id, opts \\ []) do
+  def group(market_group_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [market_group_id: market_group_id],
-      call: {Esi.Api.Market, :get_get_groups},
+      call: {Esi.Api.Market, :group},
       url: "/markets/groups/#{market_group_id}",
       method: :get,
       response: [{200, {Esi.Api.MarketsGroupsMarketGroupIdGet, :t}}, default: {Esi.Api.Error, :t}],
-      opts: opts
-    })
-  end
-
-  @doc """
-  List orders in a structure
-
-  Return all orders in a structure
-
-  ## Options
-
-    * `page`
-
-  """
-  @spec get_get_structures(integer, keyword) ::
-          {:ok, [Esi.Api.MarketsStructuresStructureIdGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_get_structures(structure_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [structure_id: structure_id],
-      call: {Esi.Api.Market, :get_get_structures},
-      url: "/markets/structures/#{structure_id}",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.MarketsStructuresStructureIdGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
       opts: opts
     })
   end
@@ -64,13 +34,13 @@ defmodule Esi.Api.Market do
 
   This route expires daily at 11:05
   """
-  @spec get_groups(keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
-  def get_groups(opts \\ []) do
+  @spec groups(keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  def groups(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Market, :get_groups},
+      call: {Esi.Api.Market, :groups},
       url: "/markets/groups",
       method: :get,
       response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
@@ -90,15 +60,15 @@ defmodule Esi.Api.Market do
     * `type_id`
 
   """
-  @spec get_history(integer, keyword) ::
+  @spec history(integer, keyword) ::
           {:ok, [Esi.Api.MarketsRegionIdHistoryGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_history(region_id, opts \\ []) do
+  def history(region_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:type_id])
 
     client.request(%{
       args: [region_id: region_id],
-      call: {Esi.Api.Market, :get_history},
+      call: {Esi.Api.Market, :history},
       url: "/markets/#{region_id}/history",
       method: :get,
       query: query,
@@ -119,15 +89,15 @@ defmodule Esi.Api.Market do
     * `type_id`
 
   """
-  @spec get_orders(integer, keyword) ::
+  @spec orders(integer, keyword) ::
           {:ok, [Esi.Api.MarketsRegionIdOrdersGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_orders(region_id, opts \\ []) do
+  def orders(region_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:order_type, :page, :type_id])
 
     client.request(%{
       args: [region_id: region_id],
-      call: {Esi.Api.Market, :get_orders},
+      call: {Esi.Api.Market, :orders},
       url: "/markets/#{region_id}/orders",
       method: :get,
       query: query,
@@ -141,16 +111,46 @@ defmodule Esi.Api.Market do
 
   Return a list of prices
   """
-  @spec get_prices(keyword) :: {:ok, [Esi.Api.MarketsPricesGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_prices(opts \\ []) do
+  @spec prices(keyword) :: {:ok, [Esi.Api.MarketsPricesGet.t()]} | {:error, Esi.Api.Error.t()}
+  def prices(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Market, :get_prices},
+      call: {Esi.Api.Market, :prices},
       url: "/markets/prices",
       method: :get,
       response: [{200, [{Esi.Api.MarketsPricesGet, :t}]}, default: {Esi.Api.Error, :t}],
+      opts: opts
+    })
+  end
+
+  @doc """
+  List orders in a structure
+
+  Return all orders in a structure
+
+  ## Options
+
+    * `page`
+
+  """
+  @spec structure(integer, keyword) ::
+          {:ok, [Esi.Api.MarketsStructuresStructureIdGet.t()]} | {:error, Esi.Api.Error.t()}
+  def structure(structure_id, opts \\ []) do
+    client = opts[:client] || @default_client
+    query = Keyword.take(opts, [:page])
+
+    client.request(%{
+      args: [structure_id: structure_id],
+      call: {Esi.Api.Market, :structure},
+      url: "/markets/structures/#{structure_id}",
+      method: :get,
+      query: query,
+      response: [
+        {200, [{Esi.Api.MarketsStructuresStructureIdGet, :t}]},
+        default: {Esi.Api.Error, :t}
+      ],
       opts: opts
     })
   end
@@ -165,14 +165,14 @@ defmodule Esi.Api.Market do
     * `page`
 
   """
-  @spec get_types(integer, keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
-  def get_types(region_id, opts \\ []) do
+  @spec types(integer, keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  def types(region_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [region_id: region_id],
-      call: {Esi.Api.Market, :get_types},
+      call: {Esi.Api.Market, :types},
       url: "/markets/#{region_id}/types",
       method: :get,
       query: query,

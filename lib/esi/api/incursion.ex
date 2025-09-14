@@ -10,13 +10,13 @@ defmodule Esi.Api.Incursion do
 
   Return a list of current incursions
   """
-  @spec get_list(keyword) :: {:ok, [Esi.Api.IncursionsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_list(opts \\ []) do
+  @spec incursions(keyword) :: {:ok, [Esi.Api.IncursionsGet.t()]} | {:error, Esi.Api.Error.t()}
+  def incursions(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Incursion, :get_list},
+      call: {Esi.Api.Incursion, :incursions},
       url: "/incursions",
       method: :get,
       response: [{200, [{Esi.Api.IncursionsGet, :t}]}, default: {Esi.Api.Error, :t}],

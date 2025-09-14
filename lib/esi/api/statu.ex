@@ -10,13 +10,13 @@ defmodule Esi.Api.Statu do
 
   EVE Server status
   """
-  @spec get_list(keyword) :: {:ok, Esi.Api.StatusGet.t()} | {:error, Esi.Api.Error.t()}
-  def get_list(opts \\ []) do
+  @spec status(keyword) :: {:ok, Esi.Api.StatusGet.t()} | {:error, Esi.Api.Error.t()}
+  def status(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Statu, :get_list},
+      call: {Esi.Api.Statu, :status},
       url: "/status",
       method: :get,
       response: [{200, {Esi.Api.StatusGet, :t}}, default: {Esi.Api.Error, :t}],

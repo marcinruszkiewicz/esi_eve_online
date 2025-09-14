@@ -10,14 +10,14 @@ defmodule Esi.Api.Sovereignty do
 
   Shows sovereignty data for campaigns.
   """
-  @spec get_campaigns(keyword) ::
+  @spec campaigns(keyword) ::
           {:ok, [Esi.Api.SovereigntyCampaignsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_campaigns(opts \\ []) do
+  def campaigns(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Sovereignty, :get_campaigns},
+      call: {Esi.Api.Sovereignty, :campaigns},
       url: "/sovereignty/campaigns",
       method: :get,
       response: [{200, [{Esi.Api.SovereigntyCampaignsGet, :t}]}, default: {Esi.Api.Error, :t}],
@@ -30,13 +30,13 @@ defmodule Esi.Api.Sovereignty do
 
   Shows sovereignty information for solar systems
   """
-  @spec get_map(keyword) :: {:ok, [Esi.Api.SovereigntyMapGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_map(opts \\ []) do
+  @spec map(keyword) :: {:ok, [Esi.Api.SovereigntyMapGet.t()]} | {:error, Esi.Api.Error.t()}
+  def map(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Sovereignty, :get_map},
+      call: {Esi.Api.Sovereignty, :map},
       url: "/sovereignty/map",
       method: :get,
       response: [{200, [{Esi.Api.SovereigntyMapGet, :t}]}, default: {Esi.Api.Error, :t}],
@@ -49,14 +49,14 @@ defmodule Esi.Api.Sovereignty do
 
   Shows sovereignty data for structures.
   """
-  @spec get_structures(keyword) ::
+  @spec structures(keyword) ::
           {:ok, [Esi.Api.SovereigntyStructuresGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_structures(opts \\ []) do
+  def structures(opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Sovereignty, :get_structures},
+      call: {Esi.Api.Sovereignty, :structures},
       url: "/sovereignty/structures",
       method: :get,
       response: [{200, [{Esi.Api.SovereigntyStructuresGet, :t}]}, default: {Esi.Api.Error, :t}],

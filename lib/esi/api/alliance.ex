@@ -6,6 +6,45 @@ defmodule Esi.Api.Alliance do
   @default_client Esi.Client
 
   @doc """
+  Get alliance information
+
+  Public information about an alliance
+  """
+  @spec alliance(integer, keyword) ::
+          {:ok, Esi.Api.AlliancesAllianceIdGet.t()} | {:error, Esi.Api.Error.t()}
+  def alliance(alliance_id, opts \\ []) do
+    client = opts[:client] || @default_client
+
+    client.request(%{
+      args: [alliance_id: alliance_id],
+      call: {Esi.Api.Alliance, :alliance},
+      url: "/alliances/#{alliance_id}",
+      method: :get,
+      response: [{200, {Esi.Api.AlliancesAllianceIdGet, :t}}, default: {Esi.Api.Error, :t}],
+      opts: opts
+    })
+  end
+
+  @doc """
+  List all alliances
+
+  List all active player alliances
+  """
+  @spec alliances(keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  def alliances(opts \\ []) do
+    client = opts[:client] || @default_client
+
+    client.request(%{
+      args: [],
+      call: {Esi.Api.Alliance, :alliances},
+      url: "/alliances",
+      method: :get,
+      response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
+      opts: opts
+    })
+  end
+
+  @doc """
   Get alliance contacts
 
   Return contacts of an alliance
@@ -15,15 +54,15 @@ defmodule Esi.Api.Alliance do
     * `page`
 
   """
-  @spec get_contacts(integer, keyword) ::
+  @spec contacts(integer, keyword) ::
           {:ok, [Esi.Api.AlliancesAllianceIdContactsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_contacts(alliance_id, opts \\ []) do
+  def contacts(alliance_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:page])
 
     client.request(%{
       args: [alliance_id: alliance_id],
-      call: {Esi.Api.Alliance, :get_contacts},
+      call: {Esi.Api.Alliance, :contacts},
       url: "/alliances/#{alliance_id}/contacts",
       method: :get,
       query: query,
@@ -40,14 +79,14 @@ defmodule Esi.Api.Alliance do
 
   Return custom labels for an alliance's contacts
   """
-  @spec get_contacts_labels(integer, keyword) ::
+  @spec contacts_labels(integer, keyword) ::
           {:ok, [Esi.Api.AlliancesAllianceIdContactsLabelsGet.t()]} | {:error, Esi.Api.Error.t()}
-  def get_contacts_labels(alliance_id, opts \\ []) do
+  def contacts_labels(alliance_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [alliance_id: alliance_id],
-      call: {Esi.Api.Alliance, :get_contacts_labels},
+      call: {Esi.Api.Alliance, :contacts_labels},
       url: "/alliances/#{alliance_id}/contacts/labels",
       method: :get,
       response: [
@@ -63,36 +102,16 @@ defmodule Esi.Api.Alliance do
 
   List all current member corporations of an alliance
   """
-  @spec get_corporations(integer, keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
-  def get_corporations(alliance_id, opts \\ []) do
+  @spec corporations(integer, keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  def corporations(alliance_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [alliance_id: alliance_id],
-      call: {Esi.Api.Alliance, :get_corporations},
+      call: {Esi.Api.Alliance, :corporations},
       url: "/alliances/#{alliance_id}/corporations",
       method: :get,
       response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
-      opts: opts
-    })
-  end
-
-  @doc """
-  Get alliance information
-
-  Public information about an alliance
-  """
-  @spec get_get(integer, keyword) ::
-          {:ok, Esi.Api.AlliancesAllianceIdGet.t()} | {:error, Esi.Api.Error.t()}
-  def get_get(alliance_id, opts \\ []) do
-    client = opts[:client] || @default_client
-
-    client.request(%{
-      args: [alliance_id: alliance_id],
-      call: {Esi.Api.Alliance, :get_get},
-      url: "/alliances/#{alliance_id}",
-      method: :get,
-      response: [{200, {Esi.Api.AlliancesAllianceIdGet, :t}}, default: {Esi.Api.Error, :t}],
       opts: opts
     })
   end
@@ -104,36 +123,17 @@ defmodule Esi.Api.Alliance do
 
   This route expires daily at 11:05
   """
-  @spec get_icons(integer, keyword) ::
+  @spec icons(integer, keyword) ::
           {:ok, Esi.Api.AlliancesAllianceIdIconsGet.t()} | {:error, Esi.Api.Error.t()}
-  def get_icons(alliance_id, opts \\ []) do
+  def icons(alliance_id, opts \\ []) do
     client = opts[:client] || @default_client
 
     client.request(%{
       args: [alliance_id: alliance_id],
-      call: {Esi.Api.Alliance, :get_icons},
+      call: {Esi.Api.Alliance, :icons},
       url: "/alliances/#{alliance_id}/icons",
       method: :get,
       response: [{200, {Esi.Api.AlliancesAllianceIdIconsGet, :t}}, default: {Esi.Api.Error, :t}],
-      opts: opts
-    })
-  end
-
-  @doc """
-  List all alliances
-
-  List all active player alliances
-  """
-  @spec get_list(keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
-  def get_list(opts \\ []) do
-    client = opts[:client] || @default_client
-
-    client.request(%{
-      args: [],
-      call: {Esi.Api.Alliance, :get_list},
-      url: "/alliances",
-      method: :get,
-      response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
       opts: opts
     })
   end
