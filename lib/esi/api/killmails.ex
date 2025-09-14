@@ -1,6 +1,6 @@
-defmodule Esi.Api.Killmail do
+defmodule Esi.Api.Killmails do
   @moduledoc """
-  Provides API endpoint related to killmail
+  Provides API endpoint related to killmails
   """
 
   @default_client Esi.Client
@@ -17,7 +17,7 @@ defmodule Esi.Api.Killmail do
 
     client.request(%{
       args: [killmail_hash: killmail_hash, killmail_id: killmail_id],
-      call: {Esi.Api.Killmail, :killmail},
+      call: {Esi.Api.Killmails, :killmail},
       url: "/killmails/#{killmail_id}/#{killmail_hash}",
       method: :get,
       response: [

@@ -127,7 +127,7 @@ defmodule Esi.CustomProcessor do
   def operation_module_names(_state, operation) do
     path = operation."$oag_path"
     parts = String.split(path, "/", trim: true)
-    base_module = singularize(List.first(parts)) |> Macro.camelize()
+    base_module = List.first(parts) |> Macro.camelize()
     [Module.concat([base_module])]
   end
 

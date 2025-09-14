@@ -1,6 +1,6 @@
-defmodule Esi.Api.Incursion do
+defmodule Esi.Api.Incursions do
   @moduledoc """
-  Provides API endpoint related to incursion
+  Provides API endpoint related to incursions
   """
 
   @default_client Esi.Client
@@ -16,7 +16,7 @@ defmodule Esi.Api.Incursion do
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Incursion, :incursions},
+      call: {Esi.Api.Incursions, :incursions},
       url: "/incursions",
       method: :get,
       response: [{200, [{Esi.Api.IncursionsGet, :t}]}, default: {Esi.Api.Error, :t}],

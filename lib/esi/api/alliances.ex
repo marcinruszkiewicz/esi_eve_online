@@ -1,6 +1,6 @@
-defmodule Esi.Api.Alliance do
+defmodule Esi.Api.Alliances do
   @moduledoc """
-  Provides API endpoints related to alliance
+  Provides API endpoints related to alliances
   """
 
   @default_client Esi.Client
@@ -17,7 +17,7 @@ defmodule Esi.Api.Alliance do
 
     client.request(%{
       args: [alliance_id: alliance_id],
-      call: {Esi.Api.Alliance, :alliance},
+      call: {Esi.Api.Alliances, :alliance},
       url: "/alliances/#{alliance_id}",
       method: :get,
       response: [{200, {Esi.Api.AlliancesAllianceIdGet, :t}}, default: {Esi.Api.Error, :t}],
@@ -36,7 +36,7 @@ defmodule Esi.Api.Alliance do
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Alliance, :alliances},
+      call: {Esi.Api.Alliances, :alliances},
       url: "/alliances",
       method: :get,
       response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
@@ -62,7 +62,7 @@ defmodule Esi.Api.Alliance do
 
     client.request(%{
       args: [alliance_id: alliance_id],
-      call: {Esi.Api.Alliance, :contacts},
+      call: {Esi.Api.Alliances, :contacts},
       url: "/alliances/#{alliance_id}/contacts",
       method: :get,
       query: query,
@@ -86,7 +86,7 @@ defmodule Esi.Api.Alliance do
 
     client.request(%{
       args: [alliance_id: alliance_id],
-      call: {Esi.Api.Alliance, :contacts_labels},
+      call: {Esi.Api.Alliances, :contacts_labels},
       url: "/alliances/#{alliance_id}/contacts/labels",
       method: :get,
       response: [
@@ -108,7 +108,7 @@ defmodule Esi.Api.Alliance do
 
     client.request(%{
       args: [alliance_id: alliance_id],
-      call: {Esi.Api.Alliance, :corporations},
+      call: {Esi.Api.Alliances, :corporations},
       url: "/alliances/#{alliance_id}/corporations",
       method: :get,
       response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
@@ -130,7 +130,7 @@ defmodule Esi.Api.Alliance do
 
     client.request(%{
       args: [alliance_id: alliance_id],
-      call: {Esi.Api.Alliance, :icons},
+      call: {Esi.Api.Alliances, :icons},
       url: "/alliances/#{alliance_id}/icons",
       method: :get,
       response: [{200, {Esi.Api.AlliancesAllianceIdIconsGet, :t}}, default: {Esi.Api.Error, :t}],

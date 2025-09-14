@@ -1,6 +1,6 @@
-defmodule Esi.Api.War do
+defmodule Esi.Api.Wars do
   @moduledoc """
-  Provides API endpoints related to war
+  Provides API endpoints related to wars
   """
 
   @default_client Esi.Client
@@ -23,7 +23,7 @@ defmodule Esi.Api.War do
 
     client.request(%{
       args: [war_id: war_id],
-      call: {Esi.Api.War, :killmails},
+      call: {Esi.Api.Wars, :killmails},
       url: "/wars/#{war_id}/killmails",
       method: :get,
       query: query,
@@ -43,7 +43,7 @@ defmodule Esi.Api.War do
 
     client.request(%{
       args: [war_id: war_id],
-      call: {Esi.Api.War, :war},
+      call: {Esi.Api.Wars, :war},
       url: "/wars/#{war_id}",
       method: :get,
       response: [{200, {Esi.Api.WarsWarIdGet, :t}}, default: {Esi.Api.Error, :t}],
@@ -68,7 +68,7 @@ defmodule Esi.Api.War do
 
     client.request(%{
       args: [],
-      call: {Esi.Api.War, :wars},
+      call: {Esi.Api.Wars, :wars},
       url: "/wars",
       method: :get,
       query: query,

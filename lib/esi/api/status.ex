@@ -1,6 +1,6 @@
-defmodule Esi.Api.Statu do
+defmodule Esi.Api.Status do
   @moduledoc """
-  Provides API endpoint related to statu
+  Provides API endpoint related to status
   """
 
   @default_client Esi.Client
@@ -16,7 +16,7 @@ defmodule Esi.Api.Statu do
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Statu, :status},
+      call: {Esi.Api.Status, :status},
       url: "/status",
       method: :get,
       response: [{200, {Esi.Api.StatusGet, :t}}, default: {Esi.Api.Error, :t}],

@@ -1,6 +1,6 @@
-defmodule Esi.Api.Character do
+defmodule Esi.Api.Characters do
   @moduledoc """
-  Provides API endpoints related to character
+  Provides API endpoints related to characters
   """
 
   @default_client Esi.Client
@@ -17,7 +17,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [body: body],
-      call: {Esi.Api.Character, :affiliation},
+      call: {Esi.Api.Characters, :affiliation},
       url: "/characters/affiliation",
       body: body,
       method: :post,
@@ -40,7 +40,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :agents_research},
+      call: {Esi.Api.Characters, :agents_research},
       url: "/characters/#{character_id}/agents_research",
       method: :get,
       response: [
@@ -69,7 +69,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :assets},
+      call: {Esi.Api.Characters, :assets},
       url: "/characters/#{character_id}/assets",
       method: :get,
       query: query,
@@ -94,7 +94,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, body: body],
-      call: {Esi.Api.Character, :assets_locations},
+      call: {Esi.Api.Characters, :assets_locations},
       url: "/characters/#{character_id}/assets/locations",
       body: body,
       method: :post,
@@ -119,7 +119,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, body: body],
-      call: {Esi.Api.Character, :assets_names},
+      call: {Esi.Api.Characters, :assets_names},
       url: "/characters/#{character_id}/assets/names",
       body: body,
       method: :post,
@@ -144,7 +144,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :attributes},
+      call: {Esi.Api.Characters, :attributes},
       url: "/characters/#{character_id}/attributes",
       method: :get,
       response: [
@@ -173,7 +173,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :blueprints},
+      call: {Esi.Api.Characters, :blueprints},
       url: "/characters/#{character_id}/blueprints",
       method: :get,
       query: query,
@@ -203,7 +203,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :calendar},
+      call: {Esi.Api.Characters, :calendar},
       url: "/characters/#{character_id}/calendar",
       method: :get,
       query: query,
@@ -228,7 +228,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, event_id: event_id],
-      call: {Esi.Api.Character, :calendar_attendees},
+      call: {Esi.Api.Characters, :calendar_attendees},
       url: "/characters/#{character_id}/calendar/#{event_id}/attendees",
       method: :get,
       response: [
@@ -251,7 +251,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, event_id: event_id],
-      call: {Esi.Api.Character, :calendar_item},
+      call: {Esi.Api.Characters, :calendar_item},
       url: "/characters/#{character_id}/calendar/#{event_id}",
       method: :get,
       response: [
@@ -274,7 +274,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :character},
+      call: {Esi.Api.Characters, :character},
       url: "/characters/#{character_id}",
       method: :get,
       response: [{200, {Esi.Api.CharactersCharacterIdGet, :t}}, default: {Esi.Api.Error, :t}],
@@ -294,7 +294,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :clones},
+      call: {Esi.Api.Characters, :clones},
       url: "/characters/#{character_id}/clones",
       method: :get,
       response: [
@@ -323,7 +323,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :contacts},
+      call: {Esi.Api.Characters, :contacts},
       url: "/characters/#{character_id}/contacts",
       method: :get,
       query: query,
@@ -348,7 +348,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :contacts_labels},
+      call: {Esi.Api.Characters, :contacts_labels},
       url: "/characters/#{character_id}/contacts/labels",
       method: :get,
       response: [
@@ -377,7 +377,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :contracts},
+      call: {Esi.Api.Characters, :contracts},
       url: "/characters/#{character_id}/contracts",
       method: :get,
       query: query,
@@ -402,7 +402,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, contract_id: contract_id],
-      call: {Esi.Api.Character, :contracts_bids},
+      call: {Esi.Api.Characters, :contracts_bids},
       url: "/characters/#{character_id}/contracts/#{contract_id}/bids",
       method: :get,
       response: [
@@ -426,7 +426,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, contract_id: contract_id],
-      call: {Esi.Api.Character, :contracts_items},
+      call: {Esi.Api.Characters, :contracts_items},
       url: "/characters/#{character_id}/contracts/#{contract_id}/items",
       method: :get,
       response: [
@@ -450,7 +450,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :corporationhistory},
+      call: {Esi.Api.Characters, :corporationhistory},
       url: "/characters/#{character_id}/corporationhistory",
       method: :get,
       response: [
@@ -481,7 +481,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, body: body],
-      call: {Esi.Api.Character, :create_contacts},
+      call: {Esi.Api.Characters, :create_contacts},
       url: "/characters/#{character_id}/contacts",
       body: body,
       method: :post,
@@ -504,7 +504,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, body: body],
-      call: {Esi.Api.Character, :create_fittings},
+      call: {Esi.Api.Characters, :create_fittings},
       url: "/characters/#{character_id}/fittings",
       body: body,
       method: :post,
@@ -528,7 +528,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, body: body],
-      call: {Esi.Api.Character, :create_mail},
+      call: {Esi.Api.Characters, :create_mail},
       url: "/characters/#{character_id}/mail",
       body: body,
       method: :post,
@@ -549,7 +549,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, body: body],
-      call: {Esi.Api.Character, :create_mail_labels},
+      call: {Esi.Api.Characters, :create_mail_labels},
       url: "/characters/#{character_id}/mail/labels",
       body: body,
       method: :post,
@@ -570,7 +570,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, body: body],
-      call: {Esi.Api.Character, :cspa},
+      call: {Esi.Api.Characters, :cspa},
       url: "/characters/#{character_id}/cspa",
       body: body,
       method: :post,
@@ -597,7 +597,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :delete_contacts},
+      call: {Esi.Api.Characters, :delete_contacts},
       url: "/characters/#{character_id}/contacts",
       method: :delete,
       query: query,
@@ -617,7 +617,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, fitting_id: fitting_id],
-      call: {Esi.Api.Character, :delete_fittings},
+      call: {Esi.Api.Characters, :delete_fittings},
       url: "/characters/#{character_id}/fittings/#{fitting_id}",
       method: :delete,
       response: [{204, :null}, default: {Esi.Api.Error, :t}],
@@ -636,7 +636,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, mail_id: mail_id],
-      call: {Esi.Api.Character, :delete_mail},
+      call: {Esi.Api.Characters, :delete_mail},
       url: "/characters/#{character_id}/mail/#{mail_id}",
       method: :delete,
       response: [{204, :null}, default: {Esi.Api.Error, :t}],
@@ -655,7 +655,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, label_id: label_id],
-      call: {Esi.Api.Character, :delete_mail_labels},
+      call: {Esi.Api.Characters, :delete_mail_labels},
       url: "/characters/#{character_id}/mail/labels/#{label_id}",
       method: :delete,
       response: [{204, :null}, default: {Esi.Api.Error, :t}],
@@ -675,7 +675,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :fatigue},
+      call: {Esi.Api.Characters, :fatigue},
       url: "/characters/#{character_id}/fatigue",
       method: :get,
       response: [
@@ -698,7 +698,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :fittings},
+      call: {Esi.Api.Characters, :fittings},
       url: "/characters/#{character_id}/fittings",
       method: :get,
       response: [
@@ -721,7 +721,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :fleet},
+      call: {Esi.Api.Characters, :fleet},
       url: "/characters/#{character_id}/fleet",
       method: :get,
       response: [{200, {Esi.Api.CharactersCharacterIdFleetGet, :t}}, default: {Esi.Api.Error, :t}],
@@ -743,7 +743,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :fw_stats},
+      call: {Esi.Api.Characters, :fw_stats},
       url: "/characters/#{character_id}/fw/stats",
       method: :get,
       response: [
@@ -765,7 +765,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :implants},
+      call: {Esi.Api.Characters, :implants},
       url: "/characters/#{character_id}/implants",
       method: :get,
       response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
@@ -791,7 +791,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :industry_jobs},
+      call: {Esi.Api.Characters, :industry_jobs},
       url: "/characters/#{character_id}/industry/jobs",
       method: :get,
       query: query,
@@ -822,7 +822,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :killmails_recent},
+      call: {Esi.Api.Characters, :killmails_recent},
       url: "/characters/#{character_id}/killmails/recent",
       method: :get,
       query: query,
@@ -846,7 +846,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :location},
+      call: {Esi.Api.Characters, :location},
       url: "/characters/#{character_id}/location",
       method: :get,
       response: [
@@ -869,7 +869,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :loyalty_points},
+      call: {Esi.Api.Characters, :loyalty_points},
       url: "/characters/#{character_id}/loyalty/points",
       method: :get,
       response: [
@@ -899,7 +899,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :mail},
+      call: {Esi.Api.Characters, :mail},
       url: "/characters/#{character_id}/mail",
       method: :get,
       query: query,
@@ -923,7 +923,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, mail_id: mail_id],
-      call: {Esi.Api.Character, :mail_item},
+      call: {Esi.Api.Characters, :mail_item},
       url: "/characters/#{character_id}/mail/#{mail_id}",
       method: :get,
       response: [
@@ -946,7 +946,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :mail_labels},
+      call: {Esi.Api.Characters, :mail_labels},
       url: "/characters/#{character_id}/mail/labels",
       method: :get,
       response: [
@@ -969,7 +969,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :mail_lists},
+      call: {Esi.Api.Characters, :mail_lists},
       url: "/characters/#{character_id}/mail/lists",
       method: :get,
       response: [
@@ -992,7 +992,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :medals},
+      call: {Esi.Api.Characters, :medals},
       url: "/characters/#{character_id}/medals",
       method: :get,
       response: [
@@ -1021,7 +1021,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :mining},
+      call: {Esi.Api.Characters, :mining},
       url: "/characters/#{character_id}/mining",
       method: :get,
       query: query,
@@ -1045,7 +1045,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :notifications},
+      call: {Esi.Api.Characters, :notifications},
       url: "/characters/#{character_id}/notifications",
       method: :get,
       response: [
@@ -1069,7 +1069,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :notifications_contacts},
+      call: {Esi.Api.Characters, :notifications_contacts},
       url: "/characters/#{character_id}/notifications/contacts",
       method: :get,
       response: [
@@ -1092,7 +1092,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :online},
+      call: {Esi.Api.Characters, :online},
       url: "/characters/#{character_id}/online",
       method: :get,
       response: [
@@ -1115,7 +1115,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :orders},
+      call: {Esi.Api.Characters, :orders},
       url: "/characters/#{character_id}/orders",
       method: :get,
       response: [
@@ -1144,7 +1144,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :orders_history},
+      call: {Esi.Api.Characters, :orders_history},
       url: "/characters/#{character_id}/orders/history",
       method: :get,
       query: query,
@@ -1168,7 +1168,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, planet_id: planet_id],
-      call: {Esi.Api.Character, :planet},
+      call: {Esi.Api.Characters, :planet},
       url: "/characters/#{character_id}/planets/#{planet_id}",
       method: :get,
       response: [
@@ -1191,7 +1191,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :planets},
+      call: {Esi.Api.Characters, :planets},
       url: "/characters/#{character_id}/planets",
       method: :get,
       response: [
@@ -1216,7 +1216,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :portrait},
+      call: {Esi.Api.Characters, :portrait},
       url: "/characters/#{character_id}/portrait",
       method: :get,
       response: [
@@ -1239,7 +1239,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :roles},
+      call: {Esi.Api.Characters, :roles},
       url: "/characters/#{character_id}/roles",
       method: :get,
       response: [{200, {Esi.Api.CharactersCharacterIdRolesGet, :t}}, default: {Esi.Api.Error, :t}],
@@ -1267,7 +1267,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :search},
+      call: {Esi.Api.Characters, :search},
       url: "/characters/#{character_id}/search",
       method: :get,
       query: query,
@@ -1291,7 +1291,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :ship},
+      call: {Esi.Api.Characters, :ship},
       url: "/characters/#{character_id}/ship",
       method: :get,
       response: [{200, {Esi.Api.CharactersCharacterIdShipGet, :t}}, default: {Esi.Api.Error, :t}],
@@ -1311,7 +1311,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :skillqueue},
+      call: {Esi.Api.Characters, :skillqueue},
       url: "/characters/#{character_id}/skillqueue",
       method: :get,
       response: [
@@ -1334,7 +1334,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :skills},
+      call: {Esi.Api.Characters, :skills},
       url: "/characters/#{character_id}/skills",
       method: :get,
       response: [
@@ -1357,7 +1357,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :standings},
+      call: {Esi.Api.Characters, :standings},
       url: "/characters/#{character_id}/standings",
       method: :get,
       response: [
@@ -1380,7 +1380,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :titles},
+      call: {Esi.Api.Characters, :titles},
       url: "/characters/#{character_id}/titles",
       method: :get,
       response: [
@@ -1402,7 +1402,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, event_id: event_id, body: body],
-      call: {Esi.Api.Character, :update_calendar},
+      call: {Esi.Api.Characters, :update_calendar},
       url: "/characters/#{character_id}/calendar/#{event_id}",
       body: body,
       method: :put,
@@ -1431,7 +1431,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, body: body],
-      call: {Esi.Api.Character, :update_contacts},
+      call: {Esi.Api.Characters, :update_contacts},
       url: "/characters/#{character_id}/contacts",
       body: body,
       method: :put,
@@ -1453,7 +1453,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id, mail_id: mail_id, body: body],
-      call: {Esi.Api.Character, :update_mail},
+      call: {Esi.Api.Characters, :update_mail},
       url: "/characters/#{character_id}/mail/#{mail_id}",
       body: body,
       method: :put,
@@ -1474,7 +1474,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :wallet},
+      call: {Esi.Api.Characters, :wallet},
       url: "/characters/#{character_id}/wallet",
       method: :get,
       response: [{200, :number}, default: {Esi.Api.Error, :t}],
@@ -1500,7 +1500,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :wallet_journal},
+      call: {Esi.Api.Characters, :wallet_journal},
       url: "/characters/#{character_id}/wallet/journal",
       method: :get,
       query: query,
@@ -1531,7 +1531,7 @@ defmodule Esi.Api.Character do
 
     client.request(%{
       args: [character_id: character_id],
-      call: {Esi.Api.Character, :wallet_transactions},
+      call: {Esi.Api.Characters, :wallet_transactions},
       url: "/characters/#{character_id}/wallet/transactions",
       method: :get,
       query: query,

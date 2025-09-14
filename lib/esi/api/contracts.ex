@@ -1,6 +1,6 @@
-defmodule Esi.Api.Contract do
+defmodule Esi.Api.Contracts do
   @moduledoc """
-  Provides API endpoints related to contract
+  Provides API endpoints related to contracts
   """
 
   @default_client Esi.Client
@@ -23,7 +23,7 @@ defmodule Esi.Api.Contract do
 
     client.request(%{
       args: [region_id: region_id],
-      call: {Esi.Api.Contract, :public},
+      call: {Esi.Api.Contracts, :public},
       url: "/contracts/public/#{region_id}",
       method: :get,
       query: query,
@@ -50,7 +50,7 @@ defmodule Esi.Api.Contract do
 
     client.request(%{
       args: [contract_id: contract_id],
-      call: {Esi.Api.Contract, :public_bid},
+      call: {Esi.Api.Contracts, :public_bid},
       url: "/contracts/public/bids/#{contract_id}",
       method: :get,
       query: query,
@@ -77,7 +77,7 @@ defmodule Esi.Api.Contract do
 
     client.request(%{
       args: [contract_id: contract_id],
-      call: {Esi.Api.Contract, :public_item},
+      call: {Esi.Api.Contracts, :public_item},
       url: "/contracts/public/items/#{contract_id}",
       method: :get,
       query: query,

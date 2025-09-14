@@ -157,20 +157,25 @@ defmodule Esi.CustomProcessorTest do
 
   describe "operation_module_names/2" do
     test "generates correct module names from paths" do
-      # Test basic module name generation
+      # Test basic module name generation (no singularization for modules)
       operation = make_operation("/alliances", "get")
       result = CustomProcessor.operation_module_names(nil, operation)
-      assert result == [Alliance]
+      assert result == [Alliances]
 
       # Test nested path module names
       operation = make_operation("/characters/{character_id}/assets", "get")
       result = CustomProcessor.operation_module_names(nil, operation)
-      assert result == [Character]
+      assert result == [Characters]
 
       # Test complex nested paths
       operation = make_operation("/universe/categories/{category_id}", "get")
       result = CustomProcessor.operation_module_names(nil, operation)
       assert result == [Universe]
+
+      # Test status module (was incorrectly "Statu" before fix)
+      operation = make_operation("/status", "get")
+      result = CustomProcessor.operation_module_names(nil, operation)
+      assert result == [Status]
     end
   end
 end

@@ -1,6 +1,6 @@
-defmodule Esi.Api.Market do
+defmodule Esi.Api.Markets do
   @moduledoc """
-  Provides API endpoints related to market
+  Provides API endpoints related to markets
   """
 
   @default_client Esi.Client
@@ -19,7 +19,7 @@ defmodule Esi.Api.Market do
 
     client.request(%{
       args: [market_group_id: market_group_id],
-      call: {Esi.Api.Market, :group},
+      call: {Esi.Api.Markets, :group},
       url: "/markets/groups/#{market_group_id}",
       method: :get,
       response: [{200, {Esi.Api.MarketsGroupsMarketGroupIdGet, :t}}, default: {Esi.Api.Error, :t}],
@@ -40,7 +40,7 @@ defmodule Esi.Api.Market do
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Market, :groups},
+      call: {Esi.Api.Markets, :groups},
       url: "/markets/groups",
       method: :get,
       response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
@@ -68,7 +68,7 @@ defmodule Esi.Api.Market do
 
     client.request(%{
       args: [region_id: region_id],
-      call: {Esi.Api.Market, :history},
+      call: {Esi.Api.Markets, :history},
       url: "/markets/#{region_id}/history",
       method: :get,
       query: query,
@@ -97,7 +97,7 @@ defmodule Esi.Api.Market do
 
     client.request(%{
       args: [region_id: region_id],
-      call: {Esi.Api.Market, :orders},
+      call: {Esi.Api.Markets, :orders},
       url: "/markets/#{region_id}/orders",
       method: :get,
       query: query,
@@ -117,7 +117,7 @@ defmodule Esi.Api.Market do
 
     client.request(%{
       args: [],
-      call: {Esi.Api.Market, :prices},
+      call: {Esi.Api.Markets, :prices},
       url: "/markets/prices",
       method: :get,
       response: [{200, [{Esi.Api.MarketsPricesGet, :t}]}, default: {Esi.Api.Error, :t}],
@@ -143,7 +143,7 @@ defmodule Esi.Api.Market do
 
     client.request(%{
       args: [structure_id: structure_id],
-      call: {Esi.Api.Market, :structure},
+      call: {Esi.Api.Markets, :structure},
       url: "/markets/structures/#{structure_id}",
       method: :get,
       query: query,
@@ -172,7 +172,7 @@ defmodule Esi.Api.Market do
 
     client.request(%{
       args: [region_id: region_id],
-      call: {Esi.Api.Market, :types},
+      call: {Esi.Api.Markets, :types},
       url: "/markets/#{region_id}/types",
       method: :get,
       query: query,

@@ -1,6 +1,6 @@
-defmodule Esi.Api.Fleet do
+defmodule Esi.Api.Fleets do
   @moduledoc """
-  Provides API endpoints related to fleet
+  Provides API endpoints related to fleets
   """
 
   @default_client Esi.Client
@@ -17,7 +17,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id],
-      call: {Esi.Api.Fleet, :create_wings},
+      call: {Esi.Api.Fleets, :create_wings},
       url: "/fleets/#{fleet_id}/wings",
       method: :post,
       response: [{201, {Esi.Api.FleetsFleetIdWingsPost, :t}}, default: {Esi.Api.Error, :t}],
@@ -37,7 +37,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id, wing_id: wing_id],
-      call: {Esi.Api.Fleet, :create_wings_squads},
+      call: {Esi.Api.Fleets, :create_wings_squads},
       url: "/fleets/#{fleet_id}/wings/#{wing_id}/squads",
       method: :post,
       response: [
@@ -59,7 +59,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id, member_id: member_id],
-      call: {Esi.Api.Fleet, :delete_members},
+      call: {Esi.Api.Fleets, :delete_members},
       url: "/fleets/#{fleet_id}/members/#{member_id}",
       method: :delete,
       response: [{204, :null}, default: {Esi.Api.Error, :t}],
@@ -78,7 +78,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id, squad_id: squad_id],
-      call: {Esi.Api.Fleet, :delete_squads},
+      call: {Esi.Api.Fleets, :delete_squads},
       url: "/fleets/#{fleet_id}/squads/#{squad_id}",
       method: :delete,
       response: [{204, :null}, default: {Esi.Api.Error, :t}],
@@ -97,7 +97,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id, wing_id: wing_id],
-      call: {Esi.Api.Fleet, :delete_wings},
+      call: {Esi.Api.Fleets, :delete_wings},
       url: "/fleets/#{fleet_id}/wings/#{wing_id}",
       method: :delete,
       response: [{204, :null}, default: {Esi.Api.Error, :t}],
@@ -117,7 +117,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id],
-      call: {Esi.Api.Fleet, :fleet},
+      call: {Esi.Api.Fleets, :fleet},
       url: "/fleets/#{fleet_id}",
       method: :get,
       response: [{200, {Esi.Api.FleetsFleetIdGet, :t}}, default: {Esi.Api.Error, :t}],
@@ -136,7 +136,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id, body: body],
-      call: {Esi.Api.Fleet, :invite},
+      call: {Esi.Api.Fleets, :invite},
       url: "/fleets/#{fleet_id}/members",
       body: body,
       method: :post,
@@ -158,7 +158,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id],
-      call: {Esi.Api.Fleet, :members},
+      call: {Esi.Api.Fleets, :members},
       url: "/fleets/#{fleet_id}/members",
       method: :get,
       response: [{200, [{Esi.Api.FleetsFleetIdMembersGet, :t}]}, default: {Esi.Api.Error, :t}],
@@ -177,7 +177,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id, body: body],
-      call: {Esi.Api.Fleet, :update},
+      call: {Esi.Api.Fleets, :update},
       url: "/fleets/#{fleet_id}",
       body: body,
       method: :put,
@@ -198,7 +198,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id, member_id: member_id, body: body],
-      call: {Esi.Api.Fleet, :update_members},
+      call: {Esi.Api.Fleets, :update_members},
       url: "/fleets/#{fleet_id}/members/#{member_id}",
       body: body,
       method: :put,
@@ -219,7 +219,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id, squad_id: squad_id, body: body],
-      call: {Esi.Api.Fleet, :update_squads},
+      call: {Esi.Api.Fleets, :update_squads},
       url: "/fleets/#{fleet_id}/squads/#{squad_id}",
       body: body,
       method: :put,
@@ -240,7 +240,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id, wing_id: wing_id, body: body],
-      call: {Esi.Api.Fleet, :update_wings},
+      call: {Esi.Api.Fleets, :update_wings},
       url: "/fleets/#{fleet_id}/wings/#{wing_id}",
       body: body,
       method: :put,
@@ -262,7 +262,7 @@ defmodule Esi.Api.Fleet do
 
     client.request(%{
       args: [fleet_id: fleet_id],
-      call: {Esi.Api.Fleet, :wings},
+      call: {Esi.Api.Fleets, :wings},
       url: "/fleets/#{fleet_id}/wings",
       method: :get,
       response: [{200, [{Esi.Api.FleetsFleetIdWingsGet, :t}]}, default: {Esi.Api.Error, :t}],
