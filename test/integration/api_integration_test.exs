@@ -2,7 +2,6 @@ defmodule Integration.ApiIntegrationTest do
   use ExUnit.Case, async: false
   import Mock
 
-  alias Esi.Client
   alias Esi.Error
 
   @moduletag :integration
