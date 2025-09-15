@@ -1,5 +1,6 @@
-defmodule Esi.CustomProcessor do
-  use OpenAPI.Processor
+if Code.ensure_loaded?(OpenAPI.Processor) do
+  defmodule Esi.CustomProcessor do
+    use OpenAPI.Processor
 
   defp singularize(word) do
     cond do
@@ -183,5 +184,16 @@ defmodule Esi.CustomProcessor do
         |> String.replace("-", "_")
         |> String.to_atom()
     end
+  end
+  end
+else
+  # Create a stub module when OpenAPI.Processor is not available
+  defmodule Esi.CustomProcessor do
+    @moduledoc """
+    Custom processor for OpenAPI generation.
+    
+    This module is only available when the oapi_generator dependency is present.
+    It's used during development for API code generation but is not needed at runtime.
+    """
   end
 end
