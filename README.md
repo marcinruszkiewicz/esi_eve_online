@@ -57,10 +57,10 @@ This library is being developed as a drop-in replacement for the legacy `esi` li
 
 1. **🔄 Backward Compatibility Module**
    ```elixir
-   # Legacy pattern support
+   # Legacy pattern support - works exactly like the old library
    ESI.API.Alliance.corporations(alliance_id) |> ESI.request()
    
-   # New pattern (internal)
+   # New pattern (recommended)
    Esi.Api.Alliance.get_corporations(alliance_id)
    ```
 
@@ -196,23 +196,24 @@ def deps do
 end
 
 # Step 2: Gradual migration with compatibility layer
-alias EsiEveOnline.Legacy, as: ESI  # Drop-in replacement
+# The library provides ESI and ESI.API modules for legacy compatibility
+ESI.API.Character.character(character_id) |> ESI.request()
 
 # Step 3: Move to new API patterns
-EsiEveOnline.Api.Character.get_character_info(character_id)
+EsiEveOnline.get("/characters/#{character_id}")
 ```
 
 ### Breaking Changes & Migration Guide
 
 #### API Module Organization
 - **Legacy**: `ESI.API.Alliance.corporations/1`
-- **New**: `Esi.Api.Alliance.get_corporations/2`
-- **Migration**: Compatibility aliases provided
+- **New**: `EsiEveOnline.get("/alliances/{alliance_id}/corporations")`
+- **Migration**: Legacy `ESI.API.*` modules provided for compatibility
 
 #### Request Options
 - **Legacy**: Options passed to `ESI.request/2`
-- **New**: Options passed to individual endpoint functions
-- **Migration**: Option mapping layer implemented
+- **New**: Options passed to `EsiEveOnline.get/2` and similar functions
+- **Migration**: Legacy `ESI.request/2` function still available
 
 #### Response Format
 - **Legacy**: Direct data return or `{:ok, data}` tuples
@@ -347,6 +348,37 @@ case Esi.Api.Characters.character(invalid_id) do
 end
 ```
 
+### Legacy Compatibility
+
+For users migrating from the old `esi` library, this package provides full backward compatibility through the `ESI` and `ESI.API.*` modules:
+
+```elixir
+# All legacy patterns work exactly as before
+ESI.API.Alliance.alliances() |> ESI.request()
+ESI.API.Character.character(12345) |> ESI.request!(token: "access_token")
+ESI.API.Universe.groups() |> ESI.stream!() |> Enum.take(100)
+
+# With pagination headers
+{:ok, data, max_pages} = ESI.API.Universe.groups() |> ESI.request_with_headers()
+
+# Available legacy modules include:
+# ESI.API.Alliance, ESI.API.Character, ESI.API.Corporation, 
+# ESI.API.Universe, ESI.API.Market, ESI.API.Fleet, etc.
+```
+
+You can gradually migrate from legacy patterns to the new API:
+
+```elixir
+# Legacy approach
+ESI.API.Character.character(char_id) |> ESI.request!(token: token)
+
+# Modern approach (equivalent)
+{:ok, character} = Esi.Api.Characters.character(char_id, token: token)
+
+# Or using the unified interface
+{:ok, character} = EsiEveOnline.get("/characters/#{char_id}", token: token)
+```
+
 ### Configuration Options
 
 ```elixir
@@ -394,8 +426,8 @@ The new library uses intelligent, semantic function names:
 
 ```elixir
 # ❌ Old library (generic, confusing)
-ESI.API.Alliance.get(alliance_id)           # Ambiguous
-ESI.API.Fleet.post(fleet_id, member_data)   # What does this do?
+ESI.API.Alliance.alliance(alliance_id) |> ESI.request()        # Generic
+ESI.API.Fleet.create_fleet_invitation(fleet_id, member_data) |> ESI.request()   # Verbose
 
 # ✅ New library (semantic, clear)
 Esi.Api.Alliances.alliance(alliance_id)      # Get alliance info
