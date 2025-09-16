@@ -1,4 +1,16 @@
 defmodule ESI.API.Contract do
+  @moduledoc """
+  Legacy compatibility module for Contract API endpoints.
+
+  This module provides the same interface as the legacy ESI.API.Contract module,
+  returning ESI.Request structs that work with the legacy request pattern.
+
+  All functions maintain exact compatibility with the legacy library while
+  internally mapping to the new Esi.Api.* modules.
+
+  Copied and adapted from the legacy ESI library for perfect compatibility.
+  """
+
   @typedoc """
   Options for [`Contract.public_item/2`](#public_item/2).
 

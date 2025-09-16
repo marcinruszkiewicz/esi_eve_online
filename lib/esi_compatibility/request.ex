@@ -43,8 +43,8 @@ defmodule ESI.Request do
   """
   @type request_opts :: [request_opt]
   @type request_opt ::
-          {:datasource, :tranquility | :singularity} 
-          | {:user_agent, String.t()} 
+          {:datasource, :tranquility | :singularity}
+          | {:user_agent, String.t()}
           | {:token, String.t()}
           | {:page, integer()}
           | {:timeout, integer()}
@@ -96,14 +96,13 @@ defmodule ESI.Request do
   """
   @spec validate(request :: t) :: :ok | {:error, String.t()}
   def validate(request) do
-    Enum.reduce(request.opts_schema, [], fn
+    request.opts_schema
+    |> Enum.reduce([], fn
       {key, {_, :required}}, acc ->
-        case Map.has_key?(request.opts, key) do
-          true ->
-            acc
-
-          false ->
-            [key | acc]
+        if Map.has_key?(request.opts, key) do
+          acc
+        else
+          [key | acc]
         end
 
       _, acc ->
@@ -117,7 +116,7 @@ defmodule ESI.Request do
         {:error, "missing option `#{inspect(missing_one)}`"}
 
       missing_many ->
-        detail = Enum.map(missing_many, &"`#{inspect(&1)}`") |> Enum.join(", ")
+        detail = Enum.map_join(missing_many, ", ", &"`#{inspect(&1)}`")
         {:error, "missing options #{detail}"}
     end
   end
@@ -125,18 +124,22 @@ defmodule ESI.Request do
   # Execute request using new Esi.Client
   defp do_run(request) do
     client_opts = map_legacy_opts_to_client_opts(request.opts)
-    
+
     case request.verb do
       :get ->
         EsiEveOnline.get(request.path, client_opts)
+
       :post ->
         body = extract_body_from_opts(request)
         EsiEveOnline.post(request.path, body, client_opts)
+
       :put ->
         body = extract_body_from_opts(request)
         EsiEveOnline.put(request.path, body, client_opts)
+
       :delete ->
         EsiEveOnline.delete(request.path, client_opts)
+
       :patch ->
         body = extract_body_from_opts(request)
         EsiEveOnline.patch(request.path, body, client_opts)
@@ -149,6 +152,7 @@ defmodule ESI.Request do
       {:ok, data} ->
         # For compatibility, assume max pages = 1 if no pagination headers
         {:ok, data, 1}
+
       {:error, error} ->
         {:error, error}
     end
@@ -156,14 +160,26 @@ defmodule ESI.Request do
 
   # Map legacy options to new client options
   defp map_legacy_opts_to_client_opts(legacy_opts) do
-    legacy_opts
-    |> Enum.reduce([], fn
-      {:datasource, _}, acc -> acc  # Ignore datasource for now
-      {:token, token}, acc -> [{:token, token} | acc]
-      {:user_agent, ua}, acc -> [{:user_agent, ua} | acc]
-      {:page, page}, acc -> [{:page, page} | acc]
-      {:timeout, timeout}, acc -> [{:timeout, timeout} | acc]
-      {:retries, retries}, acc -> [{:retries, retries} | acc]
+    Enum.reduce(legacy_opts, [], fn
+      # Ignore datasource for now
+      {:datasource, _}, acc ->
+        acc
+
+      {:token, token}, acc ->
+        [{:token, token} | acc]
+
+      {:user_agent, ua}, acc ->
+        [{:user_agent, ua} | acc]
+
+      {:page, page}, acc ->
+        [{:page, page} | acc]
+
+      {:timeout, timeout}, acc ->
+        [{:timeout, timeout} | acc]
+
+      {:retries, retries}, acc ->
+        [{:retries, retries} | acc]
+
       {key, value}, acc ->
         # Pass through other options that might be query parameters
         if is_query_param?(key) do
@@ -176,12 +192,12 @@ defmodule ESI.Request do
 
   # Extract body content from legacy request options
   defp extract_body_from_opts(request) do
-    body_opts = 
+    body_opts =
       request.opts_schema
       |> Enum.filter(fn {_, {location, _}} -> location == :body end)
       |> Enum.map(fn {key, _} -> {key, Map.get(request.opts, key)} end)
       |> Enum.reject(fn {_, value} -> is_nil(value) end)
-      |> Enum.into(%{})
+      |> Map.new()
 
     case map_size(body_opts) do
       0 -> nil
@@ -197,9 +213,11 @@ defmodule ESI.Request do
   @doc """
   Generate a stream from a request, supporting automatic pagination.
   """
+  @spec stream!(t()) :: Enumerable.t()
   def stream!(%{opts_schema: %{page: _}} = request) do
     request_fun = fn page ->
-      options(request, page: page)
+      request
+      |> options(page: page)
       |> run_with_headers()
     end
 
@@ -218,6 +236,7 @@ defmodule ESI.Request do
 
             {:ok, data, max_pages} when is_list(data) ->
               next_page = page + 1
+
               if next_page > max_pages do
                 {data, :quit}
               else

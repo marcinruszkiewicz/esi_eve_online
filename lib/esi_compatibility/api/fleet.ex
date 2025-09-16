@@ -1,4 +1,16 @@
 defmodule ESI.API.Fleet do
+  @moduledoc """
+  Legacy compatibility module for Fleet API endpoints.
+
+  This module provides the same interface as the legacy ESI.API.Fleet module,
+  returning ESI.Request structs that work with the legacy request pattern.
+
+  All functions maintain exact compatibility with the legacy library while
+  internally mapping to the new Esi.Api.* modules.
+
+  Copied and adapted from the legacy ESI library for perfect compatibility.
+  """
+
   @typedoc """
   Options for [`Fleet.create_squads/3`](#create_squads/3).
 
