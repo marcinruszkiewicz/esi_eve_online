@@ -109,7 +109,14 @@ defmodule Mix.Tasks.CopyLegacyApi do
   end
 
   defp process_legacy_module(legacy_api_path, file, dry_run) do
-    module_name = file |> String.replace(".ex", "") |> String.capitalize()
+    module_name =
+      file
+      |> String.replace(".ex", "")
+      |> case do
+        "ui" -> "UI"
+        string -> Macro.camelize(string)
+      end
+
     legacy_file_path = Path.join(legacy_api_path, file)
 
     Mix.shell().info("Processing #{module_name}...")

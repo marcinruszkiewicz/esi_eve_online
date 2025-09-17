@@ -1,21 +1,22 @@
 defmodule Esi.Error do
   @moduledoc """
   Standardized error structure for ESI API responses.
-  
+
   This module provides a consistent error format across all ESI endpoints,
   making error handling predictable and easier to work with.
   """
 
-  @type error_type :: :http_error | :api_error | :validation_error | :network_error | :timeout_error
+  @type error_type ::
+          :http_error | :api_error | :validation_error | :network_error | :timeout_error
 
   @type t :: %__MODULE__{
-    type: error_type(),
-    status: integer() | nil,
-    message: String.t(),
-    details: map() | nil,
-    request_id: String.t() | nil,
-    retry_after: integer() | nil
-  }
+          type: error_type(),
+          status: integer() | nil,
+          message: String.t(),
+          details: map() | nil,
+          request_id: String.t() | nil,
+          retry_after: integer() | nil
+        }
 
   defstruct [
     :type,

@@ -45,6 +45,7 @@ defmodule ESI.API do
   """
   @spec version() :: String.t()
   def version do
-    "2024.09"  # Based on the OpenAPI spec version
+    # Based on the OpenAPI spec version
+    "2024.09"
   end
 end

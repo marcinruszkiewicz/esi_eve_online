@@ -1,12 +1,12 @@
 defmodule EsiEveOnline do
   @moduledoc """
   Main interface for the ESI (EVE Swagger Interface) Eve Online API client.
-  
+
   This module provides both a modern API interface and backward compatibility
   with the legacy ESI library patterns.
-  
+
   ## Quick Start
-  
+
       # Get character information
       {:ok, character} = EsiEveOnline.Api.Character.character(12345)
       
@@ -15,18 +15,18 @@ defmodule EsiEveOnline do
       
       # Using the unified interface
       {:ok, character} = EsiEveOnline.get("/characters/12345")
-  
+
   ## Authentication
-  
+
   Most ESI endpoints require authentication via OAuth2 tokens:
-  
+
       opts = [token: "your_access_token"]
       {:ok, mail} = EsiEveOnline.Api.Character.mail(12345, opts)
-  
+
   ## Error Handling
-  
+
   All functions return standardized `{:ok, result}` or `{:error, %Esi.Error{}}` tuples:
-  
+
       case EsiEveOnline.Api.Character.character(12345) do
         {:ok, character_data} -> 
           IO.puts("Character name: \#{character_data.name}")
@@ -47,9 +47,9 @@ defmodule EsiEveOnline do
 
   @doc """
   Makes a GET request to the specified ESI endpoint.
-  
+
   ## Examples
-  
+
       iex> EsiEveOnline.get("/alliances/1234")
       {:ok, %{...}}
       
@@ -65,15 +65,15 @@ defmodule EsiEveOnline do
       response: [{200, :ok}, {:default, {Esi.Error, :t}}],
       call: {__MODULE__, :get}
     }
-    
+
     Client.request(request_spec, opts)
   end
 
   @doc """
   Makes a POST request to the specified ESI endpoint.
-  
+
   ## Examples
-  
+
       iex> EsiEveOnline.post("/universe/names", [1234, 5678])
       {:ok, [...]}
   """
@@ -86,7 +86,7 @@ defmodule EsiEveOnline do
       response: [{200, :ok}, {:default, {Esi.Error, :t}}],
       call: {__MODULE__, :post}
     }
-    
+
     Client.request(request_spec, opts)
   end
 
@@ -102,7 +102,7 @@ defmodule EsiEveOnline do
       response: [{200, :ok}, {:default, {Esi.Error, :t}}],
       call: {__MODULE__, :put}
     }
-    
+
     Client.request(request_spec, opts)
   end
 
@@ -118,7 +118,7 @@ defmodule EsiEveOnline do
       response: [{200, :ok}, {:default, {Esi.Error, :t}}],
       call: {__MODULE__, :delete}
     }
-    
+
     Client.request(request_spec, opts)
   end
 
@@ -134,15 +134,15 @@ defmodule EsiEveOnline do
       response: [{200, :ok}, {:default, {Esi.Error, :t}}],
       call: {__MODULE__, :patch}
     }
-    
+
     Client.request(request_spec, opts)
   end
 
   @doc """
   Convenience function that raises on error instead of returning error tuples.
-  
+
   ## Examples
-  
+
       iex> EsiEveOnline.get!("/alliances/1234")
       %{...}
       
