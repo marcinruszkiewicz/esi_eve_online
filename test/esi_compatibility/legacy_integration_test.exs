@@ -42,13 +42,20 @@ defmodule ESI.LegacyIntegrationTest do
         "security_status" => -0.07
       }
 
-      with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, character_data} end do
-        # This is the exact pattern from the legacy library with authentication
+      expected_opts = [token: "test_access_token"]
+
+      get_fn = fn path, opts ->
+        assert path == "/characters/95465499/"
+        assert Enum.sort(opts) == Enum.sort(expected_opts)
+        {:ok, character_data}
+      end
+
+      with_mock EsiEveOnline, get: get_fn do
         result =
-          ESI.API.Character.character(95_465_499) |> ESI.request(token: "test_access_token")
+          ESI.API.Character.character(95_465_499)
+          |> ESI.request(token: "test_access_token")
 
         assert {:ok, ^character_data} = result
-        assert called(EsiEveOnline.get("/characters/95465499/", token: "test_access_token"))
       end
     end
 
@@ -65,16 +72,20 @@ defmodule ESI.LegacyIntegrationTest do
         }
       ]
 
-      with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, assets_data} end do
-        # This pattern shows how options are passed both in the function call and ESI.request
+      expected_opts = [page: 1, token: "test_token"]
+
+      get_fn = fn path, opts ->
+        assert path == "/characters/95465499/assets/"
+        assert Enum.sort(opts) == Enum.sort(expected_opts)
+        {:ok, assets_data}
+      end
+
+      with_mock EsiEveOnline, get: get_fn do
         result =
-          ESI.API.Character.assets(95_465_499, page: 1) |> ESI.request!(token: "test_token")
+          ESI.API.Character.assets(95_465_499, page: 1)
+          |> ESI.request!(token: "test_token")
 
         assert result == assets_data
-
-        assert called(
-                 EsiEveOnline.get("/characters/95465499/assets/", page: 1, token: "test_token")
-               )
       end
     end
 
@@ -140,7 +151,11 @@ defmodule ESI.LegacyIntegrationTest do
         %{"contact_id" => 2_112_625_428, "contact_type" => "character", "standing" => 9.9}
       ]
 
-      expected_opts = [page: 1, token: "test_token", return_headers: true]
+      expected_opts = [
+        page: 1,
+        token: "test_token",
+        return_headers: true
+      ]
 
       get_fn = fn path, opts ->
         assert path == "/alliances/99005443/contacts/"
@@ -200,32 +215,30 @@ defmodule ESI.LegacyIntegrationTest do
       assets_data = [%{"item_id" => 1}]
       auth_error = %Esi.Error{type: :api_error, status: 401, message: "Unauthorized"}
 
+      get_fn = fn path, opts ->
+        assert path == "/characters/#{character_id}/assets/"
+        refute Keyword.has_key?(opts, :user_agent)
+
+        if Keyword.has_key?(opts, :token) do
+          {:ok, assets_data}
+        else
+          {:error, auth_error}
+        end
+      end
+
       # Mock EsiEveOnline.get to simulate auth requirement
-      with_mock EsiEveOnline,
-        get: fn _path, opts ->
-          if Keyword.has_key?(opts, :token) do
-            {:ok, assets_data}
-          else
-            {:error, auth_error}
-          end
-        end do
+      with_mock EsiEveOnline, get: get_fn do
         # --- Failure Case: No token ---
         result_no_token = ESI.API.Character.assets(character_id) |> ESI.request()
-        assert {:error, ^auth_error} = result_no_token
 
-        # Verify EsiEveOnline.get was called without a token
-        assert called(EsiEveOnline.get("/characters/#{character_id}/assets/", []))
+        assert {:error, ^auth_error} = result_no_token
 
         # --- Success Case: With token ---
         result_with_token =
-          ESI.API.Character.assets(character_id) |> ESI.request(token: "a_valid_token")
+          ESI.API.Character.assets(character_id)
+          |> ESI.request(token: "a_valid_token")
 
         assert {:ok, ^assets_data} = result_with_token
-
-        # Verify EsiEveOnline.get was called with the token
-        assert called(
-                 EsiEveOnline.get("/characters/#{character_id}/assets/", token: "a_valid_token")
-               )
       end
     end
   end
@@ -251,7 +264,7 @@ defmodule ESI.LegacyIntegrationTest do
       end
     end
 
-    test "reproduces legacy example: ESI.API.Universe.groups() |> ESI.stream! |> Enum.take(1020)" do
+    test "reproduces legacy example: ESI.API.Universe.groups() |> ESI.stream!() |> Enum.take(1020)" do
       with_mock ESI.Request,
         options: fn req, _opts -> req end,
         stream!: fn _req ->

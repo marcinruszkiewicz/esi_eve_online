@@ -5,6 +5,7 @@ defmodule Integration.ApiIntegrationTest do
 
   alias Esi.Error
 
+  @user_agent Application.compile_env(:esi_eve_online, :user_agent, "EsiEveOnline-Test-Suite/1.0")
   @moduletag :integration
 
   describe "generated API modules integration" do
@@ -39,8 +40,7 @@ defmodule Integration.ApiIntegrationTest do
             headers: [
               {"accept", "application/json"},
               {"content-type", "application/json"},
-              {"user-agent",
-               "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
+              {"user-agent", @user_agent}
             ],
             params: %{},
             receive_timeout: 30_000,
@@ -84,8 +84,7 @@ defmodule Integration.ApiIntegrationTest do
               {"authorization", "Bearer test-access-token"},
               {"accept", "application/json"},
               {"content-type", "application/json"},
-              {"user-agent",
-               "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
+              {"user-agent", @user_agent}
             ],
             params: %{},
             receive_timeout: 30_000,
@@ -132,8 +131,7 @@ defmodule Integration.ApiIntegrationTest do
             headers: [
               {"accept", "application/json"},
               {"content-type", "application/json"},
-              {"user-agent",
-               "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
+              {"user-agent", @user_agent}
             ],
             params: %{},
             receive_timeout: 30_000,
@@ -171,8 +169,7 @@ defmodule Integration.ApiIntegrationTest do
               {"authorization", "Bearer fleet-commander-token"},
               {"accept", "application/json"},
               {"content-type", "application/json"},
-              {"user-agent",
-               "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
+              {"user-agent", @user_agent}
             ],
             params: %{},
             receive_timeout: 30_000,

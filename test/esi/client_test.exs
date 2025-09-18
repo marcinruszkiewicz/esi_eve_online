@@ -6,6 +6,8 @@ defmodule Esi.ClientTest do
   alias Esi.Client
   alias Esi.Error
 
+  @user_agent Application.compile_env(:esi_eve_online, :user_agent, "EsiEveOnline-Test-Suite/1.0")
+
   describe "request/2" do
     test "successful GET request" do
       request_spec = %{
@@ -32,8 +34,7 @@ defmodule Esi.ClientTest do
             headers: [
               {"accept", "application/json"},
               {"content-type", "application/json"},
-              {"user-agent",
-               "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
+              {"user-agent", @user_agent}
             ],
             params: %{},
             receive_timeout: 30_000,
@@ -70,8 +71,7 @@ defmodule Esi.ClientTest do
             headers: [
               {"accept", "application/json"},
               {"content-type", "application/json"},
-              {"user-agent",
-               "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
+              {"user-agent", @user_agent}
             ],
             params: %{},
             receive_timeout: 30_000,
@@ -110,8 +110,7 @@ defmodule Esi.ClientTest do
               {"authorization", "Bearer test-token"},
               {"accept", "application/json"},
               {"content-type", "application/json"},
-              {"user-agent",
-               "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
+              {"user-agent", @user_agent}
             ],
             params: %{},
             receive_timeout: 30_000,

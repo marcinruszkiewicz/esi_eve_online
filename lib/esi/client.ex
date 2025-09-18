@@ -21,7 +21,6 @@ defmodule Esi.Client do
   @type response :: {:ok, term()} | {:error, Error.t()}
 
   @default_base_url "https://esi.evetech.net/latest"
-  @default_user_agent "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"
   @default_timeout 30_000
   @default_retries 3
 
@@ -54,52 +53,67 @@ defmodule Esi.Client do
   """
   @spec request(map(), request_options()) :: response()
   def request(request_spec, opts \\ []) do
-    %{
-      url: path,
-      method: method,
-      args: args,
-      response: response_specs,
-      call: {_module, _function}
-    } = request_spec
-
-    # Merge options from request spec with passed options (passed options take precedence)
     merged_opts = Keyword.merge(request_spec[:opts] || [], opts)
 
-    # Build the full URL
-    base_url = merged_opts[:base_url] || @default_base_url
-    full_url = base_url <> path
+    with_user_agent(merged_opts, fn merged_opts ->
+      %{
+        url: path,
+        method: method,
+        args: args,
+        response: response_specs,
+        call: {_module, _function}
+      } = request_spec
 
-    # Extract request components
-    {body, query_params, path_params} = extract_request_components(args)
+      # Build the full URL
+      base_url = merged_opts[:base_url] || @default_base_url
+      full_url = base_url <> path
 
-    # Substitute path parameters
-    final_url = substitute_path_params(full_url, path_params)
+      # Extract request components
+      {body, query_params, path_params} = extract_request_components(args)
 
-    # Build request options
-    req_opts = build_request_options(merged_opts, body, query_params)
+      # Substitute path parameters
+      final_url = substitute_path_params(full_url, path_params)
 
-    # Make the HTTP request
-    case make_http_request(method, final_url, req_opts) do
-      {:ok, %Req.Response{status: status, body: response_body, headers: headers}} ->
-        if Keyword.get(merged_opts, :return_headers, false) do
-          # Pass body and headers through for legacy pagination handling
-          {:ok, {response_body, headers}}
-        else
-          handle_response(status, response_body, headers, response_specs)
-        end
+      # Build request options
+      req_opts = build_request_options(merged_opts, body, query_params)
 
-      {:error, %Req.TransportError{reason: :timeout}} ->
-        {:error, Error.timeout_error()}
+      # Make the HTTP request
+      case make_http_request(method, final_url, req_opts) do
+        {:ok, %Req.Response{status: status, body: response_body, headers: headers}} ->
+          if Keyword.get(merged_opts, :return_headers, false) do
+            # Pass body and headers through for legacy pagination handling
+            {:ok, {response_body, headers}}
+          else
+            handle_response(status, response_body, headers, response_specs)
+          end
 
-      {:error, %Req.TransportError{reason: reason}} ->
-        {:error, Error.network_error("Network error: #{inspect(reason)}")}
+        {:error, %Req.TransportError{reason: :timeout}} ->
+          {:error, Error.timeout_error()}
 
-      {:error, error} ->
-        {:error, Error.network_error("Request failed: #{inspect(error)}")}
-    end
+        {:error, %Req.TransportError{reason: reason}} ->
+          {:error, Error.network_error("Network error: #{inspect(reason)}")}
+
+        {:error, error} ->
+          {:error, Error.network_error("Request failed: #{inspect(error)}")}
+      end
+    end)
   rescue
     error ->
       {:error, Error.network_error("Unexpected error: #{inspect(error)}")}
+  end
+
+  defp with_user_agent(opts, fun) do
+    case opts[:user_agent] || Application.get_env(:esi_eve_online, :user_agent) do
+      nil ->
+        {:error,
+         Error.validation_error(
+           "A custom user agent is required. Please provide one in the request options or in your application config."
+         )}
+
+      user_agent ->
+        final_opts = Keyword.put(opts, :user_agent, user_agent)
+        fun.(final_opts)
+    end
   end
 
   # Private functions
@@ -195,7 +209,7 @@ defmodule Esi.Client do
     base_headers = [
       {"accept", "application/json"},
       {"content-type", "application/json"},
-      {"user-agent", opts[:user_agent] || @default_user_agent}
+      {"user-agent", opts[:user_agent]}
     ]
 
     case opts[:token] do
