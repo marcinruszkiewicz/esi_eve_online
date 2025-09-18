@@ -1,0 +1,502 @@
+[
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000001,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 100,
+    "type_id": 34
+  },
+  {
+    "is_blueprint_copy": true,
+    "is_singleton": true,
+    "item_id": 1000000002,
+    "location_flag": "Hangar",
+    "location_id": 1000000000001,
+    "location_type": "structure",
+    "quantity": 1,
+    "type_id": 1234
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000003,
+    "location_flag": "AssetSafety",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 50,
+    "type_id": 456
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000004,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 10,
+    "type_id": 587
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000005,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 597
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000006,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 603
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000007,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 608
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000008,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 621
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000009,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 626
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000010,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 631
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000011,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 638
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000012,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 645
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000013,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 650
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000014,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 651
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000015,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 652
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000016,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 653
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000017,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 654
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000018,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 655
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000019,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 656
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000020,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 657
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000021,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 658
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000022,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 659
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000023,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 660
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000024,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 661
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000025,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 662
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000026,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 663
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000027,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 664
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000028,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 665
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000029,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 666
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000030,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 667
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000031,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 668
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000032,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 669
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000033,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 670
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000034,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 671
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000035,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 672
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000036,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 673
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000037,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 674
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000038,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 675
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000039,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 676
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000040,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 677
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000041,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 678
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000042,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 679
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000043,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 680
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000044,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 681
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000045,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 682
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000046,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 683
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000047,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 684
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000048,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 685
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000049,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 686
+  },
+  {
+    "is_blueprint_copy": false,
+    "is_singleton": false,
+    "item_id": 1000000050,
+    "location_flag": "Hangar",
+    "location_id": 60003760,
+    "location_type": "station",
+    "quantity": 1,
+    "type_id": 687
+  }
+]

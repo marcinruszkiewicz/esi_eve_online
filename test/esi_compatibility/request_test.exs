@@ -334,5 +334,42 @@ defmodule ESI.RequestTest do
         end
       end
     end
+
+    test "paginates through all available asset pages" do
+      assets =
+        "test/fixtures/assets.json"
+        |> File.read!()
+        |> Jason.decode!()
+
+      request = %ESI.Request{
+        verb: :get,
+        path: "/characters/12345/assets/",
+        opts_schema: %{page: {:query, :optional}},
+        opts: %{}
+      }
+
+      # Mock the underlying HTTP client to simulate header returns
+      with_mock EsiEveOnline,
+        get: fn path, opts ->
+          assert path == "/characters/12345/assets/"
+
+          if Keyword.get(opts, :return_headers, false) do
+            page = Keyword.get(opts, :page, 1)
+            start_index = (page - 1) * 10
+            page_assets = Enum.slice(assets, start_index, 10)
+            headers = [{"x-pages", "5"}]
+            {:ok, {page_assets, headers}}
+          else
+            # Should not be called without headers in this test
+            {:ok, []}
+          end
+        end do
+        stream = ESI.Request.stream!(request)
+        result = Enum.to_list(stream)
+
+        assert length(result) == 50
+        assert result == assets
+      end
+    end
   end
 end

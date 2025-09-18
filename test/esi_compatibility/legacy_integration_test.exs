@@ -140,17 +140,26 @@ defmodule ESI.LegacyIntegrationTest do
         %{"contact_id" => 2_112_625_428, "contact_type" => "character", "standing" => 9.9}
       ]
 
-      with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, contacts_data} end do
+      expected_opts = [page: 1, token: "test_token", return_headers: true]
+
+      get_fn = fn path, opts ->
+        assert path == "/alliances/99005443/contacts/"
+        assert Enum.sort(opts) == Enum.sort(expected_opts)
+
+        if Keyword.get(opts, :return_headers) do
+          {:ok, {contacts_data, [{"x-pages", "1"}]}}
+        else
+          {:ok, contacts_data}
+        end
+      end
+
+      with_mock EsiEveOnline, get: get_fn do
         # This shows how to get pagination information
         result =
           ESI.API.Alliance.contacts(99_005_443, page: 1)
           |> ESI.request_with_headers(token: "test_token")
 
         assert {:ok, ^contacts_data, 1} = result
-
-        assert called(
-                 EsiEveOnline.get("/alliances/99005443/contacts/", page: 1, token: "test_token")
-               )
       end
     end
 
@@ -185,19 +194,60 @@ defmodule ESI.LegacyIntegrationTest do
         end
       end
     end
+
+    test "auth failure is handled correctly for token-required endpoints" do
+      character_id = 123_456
+      assets_data = [%{"item_id" => 1}]
+      auth_error = %Esi.Error{type: :api_error, status: 401, message: "Unauthorized"}
+
+      # Mock EsiEveOnline.get to simulate auth requirement
+      with_mock EsiEveOnline,
+        get: fn _path, opts ->
+          if Keyword.has_key?(opts, :token) do
+            {:ok, assets_data}
+          else
+            {:error, auth_error}
+          end
+        end do
+        # --- Failure Case: No token ---
+        result_no_token = ESI.API.Character.assets(character_id) |> ESI.request()
+        assert {:error, ^auth_error} = result_no_token
+
+        # Verify EsiEveOnline.get was called without a token
+        assert called(EsiEveOnline.get("/characters/#{character_id}/assets/", []))
+
+        # --- Success Case: With token ---
+        result_with_token =
+          ESI.API.Character.assets(character_id) |> ESI.request(token: "a_valid_token")
+
+        assert {:ok, ^assets_data} = result_with_token
+
+        # Verify EsiEveOnline.get was called with the token
+        assert called(
+                 EsiEveOnline.get("/characters/#{character_id}/assets/", token: "a_valid_token")
+               )
+      end
+    end
   end
 
   describe "legacy library examples from documentation" do
     test "reproduces legacy example: ESI.API.Insurance.prices() |> ESI.request" do
-      # This would be how insurance prices were fetched in the legacy library
-      # We don't have the Insurance module implemented yet, but this shows the pattern
+      insurance_data = [
+        %{
+          "levels" => [
+            %{"cost" => 100.0, "name" => "Basic", "payout" => 200.0}
+          ],
+          "type_id" => 123
+        }
+      ]
 
-      # Note: In a full implementation, we'd add ESI.API.Insurance module
-      # For now, we'll simulate it with Alliance.alliances which has the same structure
-
-      with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, ["price_data"]} end do
-        result = ESI.API.Alliance.alliances() |> ESI.request()
-        assert {:ok, ["price_data"]} = result
+      with_mock EsiEveOnline,
+        get: fn path, _opts ->
+          assert path == "/insurance/prices/"
+          {:ok, insurance_data}
+        end do
+        result = ESI.API.Insurance.prices() |> ESI.request()
+        assert {:ok, ^insurance_data} = result
       end
     end
 

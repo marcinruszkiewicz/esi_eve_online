@@ -149,8 +149,23 @@ defmodule ESI.Request do
   # Execute request with headers for pagination support
   defp do_run_with_headers(request) do
     case do_run(%{request | opts: Map.put(request.opts, :return_headers, true)}) do
+      {:ok, {data, headers}} ->
+        pages =
+          case Enum.find(headers, fn {name, _} -> String.downcase(name) == "x-pages" end) do
+            {_, value} ->
+              case Integer.parse(value) do
+                {int_val, _} -> int_val
+                _ -> 1
+              end
+
+            nil ->
+              1
+          end
+
+        {:ok, data, pages}
+
+      # Fallback for requests that don't return headers (e.g., from mocks in other tests)
       {:ok, data} ->
-        # For compatibility, assume max pages = 1 if no pagination headers
         {:ok, data, 1}
 
       {:error, error} ->
@@ -179,6 +194,9 @@ defmodule ESI.Request do
 
       {:retries, retries}, acc ->
         [{:retries, retries} | acc]
+
+      {:return_headers, value}, acc ->
+        [{:return_headers, value} | acc]
 
       {key, value}, acc ->
         # Pass through other options that might be query parameters

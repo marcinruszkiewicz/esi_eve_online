@@ -523,20 +523,10 @@ Run the comprehensive test suite:
 # Run all tests
 mix test
 
-# Run with integration tests
-mix test --include integration
-
 # Run specific test files
 mix test test/esi/client_test.exs
 mix test test/esi/custom_processor_test.exs
 ```
-
-The test suite includes:
-- **56 total tests** covering all functionality
-- Unit tests for error handling, client, and main interface
-- Integration tests verifying end-to-end API functionality
-- Custom processor tests ensuring correct function naming
-- Mock-based testing for reliable, fast execution
 
 ## Contributing
 
@@ -552,5 +542,5 @@ When contributing:
 
 MIT License - See LICENSE file for details.
 
-**Note**: This package is not officially supported or endorsed by CCP Games or EVE Online. It is a community-maintained utility for EVE Online developers.
+**Note**: This package is not officially supported or endorsed by CCP Games. It is a community-maintained utility for EVE Online developers.
 

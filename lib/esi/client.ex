@@ -81,7 +81,12 @@ defmodule Esi.Client do
     # Make the HTTP request
     case make_http_request(method, final_url, req_opts) do
       {:ok, %Req.Response{status: status, body: response_body, headers: headers}} ->
-        handle_response(status, response_body, headers, response_specs)
+        if Keyword.get(merged_opts, :return_headers, false) do
+          # Pass body and headers through for legacy pagination handling
+          {:ok, {response_body, headers}}
+        else
+          handle_response(status, response_body, headers, response_specs)
+        end
 
       {:error, %Req.TransportError{reason: :timeout}} ->
         {:error, Error.timeout_error()}
@@ -158,9 +163,22 @@ defmodule Esi.Client do
   end
 
   defp build_request_options(opts, body, query_params) do
+    known_opts = [
+      :token,
+      :client,
+      :user_agent,
+      :timeout,
+      :retries,
+      :base_url,
+      :return_headers
+    ]
+
+    extra_params = Keyword.drop(opts, known_opts)
+    all_params = Map.merge(query_params, Map.new(extra_params))
+
     base_opts = [
       headers: build_headers(opts),
-      params: query_params,
+      params: all_params,
       receive_timeout: opts[:timeout] || @default_timeout,
       retry: :transient,
       max_retries: opts[:retries] || @default_retries
