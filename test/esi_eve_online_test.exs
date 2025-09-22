@@ -128,6 +128,12 @@ defmodule EsiEveOnlineTest do
       end
     end
 
+    test "put!/3 returns result on success" do
+      with_mock Client, request: fn _spec, _opts -> {:ok, :ok} end do
+        assert :ok = EsiEveOnline.put!("/characters/1234/settings", %{})
+      end
+    end
+
     test "put!/3 raises on error" do
       error = %Error{type: :api_error, status: 403, message: "Forbidden"}
 
@@ -138,6 +144,12 @@ defmodule EsiEveOnlineTest do
       end
     end
 
+    test "delete!/2 returns result on success" do
+      with_mock Client, request: fn _spec, _opts -> {:ok, :ok} end do
+        assert :ok = EsiEveOnline.delete!("/characters/1234/contacts/5678")
+      end
+    end
+
     test "delete!/2 raises on error" do
       error = %Error{type: :network_error, message: "Connection failed"}
 
@@ -145,6 +157,12 @@ defmodule EsiEveOnlineTest do
         assert_raise RuntimeError, "API request failed: Connection failed", fn ->
           EsiEveOnline.delete!("/characters/1234/contacts/5678")
         end
+      end
+    end
+
+    test "patch!/3 returns result on success" do
+      with_mock Client, request: fn _spec, _opts -> {:ok, :ok} end do
+        assert :ok = EsiEveOnline.patch!("/characters/1234/profile", %{})
       end
     end
 

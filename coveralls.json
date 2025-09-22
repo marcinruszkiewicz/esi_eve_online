@@ -1,0 +1,12 @@
+{
+  "skip_files": [
+    "lib/esi/api/*",
+    "lib/esi_compatibility/api/*",
+    "lib/mix/tasks/copy_legacy_api.ex"
+  ],
+  "coverage_options": {
+    "treat_no_relevant_lines_as_covered": true,
+    "output_dir": "cover/",
+    "minimum_coverage": 100
+  }
+}

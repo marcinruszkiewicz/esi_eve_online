@@ -30,13 +30,15 @@ config :esi_eve_online,
   user_agent: "MyAwesomeApp/1.0 (contact@example.com)"
 ```
 
+### Per-Request Configuration Options
+
 You can also provide a `user_agent` on a per-request basis, which will override the global configuration:
 
 ```elixir
 Esi.Api.Universe.systems(user_agent: "MyTemporaryAgent/0.1")
 ```
 
-### Configuration Options
+As well as some other custom options:
 
 ```elixir
 # Custom timeout and retries
@@ -214,42 +216,10 @@ The library uses a custom OpenAPI processor (`Esi.CustomProcessor`) to generate 
 - **DELETE** requests: `delete_*` prefix (e.g., `delete_mail`, `delete_contacts`)
 - **Special cases**: UI functions like `openwindow` → `open_*_window`
 
-#### Conflict Resolution & Exceptions
+#### Exceptions
 The processor handles naming conflicts with specific exceptions:
 
 - **Fleet members**: POST `/fleets/{id}/members` → `invite()` (not `members()`)
-- **Dogma attributes**: GET `/dogma/attributes/{id}` → `attribute()` (singular)
-
-#### Examples of Improved Naming
-```elixir
-# Old problematic names → New semantic names
-put_get_mail        → update_mail
-delete_get_contacts → delete_contacts  
-get (ambiguous)     → alliance / alliances (specific)
-post_openwindow_*   → open_*_window
-
-# Conflict resolution examples
-POST /fleets/{id}/members → invite(fleet_id, body, opts)
-GET  /fleets/{id}/members → members(fleet_id, opts)
-GET  /dogma/attributes    → attributes(opts)  
-GET  /dogma/attributes/{id} → attribute(attribute_id, opts)
-```
-
-### Configuration
-
-The OpenAPI generator is configured in `config/config.exs`:
-
-```elixir
-config :oapi_generator, default: [
-  processor: Esi.CustomProcessor,
-  naming: [operation_use_tags: false],
-  output: [
-    base_module: Esi.Api,
-    location: "lib/esi/api",
-    default_client: Esi.Client
-  ]
-]
-```
 
 ### Testing
 

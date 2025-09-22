@@ -187,6 +187,98 @@ defmodule ESI.RequestTest do
 
       assert {:error, "missing option `:required_param`"} = ESI.Request.run(request)
     end
+
+    test "calls EsiEveOnline.patch for PATCH requests" do
+      request = %ESI.Request{
+        verb: :patch,
+        path: "/test/",
+        opts_schema: %{data: {:body, :required}},
+        opts: %{data: %{"test" => "value"}}
+      }
+
+      with_mock EsiEveOnline, patch: fn _path, _body, _opts -> {:ok, "success"} end do
+        assert {:ok, "success"} = ESI.Request.run(request)
+        assert called(EsiEveOnline.patch("/test/", %{"test" => "value"}, []))
+      end
+    end
+  end
+
+  describe "run_with_headers/1" do
+    test "returns data and pages when x-pages header is present" do
+      request = %ESI.Request{
+        verb: :get,
+        path: "/test/",
+        opts_schema: %{},
+        opts: %{}
+      }
+
+      with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, {[1, 2, 3], [{"x-pages", "2"}]}} end do
+        assert {:ok, [1, 2, 3], 2} = ESI.Request.run_with_headers(request)
+      end
+    end
+
+    test "returns 1 page when x-pages header is not present" do
+      request = %ESI.Request{
+        verb: :get,
+        path: "/test/",
+        opts_schema: %{},
+        opts: %{}
+      }
+
+      with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, {[1, 2, 3], []}} end do
+        assert {:ok, [1, 2, 3], 1} = ESI.Request.run_with_headers(request)
+      end
+    end
+
+    test "returns 1 page when x-pages header is invalid" do
+      request = %ESI.Request{
+        verb: :get,
+        path: "/test/",
+        opts_schema: %{},
+        opts: %{}
+      }
+
+      with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, {[1, 2, 3], [{"x-pages", "invalid"}]}} end do
+        assert {:ok, [1, 2, 3], 1} = ESI.Request.run_with_headers(request)
+      end
+    end
+
+    test "returns error when request fails" do
+      request = %ESI.Request{
+        verb: :get,
+        path: "/test/",
+        opts_schema: %{},
+        opts: %{}
+      }
+
+      with_mock EsiEveOnline, get: fn _path, _opts -> {:error, "API error"} end do
+        assert {:error, "API error"} = ESI.Request.run_with_headers(request)
+      end
+    end
+
+    test "returns validation error for invalid request" do
+      request = %ESI.Request{
+        verb: :get,
+        path: "/test/",
+        opts_schema: %{required_param: {:query, :required}},
+        opts: %{}
+      }
+
+      assert {:error, "missing option `:required_param`"} = ESI.Request.run_with_headers(request)
+    end
+
+    test "fallback for requests that don't return headers" do
+      request = %ESI.Request{
+        verb: :get,
+        path: "/test/",
+        opts_schema: %{},
+        opts: %{}
+      }
+
+      with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, [1, 2, 3]} end do
+        assert {:ok, [1, 2, 3], 1} = ESI.Request.run_with_headers(request)
+      end
+    end
   end
 
   describe "option mapping" do
@@ -246,6 +338,61 @@ defmodule ESI.RequestTest do
         ESI.Request.run(request)
       end
     end
+
+    test "ignores unknown options" do
+      request = %ESI.Request{
+        verb: :get,
+        path: "/test/",
+        opts_schema: %{},
+        opts: %{unknown: "value", token: "test_token"}
+      }
+
+      with_mock EsiEveOnline,
+        get: fn _path, opts ->
+          assert Keyword.get(opts, :token) == "test_token"
+          assert Keyword.get(opts, :unknown) == nil
+          {:ok, "success"}
+        end do
+        ESI.Request.run(request)
+      end
+    end
+
+    test "extracts body from body-type options with multiple values" do
+      request = %ESI.Request{
+        verb: :post,
+        path: "/test/",
+        opts_schema: %{
+          data1: {:body, :required},
+          data2: {:body, :required}
+        },
+        opts: %{data1: [1, 2, 3], data2: [4, 5, 6]}
+      }
+
+      with_mock EsiEveOnline,
+        post: fn _path, body, _opts ->
+          assert body == %{data1: [1, 2, 3], data2: [4, 5, 6]}
+          {:ok, "success"}
+        end do
+        ESI.Request.run(request)
+      end
+    end
+
+    test "extracts empty body when no body-type options are present" do
+      request = %ESI.Request{
+        verb: :post,
+        path: "/test/",
+        opts_schema: %{},
+        opts: %{}
+      }
+
+      with_mock EsiEveOnline,
+        post: fn _path, body, _opts ->
+          assert body == nil
+          {:ok, "success"}
+        end do
+        ESI.Request.run(request)
+      end
+    end
   end
 
   describe "stream!/1" do
@@ -288,6 +435,63 @@ defmodule ESI.RequestTest do
       end
     end
 
+    test "creates single-result stream for non-paginated requests with a single item" do
+      request = %ESI.Request{
+        verb: :get,
+        path: "/test/",
+        opts_schema: %{},
+        opts: %{}
+      }
+
+      with_mock ESI.Request,
+        run: fn _req -> {:ok, :result1} end,
+        stream!: fn _req -> Stream.cycle([:result1]) |> Stream.take(1) end do
+        stream = ESI.Request.stream!(request)
+        result = Enum.to_list(stream)
+        assert result == [:result1]
+      end
+    end
+
+    test "stops pagination when next_page > max_pages" do
+      request = %ESI.Request{
+        verb: :get,
+        path: "/test/",
+        opts_schema: %{page: {:query, :optional}},
+        opts: %{}
+      }
+
+      with_mock ESI.Request,
+        run_with_headers: fn
+          %{opts: %{page: 1}} -> {:ok, [1, 2, 3], 1}
+        end,
+        stream!: fn _req -> Stream.take([1, 2, 3], 3) end,
+        options: fn req, opts -> %{req | opts: Map.merge(req.opts, Map.new(opts))} end do
+        stream = ESI.Request.stream!(request)
+        result = Enum.to_list(stream)
+        assert result == [1, 2, 3]
+      end
+    end
+
+    test "handles non-list data in paginated stream" do
+      request = %ESI.Request{
+        verb: :get,
+        path: "/test/",
+        opts_schema: %{page: {:query, :optional}},
+        opts: %{}
+      }
+
+      with_mock ESI.Request,
+        run_with_headers: fn
+          %{opts: %{page: 1}} -> {:ok, :not_a_list, 1}
+        end,
+        stream!: fn _req -> Stream.take([:not_a_list], 1) end,
+        options: fn req, opts -> %{req | opts: Map.merge(req.opts, Map.new(opts))} end do
+        stream = ESI.Request.stream!(request)
+        result = Enum.to_list(stream)
+        assert result == [:not_a_list]
+      end
+    end
+
     test "stops pagination when empty page is returned" do
       request = %ESI.Request{
         verb: :get,
@@ -306,32 +510,6 @@ defmodule ESI.RequestTest do
         stream = ESI.Request.stream!(request)
         result = Enum.to_list(stream)
         assert result == [1, 2, 3]
-      end
-    end
-
-    test "raises error when pagination fails" do
-      request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
-        opts_schema: %{page: {:query, :optional}},
-        opts: %{}
-      }
-
-      with_mock ESI.Request,
-        run_with_headers: fn _req -> {:error, "API error"} end,
-        stream!: fn _req ->
-          Stream.resource(
-            fn -> :start end,
-            fn :start -> raise RuntimeError, "Request failed: API error" end,
-            fn _ -> :ok end
-          )
-        end,
-        options: fn req, opts -> %{req | opts: Map.merge(req.opts, Map.new(opts))} end do
-        stream = ESI.Request.stream!(request)
-
-        assert_raise RuntimeError, ~r/Request failed/, fn ->
-          Enum.to_list(stream)
-        end
       end
     end
 

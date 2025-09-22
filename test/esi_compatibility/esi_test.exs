@@ -101,6 +101,20 @@ defmodule ESI.Test do
         end
       end
     end
+
+    test "raises error on failure with a non-Esi.Error struct" do
+      request = %ESI.Request{
+        verb: :get,
+        path: "/invalid/",
+        opts_schema: %{}
+      }
+
+      with_mock EsiEveOnline, get: fn _path, _opts -> {:error, "some error"} end do
+        assert_raise RuntimeError, "Request failed: \"some error\"", fn ->
+          ESI.request!(request)
+        end
+      end
+    end
   end
 
   describe "request_with_headers/2" do
@@ -141,6 +155,20 @@ defmodule ESI.Test do
 
       with_mock EsiEveOnline, get: fn _path, _opts -> {:error, error} end do
         assert_raise RuntimeError, "Request failed: Not found", fn ->
+          ESI.request_with_headers!(request)
+        end
+      end
+    end
+
+    test "raises error on failure with a non-Esi.Error struct" do
+      request = %ESI.Request{
+        verb: :get,
+        path: "/invalid/",
+        opts_schema: %{}
+      }
+
+      with_mock EsiEveOnline, get: fn _path, _opts -> {:error, "some error"} end do
+        assert_raise RuntimeError, "Request failed: \"some error\"", fn ->
           ESI.request_with_headers!(request)
         end
       end

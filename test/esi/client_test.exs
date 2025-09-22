@@ -302,6 +302,174 @@ defmodule Esi.ClientTest do
                } = error
       end
     end
+
+    test "handles unexpected non-transport errors" do
+      request_spec = %{
+        url: "/status",
+        method: :get,
+        args: [],
+        response: [{200, :ok}],
+        call: {Esi.Api.Status, :status}
+      }
+
+      with_mock Req, request: fn _opts -> {:error, "some other error"} end do
+        assert {:error, error} = Client.request(request_spec, [])
+
+        assert %Error{
+                 type: :network_error,
+                 message: "Request failed: \"some other error\""
+               } = error
+      end
+    end
+
+    defp make_request_spec(response_spec) do
+      %{
+        url: "/test",
+        method: :get,
+        args: [],
+        response: response_spec,
+        call: {Esi.ClientTest, :test}
+      }
+    end
+
+    test "handles integer list response" do
+      request_spec = make_request_spec([{200, [:integer]}])
+      mock_response = %Req.Response{status: 200, body: [1, 2, 3], headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:ok, [1, 2, 3]} = Client.request(request_spec)
+      end
+    end
+
+    test "handles other response types" do
+      request_spec = make_request_spec([{200, :string}])
+      mock_response = %Req.Response{status: 200, body: "a string", headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:ok, "a string"} = Client.request(request_spec)
+      end
+    end
+
+    test "handles default response spec" do
+      request_spec = make_request_spec([{:default, :ok}])
+      mock_response = %Req.Response{status: 200, body: "default", headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:ok, "default"} = Client.request(request_spec)
+      end
+    end
+
+    test "handles simple default response spec" do
+      request_spec = make_request_spec([:default])
+      mock_response = %Req.Response{status: 200, body: "simple default", headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:ok, "simple default"} = Client.request(request_spec)
+      end
+    end
+
+    test "handles no matching response spec" do
+      request_spec = make_request_spec([])
+      mock_response = %Req.Response{status: 200, body: "no spec", headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:ok, "no spec"} = Client.request(request_spec)
+      end
+    end
+
+    test "handles response with a struct" do
+      request_spec = make_request_spec([{200, {Esi.Error, :t}}])
+      mock_response = %Req.Response{status: 200, body: %{"error" => "test"}, headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:ok, %{"error" => "test"}} = Client.request(request_spec)
+      end
+    end
+
+    test "handles 400 bad request" do
+      request_spec = make_request_spec([])
+      mock_response = %Req.Response{status: 400, body: %{"error" => "bad request"}, headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:error, %Error{type: :validation_error, message: "bad request"}} =
+                 Client.request(request_spec)
+      end
+    end
+
+    test "handles 403 forbidden" do
+      request_spec = make_request_spec([])
+      mock_response = %Req.Response{status: 403, body: %{}, headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:error, %Error{type: :api_error, status: 403}} = Client.request(request_spec)
+      end
+    end
+
+    test "handles 500 internal server error" do
+      request_spec = make_request_spec([])
+      mock_response = %Req.Response{status: 500, body: %{}, headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:error, %Error{type: :api_error, status: 500}} = Client.request(request_spec)
+      end
+    end
+
+    test "handles 502 bad gateway" do
+      request_spec = make_request_spec([])
+      mock_response = %Req.Response{status: 502, body: %{}, headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:error, %Error{type: :api_error, status: 502}} = Client.request(request_spec)
+      end
+    end
+
+    test "handles 503 service unavailable" do
+      request_spec = make_request_spec([])
+      mock_response = %Req.Response{status: 503, body: %{}, headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:error, %Error{type: :api_error, status: 503}} = Client.request(request_spec)
+      end
+    end
+
+    test "handles other error with message" do
+      request_spec = make_request_spec([])
+
+      mock_response = %Req.Response{status: 418, body: %{"error" => "I'm a teapot"}, headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:error, %Error{type: :api_error, status: 418, message: "I'm a teapot"}} =
+                 Client.request(request_spec)
+      end
+    end
+
+    test "handles other error without message" do
+      request_spec = make_request_spec([])
+      mock_response = %Req.Response{status: 418, body: %{}, headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:error, %Error{type: :http_error, status: 418}} = Client.request(request_spec)
+      end
+    end
+
+    test "handles missing retry-after header" do
+      request_spec = make_request_spec([])
+      mock_response = %Req.Response{status: 420, body: %{}, headers: []}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:error, %Error{retry_after: nil}} = Client.request(request_spec)
+      end
+    end
+
+    test "handles invalid retry-after header" do
+      request_spec = make_request_spec([])
+
+      mock_response = %Req.Response{status: 420, body: %{}, headers: [{"retry-after", "invalid"}]}
+
+      with_mock Req, request: fn _ -> {:ok, mock_response} end do
+        assert {:error, %Error{retry_after: nil}} = Client.request(request_spec)
+      end
+    end
   end
 
   describe "path parameter substitution" do
@@ -343,6 +511,31 @@ defmodule Esi.ClientTest do
         end do
         Client.request(request_spec)
       end
+    end
+  end
+
+  describe "user agent handling" do
+    test "returns error when user agent is not provided" do
+      # Unload the application environment variable
+      Application.put_env(:esi_eve_online, :user_agent, nil)
+
+      request_spec = %{
+        url: "/status",
+        method: :get,
+        args: [],
+        response: [{200, :ok}],
+        call: {Esi.Api.Status, :status}
+      }
+
+      assert {:error, error} = Client.request(request_spec, [])
+
+      assert %Error{
+               type: :validation_error,
+               message: "A custom user agent is required. Please provide one in the request options or in your application config."
+             } = error
+
+      # Restore the application environment variable
+      Application.put_env(:esi_eve_online, :user_agent, @user_agent)
     end
   end
 end

@@ -27,7 +27,7 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
           # classes -> class, addresses -> address
           String.slice(word, 0, String.length(word) - 2)
 
-        String.ends_with?(word, "s") and not String.ends_with?(word, "ss") ->
+        String.ends_with?(word, "s") and not String.ends_with?(word, "ss") and word != "status" ->
           # items -> item, but not class -> clas
           String.slice(word, 0, String.length(word) - 1)
 
@@ -74,10 +74,10 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
           String.to_atom(result)
 
         # Only use "create_" prefix for operations that actually create resources
-        name_parts == [] and is_creation_operation?(base_name) ->
+        name_parts == [] and creation_operation?(base_name) ->
           :create
 
-        name_parts != [] and is_creation_operation?(base_name) ->
+        name_parts != [] and creation_operation?(base_name) ->
           String.to_atom("create_#{base_name}")
 
         # For non-creation POST operations, use the base name directly
@@ -90,7 +90,7 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
     end
 
     # Determine if a POST operation is actually creating a resource
-    defp is_creation_operation?(base_name) do
+    defp creation_operation?(base_name) do
       # Known creation operations based on EVE API patterns
       creation_patterns = [
         # Add contacts
@@ -165,7 +165,7 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
         |> Enum.reject(&String.starts_with?(&1, "{"))
 
       # Check if path ends with a parameter (like {id})
-      ends_with_param = String.starts_with?(List.last(parts), "{")
+      ends_with_param = List.last(parts) |> then(&(is_binary(&1) and String.starts_with?(&1, "{")))
 
       # Get the base resource name from the first path segment
       first_segment = List.first(parts)

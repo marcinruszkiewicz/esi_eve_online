@@ -200,7 +200,7 @@ defmodule ESI.Request do
 
       {key, value}, acc ->
         # Pass through other options that might be query parameters
-        if is_query_param?(key) do
+        if query_param?(key) do
           [{key, value} | acc]
         else
           acc
@@ -225,8 +225,8 @@ defmodule ESI.Request do
   end
 
   # Determine if an option should be passed as a query parameter
-  defp is_query_param?(key) when key in [:if_none_match, :etag, :language], do: true
-  defp is_query_param?(_), do: false
+  defp query_param?(key) when key in [:if_none_match, :etag, :language], do: true
+  defp query_param?(_), do: false
 
   @doc """
   Generate a stream from a request, supporting automatic pagination.

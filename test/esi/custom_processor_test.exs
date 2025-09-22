@@ -48,6 +48,10 @@ defmodule Esi.CustomProcessorTest do
         make_operation("/corporation/{corporation_id}/mining/observers/{observer_id}", "get")
 
       assert CustomProcessor.operation_function_name(nil, operation) == :mining_observer
+
+      # GET /characters/{character_id}/notifications/contacts -> notifications_contacts
+      operation = make_operation("/characters/{character_id}/notifications/contacts", "get")
+      assert CustomProcessor.operation_function_name(nil, operation) == :notifications_contacts
     end
 
     test "GET requests with special contract cases" do
@@ -58,6 +62,10 @@ defmodule Esi.CustomProcessorTest do
       # GET /contracts/public/items/{contract_id} -> public_item
       operation = make_operation("/contracts/public/items/{contract_id}", "get")
       assert CustomProcessor.operation_function_name(nil, operation) == :public_item
+
+      # GET /contracts/public/bids/{contract_id} -> public_bids
+      operation = make_operation("/contracts/public/bids/{contract_id}", "get")
+      assert CustomProcessor.operation_function_name(nil, operation) == :public_bid
     end
 
     test "POST requests with fleet exception" do
@@ -100,6 +108,10 @@ defmodule Esi.CustomProcessorTest do
       # POST /characters/{character_id}/cspa -> cspa
       operation = make_operation("/characters/{character_id}/cspa", "post")
       assert CustomProcessor.operation_function_name(nil, operation) == :cspa
+
+      # POST /characters/{character_id}/assets/names -> assets_names
+      operation = make_operation("/characters/{character_id}/assets/names", "post")
+      assert CustomProcessor.operation_function_name(nil, operation) == :assets_names
     end
 
     test "POST requests with openwindow special handling" do
@@ -132,6 +144,32 @@ defmodule Esi.CustomProcessorTest do
       assert CustomProcessor.operation_function_name(nil, operation) == :delete_contacts
     end
 
+    test "PATCH requests" do
+      # PATCH /alliances/{alliance_id} -> update
+      operation = make_operation("/alliances/{alliance_id}", "patch")
+      assert CustomProcessor.operation_function_name(nil, operation) == :update
+
+      # PATCH /characters/{character_id}/calendar/{event_id} -> update_calendar
+      operation = make_operation("/characters/{character_id}/calendar/{event_id}", "patch")
+      assert CustomProcessor.operation_function_name(nil, operation) == :update_calendar
+    end
+
+    test "other methods" do
+      # OPTIONS /alliances/{alliance_id} -> options
+      operation = make_operation("/alliances/{alliance_id}", "options")
+      assert CustomProcessor.operation_function_name(nil, operation) == :options
+
+      # HEAD /characters/{character_id}/calendar/{event_id} -> head_calendar
+      operation = make_operation("/characters/{character_id}/calendar/{event_id}", "head")
+      assert CustomProcessor.operation_function_name(nil, operation) == :head_calendar
+    end
+
+    test "empty path segments" do
+      # GET / -> resource
+      operation = make_operation("/", "get")
+      assert CustomProcessor.operation_function_name(nil, operation) == :resource
+    end
+
     test "hyphen replacement in function names" do
       # GET /meta/compatibility-dates -> compatibility_dates
       operation = make_operation("/meta/compatibility-dates", "get")
@@ -154,6 +192,24 @@ defmodule Esi.CustomProcessorTest do
       # Test items -> item (regular s removal)
       operation = make_operation("/universe/items/{item_id}", "get")
       assert CustomProcessor.operation_function_name(nil, operation) == :item
+    end
+
+    test "singularization rules for irregular plurals" do
+      # Test wolves -> wolf
+      operation = make_operation("/universe/wolves/{wolf_id}", "get")
+      assert CustomProcessor.operation_function_name(nil, operation) == :wolf
+
+      # Test classes -> class
+      operation = make_operation("/universe/classes/{class_id}", "get")
+      assert CustomProcessor.operation_function_name(nil, operation) == :class
+
+      # Test information -> information_item
+      operation = make_operation("/universe/information/{information_id}", "get")
+      assert CustomProcessor.operation_function_name(nil, operation) == :information_item
+
+      # Test status -> status
+      operation = make_operation("/universe/status/{status_id}", "get")
+      assert CustomProcessor.operation_function_name(nil, operation) == :status
     end
   end
 
