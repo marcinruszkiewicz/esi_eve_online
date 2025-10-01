@@ -1,0 +1,2432 @@
+{
+  "captured_at": "2025-10-01T09:13:28.098102Z",
+  "data": [
+    {
+      "category_id": 2,
+      "group_id": 1001,
+      "name": "Test Group 1001",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1002,
+      "name": "Test Group 1002",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1003,
+      "name": "Test Group 1003",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1004,
+      "name": "Test Group 1004",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1005,
+      "name": "Test Group 1005",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1006,
+      "name": "Test Group 1006",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1007,
+      "name": "Test Group 1007",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1008,
+      "name": "Test Group 1008",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1009,
+      "name": "Test Group 1009",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1010,
+      "name": "Test Group 1010",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1011,
+      "name": "Test Group 1011",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1012,
+      "name": "Test Group 1012",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1013,
+      "name": "Test Group 1013",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1014,
+      "name": "Test Group 1014",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1015,
+      "name": "Test Group 1015",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1016,
+      "name": "Test Group 1016",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1017,
+      "name": "Test Group 1017",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1018,
+      "name": "Test Group 1018",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1019,
+      "name": "Test Group 1019",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1020,
+      "name": "Test Group 1020",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1021,
+      "name": "Test Group 1021",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1022,
+      "name": "Test Group 1022",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1023,
+      "name": "Test Group 1023",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1024,
+      "name": "Test Group 1024",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1025,
+      "name": "Test Group 1025",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1026,
+      "name": "Test Group 1026",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1027,
+      "name": "Test Group 1027",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1028,
+      "name": "Test Group 1028",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1029,
+      "name": "Test Group 1029",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1030,
+      "name": "Test Group 1030",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1031,
+      "name": "Test Group 1031",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1032,
+      "name": "Test Group 1032",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1033,
+      "name": "Test Group 1033",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1034,
+      "name": "Test Group 1034",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1035,
+      "name": "Test Group 1035",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1036,
+      "name": "Test Group 1036",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1037,
+      "name": "Test Group 1037",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1038,
+      "name": "Test Group 1038",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1039,
+      "name": "Test Group 1039",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1040,
+      "name": "Test Group 1040",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1041,
+      "name": "Test Group 1041",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1042,
+      "name": "Test Group 1042",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1043,
+      "name": "Test Group 1043",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1044,
+      "name": "Test Group 1044",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1045,
+      "name": "Test Group 1045",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1046,
+      "name": "Test Group 1046",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1047,
+      "name": "Test Group 1047",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1048,
+      "name": "Test Group 1048",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1049,
+      "name": "Test Group 1049",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1050,
+      "name": "Test Group 1050",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1051,
+      "name": "Test Group 1051",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1052,
+      "name": "Test Group 1052",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1053,
+      "name": "Test Group 1053",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1054,
+      "name": "Test Group 1054",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1055,
+      "name": "Test Group 1055",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1056,
+      "name": "Test Group 1056",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1057,
+      "name": "Test Group 1057",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1058,
+      "name": "Test Group 1058",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1059,
+      "name": "Test Group 1059",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1060,
+      "name": "Test Group 1060",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1061,
+      "name": "Test Group 1061",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1062,
+      "name": "Test Group 1062",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1063,
+      "name": "Test Group 1063",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1064,
+      "name": "Test Group 1064",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1065,
+      "name": "Test Group 1065",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1066,
+      "name": "Test Group 1066",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1067,
+      "name": "Test Group 1067",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1068,
+      "name": "Test Group 1068",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1069,
+      "name": "Test Group 1069",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1070,
+      "name": "Test Group 1070",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1071,
+      "name": "Test Group 1071",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1072,
+      "name": "Test Group 1072",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1073,
+      "name": "Test Group 1073",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1074,
+      "name": "Test Group 1074",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1075,
+      "name": "Test Group 1075",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1076,
+      "name": "Test Group 1076",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1077,
+      "name": "Test Group 1077",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1078,
+      "name": "Test Group 1078",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1079,
+      "name": "Test Group 1079",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1080,
+      "name": "Test Group 1080",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1081,
+      "name": "Test Group 1081",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1082,
+      "name": "Test Group 1082",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1083,
+      "name": "Test Group 1083",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1084,
+      "name": "Test Group 1084",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1085,
+      "name": "Test Group 1085",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1086,
+      "name": "Test Group 1086",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1087,
+      "name": "Test Group 1087",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1088,
+      "name": "Test Group 1088",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1089,
+      "name": "Test Group 1089",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1090,
+      "name": "Test Group 1090",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1091,
+      "name": "Test Group 1091",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1092,
+      "name": "Test Group 1092",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1093,
+      "name": "Test Group 1093",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1094,
+      "name": "Test Group 1094",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1095,
+      "name": "Test Group 1095",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1096,
+      "name": "Test Group 1096",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1097,
+      "name": "Test Group 1097",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1098,
+      "name": "Test Group 1098",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1099,
+      "name": "Test Group 1099",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1100,
+      "name": "Test Group 1100",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1101,
+      "name": "Test Group 1101",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1102,
+      "name": "Test Group 1102",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1103,
+      "name": "Test Group 1103",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1104,
+      "name": "Test Group 1104",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1105,
+      "name": "Test Group 1105",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1106,
+      "name": "Test Group 1106",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1107,
+      "name": "Test Group 1107",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1108,
+      "name": "Test Group 1108",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1109,
+      "name": "Test Group 1109",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1110,
+      "name": "Test Group 1110",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1111,
+      "name": "Test Group 1111",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1112,
+      "name": "Test Group 1112",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1113,
+      "name": "Test Group 1113",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1114,
+      "name": "Test Group 1114",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1115,
+      "name": "Test Group 1115",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1116,
+      "name": "Test Group 1116",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1117,
+      "name": "Test Group 1117",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1118,
+      "name": "Test Group 1118",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1119,
+      "name": "Test Group 1119",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1120,
+      "name": "Test Group 1120",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1121,
+      "name": "Test Group 1121",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1122,
+      "name": "Test Group 1122",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1123,
+      "name": "Test Group 1123",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1124,
+      "name": "Test Group 1124",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1125,
+      "name": "Test Group 1125",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1126,
+      "name": "Test Group 1126",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1127,
+      "name": "Test Group 1127",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1128,
+      "name": "Test Group 1128",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1129,
+      "name": "Test Group 1129",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1130,
+      "name": "Test Group 1130",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1131,
+      "name": "Test Group 1131",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1132,
+      "name": "Test Group 1132",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1133,
+      "name": "Test Group 1133",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1134,
+      "name": "Test Group 1134",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1135,
+      "name": "Test Group 1135",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1136,
+      "name": "Test Group 1136",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1137,
+      "name": "Test Group 1137",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1138,
+      "name": "Test Group 1138",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1139,
+      "name": "Test Group 1139",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1140,
+      "name": "Test Group 1140",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1141,
+      "name": "Test Group 1141",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1142,
+      "name": "Test Group 1142",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1143,
+      "name": "Test Group 1143",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1144,
+      "name": "Test Group 1144",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1145,
+      "name": "Test Group 1145",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1146,
+      "name": "Test Group 1146",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1147,
+      "name": "Test Group 1147",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1148,
+      "name": "Test Group 1148",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1149,
+      "name": "Test Group 1149",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1150,
+      "name": "Test Group 1150",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1151,
+      "name": "Test Group 1151",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1152,
+      "name": "Test Group 1152",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1153,
+      "name": "Test Group 1153",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1154,
+      "name": "Test Group 1154",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1155,
+      "name": "Test Group 1155",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1156,
+      "name": "Test Group 1156",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1157,
+      "name": "Test Group 1157",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1158,
+      "name": "Test Group 1158",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1159,
+      "name": "Test Group 1159",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1160,
+      "name": "Test Group 1160",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1161,
+      "name": "Test Group 1161",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1162,
+      "name": "Test Group 1162",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1163,
+      "name": "Test Group 1163",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1164,
+      "name": "Test Group 1164",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1165,
+      "name": "Test Group 1165",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1166,
+      "name": "Test Group 1166",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1167,
+      "name": "Test Group 1167",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1168,
+      "name": "Test Group 1168",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1169,
+      "name": "Test Group 1169",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1170,
+      "name": "Test Group 1170",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1171,
+      "name": "Test Group 1171",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1172,
+      "name": "Test Group 1172",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1173,
+      "name": "Test Group 1173",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1174,
+      "name": "Test Group 1174",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1175,
+      "name": "Test Group 1175",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1176,
+      "name": "Test Group 1176",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1177,
+      "name": "Test Group 1177",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1178,
+      "name": "Test Group 1178",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1179,
+      "name": "Test Group 1179",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1180,
+      "name": "Test Group 1180",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1181,
+      "name": "Test Group 1181",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1182,
+      "name": "Test Group 1182",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1183,
+      "name": "Test Group 1183",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1184,
+      "name": "Test Group 1184",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1185,
+      "name": "Test Group 1185",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1186,
+      "name": "Test Group 1186",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1187,
+      "name": "Test Group 1187",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1188,
+      "name": "Test Group 1188",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1189,
+      "name": "Test Group 1189",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1190,
+      "name": "Test Group 1190",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1191,
+      "name": "Test Group 1191",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1192,
+      "name": "Test Group 1192",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1193,
+      "name": "Test Group 1193",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1194,
+      "name": "Test Group 1194",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1195,
+      "name": "Test Group 1195",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1196,
+      "name": "Test Group 1196",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1197,
+      "name": "Test Group 1197",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1198,
+      "name": "Test Group 1198",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1199,
+      "name": "Test Group 1199",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1200,
+      "name": "Test Group 1200",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1201,
+      "name": "Test Group 1201",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1202,
+      "name": "Test Group 1202",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1203,
+      "name": "Test Group 1203",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1204,
+      "name": "Test Group 1204",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1205,
+      "name": "Test Group 1205",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1206,
+      "name": "Test Group 1206",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1207,
+      "name": "Test Group 1207",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1208,
+      "name": "Test Group 1208",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1209,
+      "name": "Test Group 1209",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1210,
+      "name": "Test Group 1210",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1211,
+      "name": "Test Group 1211",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1212,
+      "name": "Test Group 1212",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1213,
+      "name": "Test Group 1213",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1214,
+      "name": "Test Group 1214",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1215,
+      "name": "Test Group 1215",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1216,
+      "name": "Test Group 1216",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1217,
+      "name": "Test Group 1217",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1218,
+      "name": "Test Group 1218",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1219,
+      "name": "Test Group 1219",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1220,
+      "name": "Test Group 1220",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1221,
+      "name": "Test Group 1221",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1222,
+      "name": "Test Group 1222",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1223,
+      "name": "Test Group 1223",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1224,
+      "name": "Test Group 1224",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1225,
+      "name": "Test Group 1225",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1226,
+      "name": "Test Group 1226",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1227,
+      "name": "Test Group 1227",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1228,
+      "name": "Test Group 1228",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1229,
+      "name": "Test Group 1229",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1230,
+      "name": "Test Group 1230",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1231,
+      "name": "Test Group 1231",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1232,
+      "name": "Test Group 1232",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1233,
+      "name": "Test Group 1233",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1234,
+      "name": "Test Group 1234",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1235,
+      "name": "Test Group 1235",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1236,
+      "name": "Test Group 1236",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1237,
+      "name": "Test Group 1237",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1238,
+      "name": "Test Group 1238",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1239,
+      "name": "Test Group 1239",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1240,
+      "name": "Test Group 1240",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1241,
+      "name": "Test Group 1241",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1242,
+      "name": "Test Group 1242",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1243,
+      "name": "Test Group 1243",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1244,
+      "name": "Test Group 1244",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1245,
+      "name": "Test Group 1245",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1246,
+      "name": "Test Group 1246",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1247,
+      "name": "Test Group 1247",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1248,
+      "name": "Test Group 1248",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1249,
+      "name": "Test Group 1249",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1250,
+      "name": "Test Group 1250",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1251,
+      "name": "Test Group 1251",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1252,
+      "name": "Test Group 1252",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1253,
+      "name": "Test Group 1253",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1254,
+      "name": "Test Group 1254",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1255,
+      "name": "Test Group 1255",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1256,
+      "name": "Test Group 1256",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1257,
+      "name": "Test Group 1257",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1258,
+      "name": "Test Group 1258",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1259,
+      "name": "Test Group 1259",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1260,
+      "name": "Test Group 1260",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1261,
+      "name": "Test Group 1261",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1262,
+      "name": "Test Group 1262",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1263,
+      "name": "Test Group 1263",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1264,
+      "name": "Test Group 1264",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1265,
+      "name": "Test Group 1265",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1266,
+      "name": "Test Group 1266",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1267,
+      "name": "Test Group 1267",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1268,
+      "name": "Test Group 1268",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1269,
+      "name": "Test Group 1269",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1270,
+      "name": "Test Group 1270",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1271,
+      "name": "Test Group 1271",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1272,
+      "name": "Test Group 1272",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1273,
+      "name": "Test Group 1273",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1274,
+      "name": "Test Group 1274",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1275,
+      "name": "Test Group 1275",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1276,
+      "name": "Test Group 1276",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1277,
+      "name": "Test Group 1277",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1278,
+      "name": "Test Group 1278",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1279,
+      "name": "Test Group 1279",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1280,
+      "name": "Test Group 1280",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1281,
+      "name": "Test Group 1281",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1282,
+      "name": "Test Group 1282",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1283,
+      "name": "Test Group 1283",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1284,
+      "name": "Test Group 1284",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1285,
+      "name": "Test Group 1285",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1286,
+      "name": "Test Group 1286",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1287,
+      "name": "Test Group 1287",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1288,
+      "name": "Test Group 1288",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1289,
+      "name": "Test Group 1289",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1290,
+      "name": "Test Group 1290",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1291,
+      "name": "Test Group 1291",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1292,
+      "name": "Test Group 1292",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1293,
+      "name": "Test Group 1293",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1294,
+      "name": "Test Group 1294",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1295,
+      "name": "Test Group 1295",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1296,
+      "name": "Test Group 1296",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1297,
+      "name": "Test Group 1297",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1298,
+      "name": "Test Group 1298",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1299,
+      "name": "Test Group 1299",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1300,
+      "name": "Test Group 1300",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1301,
+      "name": "Test Group 1301",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1302,
+      "name": "Test Group 1302",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1303,
+      "name": "Test Group 1303",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1304,
+      "name": "Test Group 1304",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1305,
+      "name": "Test Group 1305",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1306,
+      "name": "Test Group 1306",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1307,
+      "name": "Test Group 1307",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1308,
+      "name": "Test Group 1308",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1309,
+      "name": "Test Group 1309",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1310,
+      "name": "Test Group 1310",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1311,
+      "name": "Test Group 1311",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1312,
+      "name": "Test Group 1312",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1313,
+      "name": "Test Group 1313",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1314,
+      "name": "Test Group 1314",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1315,
+      "name": "Test Group 1315",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1316,
+      "name": "Test Group 1316",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1317,
+      "name": "Test Group 1317",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1318,
+      "name": "Test Group 1318",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1319,
+      "name": "Test Group 1319",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1320,
+      "name": "Test Group 1320",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1321,
+      "name": "Test Group 1321",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1322,
+      "name": "Test Group 1322",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1323,
+      "name": "Test Group 1323",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1324,
+      "name": "Test Group 1324",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1325,
+      "name": "Test Group 1325",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1326,
+      "name": "Test Group 1326",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1327,
+      "name": "Test Group 1327",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1328,
+      "name": "Test Group 1328",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1329,
+      "name": "Test Group 1329",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1330,
+      "name": "Test Group 1330",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1331,
+      "name": "Test Group 1331",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1332,
+      "name": "Test Group 1332",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1333,
+      "name": "Test Group 1333",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1334,
+      "name": "Test Group 1334",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1335,
+      "name": "Test Group 1335",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1336,
+      "name": "Test Group 1336",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1337,
+      "name": "Test Group 1337",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1338,
+      "name": "Test Group 1338",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1339,
+      "name": "Test Group 1339",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1340,
+      "name": "Test Group 1340",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1341,
+      "name": "Test Group 1341",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1342,
+      "name": "Test Group 1342",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1343,
+      "name": "Test Group 1343",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1344,
+      "name": "Test Group 1344",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1345,
+      "name": "Test Group 1345",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1346,
+      "name": "Test Group 1346",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1347,
+      "name": "Test Group 1347",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1348,
+      "name": "Test Group 1348",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1349,
+      "name": "Test Group 1349",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1350,
+      "name": "Test Group 1350",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1351,
+      "name": "Test Group 1351",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1352,
+      "name": "Test Group 1352",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1353,
+      "name": "Test Group 1353",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1354,
+      "name": "Test Group 1354",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1355,
+      "name": "Test Group 1355",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1356,
+      "name": "Test Group 1356",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1357,
+      "name": "Test Group 1357",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1358,
+      "name": "Test Group 1358",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1359,
+      "name": "Test Group 1359",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1360,
+      "name": "Test Group 1360",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1361,
+      "name": "Test Group 1361",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1362,
+      "name": "Test Group 1362",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1363,
+      "name": "Test Group 1363",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1364,
+      "name": "Test Group 1364",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1365,
+      "name": "Test Group 1365",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1366,
+      "name": "Test Group 1366",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1367,
+      "name": "Test Group 1367",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1368,
+      "name": "Test Group 1368",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1369,
+      "name": "Test Group 1369",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1370,
+      "name": "Test Group 1370",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1371,
+      "name": "Test Group 1371",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1372,
+      "name": "Test Group 1372",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1373,
+      "name": "Test Group 1373",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1374,
+      "name": "Test Group 1374",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1375,
+      "name": "Test Group 1375",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1376,
+      "name": "Test Group 1376",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1377,
+      "name": "Test Group 1377",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1378,
+      "name": "Test Group 1378",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1379,
+      "name": "Test Group 1379",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1380,
+      "name": "Test Group 1380",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1381,
+      "name": "Test Group 1381",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1382,
+      "name": "Test Group 1382",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1383,
+      "name": "Test Group 1383",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1384,
+      "name": "Test Group 1384",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1385,
+      "name": "Test Group 1385",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1386,
+      "name": "Test Group 1386",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1387,
+      "name": "Test Group 1387",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1388,
+      "name": "Test Group 1388",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1389,
+      "name": "Test Group 1389",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1390,
+      "name": "Test Group 1390",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1391,
+      "name": "Test Group 1391",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1392,
+      "name": "Test Group 1392",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1393,
+      "name": "Test Group 1393",
+      "published": true
+    },
+    {
+      "category_id": 5,
+      "group_id": 1394,
+      "name": "Test Group 1394",
+      "published": true
+    },
+    {
+      "category_id": 6,
+      "group_id": 1395,
+      "name": "Test Group 1395",
+      "published": true
+    },
+    {
+      "category_id": 7,
+      "group_id": 1396,
+      "name": "Test Group 1396",
+      "published": true
+    },
+    {
+      "category_id": 8,
+      "group_id": 1397,
+      "name": "Test Group 1397",
+      "published": true
+    },
+    {
+      "category_id": 9,
+      "group_id": 1398,
+      "name": "Test Group 1398",
+      "published": true
+    },
+    {
+      "category_id": 10,
+      "group_id": 1399,
+      "name": "Test Group 1399",
+      "published": true
+    },
+    {
+      "category_id": 1,
+      "group_id": 1400,
+      "name": "Test Group 1400",
+      "published": true
+    },
+    {
+      "category_id": 2,
+      "group_id": 1401,
+      "name": "Test Group 1401",
+      "published": true
+    },
+    {
+      "category_id": 3,
+      "group_id": 1402,
+      "name": "Test Group 1402",
+      "published": true
+    },
+    {
+      "category_id": 4,
+      "group_id": 1403,
+      "name": "Test Group 1403",
+      "published": true
+    }
+  ],
+  "endpoint": "/universe/groups/",
+  "headers": {
+    "x-esi-error-limit-remain": "100",
+    "x-esi-error-limit-reset": "1640995200",
+    "x-esi-request-id": "mock-request-2338",
+    "x-pages": "2"
+  },
+  "note": "This is mock data for testing",
+  "page": 2
+}

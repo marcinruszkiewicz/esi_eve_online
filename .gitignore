@@ -21,3 +21,5 @@ esi_eve_online-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+*.code-workspace

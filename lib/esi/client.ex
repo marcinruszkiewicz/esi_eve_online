@@ -1,7 +1,7 @@
 defmodule Esi.Client do
   @moduledoc """
   HTTP client for ESI (EVE Swagger Interface) API.
-  
+
   This module provides the core HTTP client functionality used by all generated
   API modules. It handles authentication, error processing, and request/response
   standardization.
@@ -10,15 +10,16 @@ defmodule Esi.Client do
   alias Esi.Error
 
   @type request_options :: [
-    token: String.t(),
-    client: module(),
-    user_agent: String.t(),
-    timeout: integer(),
-    retries: integer(),
-    base_url: String.t()
-  ]
+          token: String.t(),
+          client: module(),
+          user_agent: String.t(),
+          timeout: integer(),
+          retries: integer(),
+          base_url: String.t()
+        ]
 
   @type response :: {:ok, term()} | {:error, Error.t()}
+  @type response_with_headers :: {:ok, term(), integer()} | {:error, Error.t()}
 
   @default_base_url "https://esi.evetech.net/latest"
   @default_user_agent "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"
@@ -27,11 +28,11 @@ defmodule Esi.Client do
 
   @doc """
   Makes an HTTP request to the ESI API.
-  
+
   This is the main entry point used by all generated API modules.
-  
+
   ## Parameters
-  
+
   - `request_spec` - A map containing request details:
     - `:url` - The API endpoint path
     - `:method` - HTTP method (`:get`, `:post`, etc.)
@@ -39,9 +40,9 @@ defmodule Esi.Client do
     - `:response` - Expected response format
     - `:call` - Module and function name for debugging
   - `opts` - Request options (see `t:request_options/0`)
-  
+
   ## Examples
-  
+
       iex> request_spec = %{
       ...>   url: "/alliances/1234",
       ...>   method: :get,
@@ -71,7 +72,7 @@ defmodule Esi.Client do
 
     # Extract request components
     {body, query_params, path_params} = extract_request_components(args)
-    
+
     # Substitute path parameters
     final_url = substitute_path_params(full_url, path_params)
 
@@ -82,13 +83,85 @@ defmodule Esi.Client do
     case make_http_request(method, final_url, req_opts) do
       {:ok, %Req.Response{status: status, body: response_body, headers: headers}} ->
         handle_response(status, response_body, headers, response_specs)
-      
+
       {:error, %Req.TransportError{reason: :timeout}} ->
         {:error, Error.timeout_error()}
-      
+
       {:error, %Req.TransportError{reason: reason}} ->
         {:error, Error.network_error("Network error: #{inspect(reason)}")}
-      
+
+      {:error, error} ->
+        {:error, Error.network_error("Request failed: #{inspect(error)}")}
+    end
+  rescue
+    error ->
+      {:error, Error.network_error("Unexpected error: #{inspect(error)}")}
+  end
+
+  @doc """
+  Makes an HTTP request to the ESI API and returns response with headers.
+
+  This is primarily used for paginated requests where you need access
+  to pagination headers like `x-pages`.
+
+  ## Parameters
+
+  - `request_spec` - A map containing request details (same as `request/2`)
+  - `opts` - Request options (same as `request/2`)
+
+  ## Returns
+
+  `{:ok, data, max_pages}` on success, `{:error, error}` on failure.
+
+  ## Examples
+
+      iex> request_spec = %{
+      ...>   url: "/universe/groups",
+      ...>   method: :get,
+      ...>   args: [],
+      ...>   response: [{200, [:integer]}],
+      ...>   call: {Esi.Api.Universe, :groups}
+      ...> }
+      iex> Esi.Client.request_with_headers(request_spec, [])
+      {:ok, [1, 2, 3], 2}
+  """
+  @spec request_with_headers(map(), request_options()) :: response_with_headers()
+  def request_with_headers(request_spec, opts \\ []) do
+    %{
+      url: path,
+      method: method,
+      args: args,
+      response: response_specs,
+      call: {_module, _function}
+    } = request_spec
+
+    # Merge options from request spec with passed options (passed options take precedence)
+    merged_opts = Keyword.merge(request_spec[:opts] || [], opts)
+
+    # Build the full URL
+    base_url = merged_opts[:base_url] || @default_base_url
+    full_url = base_url <> path
+
+    # Extract request components
+    {body, query_params, path_params} = extract_request_components(args)
+
+    # Substitute path parameters
+    final_url = substitute_path_params(full_url, path_params)
+
+    # Build request options
+    req_opts = build_request_options(merged_opts, body, query_params)
+
+    # Make the HTTP request
+    case make_http_request(method, final_url, req_opts) do
+      {:ok, %Req.Response{status: status, body: response_body, headers: headers}} ->
+        handle_response_with_headers(status, response_body, headers, response_specs)
+
+      {:error, %Req.TransportError{reason: :timeout}} ->
+        {:error, Error.timeout_error()}
+
+      {:error, %Req.TransportError{reason: reason}} ->
+        {:error, Error.network_error("Network error: #{inspect(reason)}")}
+
       {:error, error} ->
         {:error, Error.network_error("Request failed: #{inspect(error)}")}
     end
@@ -104,22 +177,50 @@ defmodule Esi.Client do
     query_params = Keyword.drop(args, [:body]) |> Enum.into(%{})
     path_params = Map.take(query_params, get_path_param_keys(query_params))
     query_params = Map.drop(query_params, Map.keys(path_params))
-    
+
     {body, query_params, path_params}
   end
 
   defp get_path_param_keys(params) do
     # Common path parameter patterns in ESI
     path_keys = [
-      :alliance_id, :character_id, :corporation_id, :fleet_id, :type_id,
-      :system_id, :region_id, :constellation_id, :category_id, :group_id,
-      :market_group_id, :contract_id, :item_id, :event_id, :mail_id,
-      :contact_id, :fitting_id, :planet_id, :structure_id, :war_id,
-      :killmail_id, :observer_id, :extraction_id, :wing_id, :squad_id,
-      :attribute_id, :effect_id, :graphic_id, :icon_id, :race_id,
-      :bloodline_id, :ancestry_id, :faction_id, :agent_id, :station_id
+      :alliance_id,
+      :character_id,
+      :corporation_id,
+      :fleet_id,
+      :type_id,
+      :system_id,
+      :region_id,
+      :constellation_id,
+      :category_id,
+      :group_id,
+      :market_group_id,
+      :contract_id,
+      :item_id,
+      :event_id,
+      :mail_id,
+      :contact_id,
+      :fitting_id,
+      :planet_id,
+      :structure_id,
+      :war_id,
+      :killmail_id,
+      :observer_id,
+      :extraction_id,
+      :wing_id,
+      :squad_id,
+      :attribute_id,
+      :effect_id,
+      :graphic_id,
+      :icon_id,
+      :race_id,
+      :bloodline_id,
+      :ancestry_id,
+      :faction_id,
+      :agent_id,
+      :station_id
     ]
-    
+
     Map.keys(params) |> Enum.filter(&(&1 in path_keys))
   end
 
@@ -169,26 +270,26 @@ defmodule Esi.Client do
         # TODO: Implement proper response deserialization based on module/type
         # For now, just return the body as-is
         {:ok, body}
-      
+
       {^status, [:integer]} ->
         # Handle list of integers response
         {:ok, body}
-      
+
       {^status, :ok} ->
         {:ok, body}
-      
+
       {^status, _other_type} ->
         # Handle any other response type specification
         {:ok, body}
-      
+
       {:default, _} ->
         # Default response spec
         {:ok, body}
-      
+
       :default ->
         # Simple default
         {:ok, body}
-      
+
       nil ->
         # Fallback for successful responses without specific spec
         {:ok, body}
@@ -199,45 +300,128 @@ defmodule Esi.Client do
     request_id = get_header_value(headers, "x-esi-request-id")
     retry_after = get_header_value(headers, "retry-after") |> parse_retry_after()
 
-    error = case {status, body} do
-      {400, %{"error" => message}} ->
-        Error.validation_error(message, %{status: status, body: body})
-      
-      {401, _} ->
-        Error.api_error(401, "Unauthorized - invalid or expired token", %{body: body})
-      
-      {403, _} ->
-        Error.api_error(403, "Forbidden - insufficient permissions", %{body: body})
-      
-      {404, _} ->
-        Error.api_error(404, "Not found", %{body: body})
-      
-      {420, _} ->
-        Error.api_error(420, "Error limited - too many requests", %{body: body})
-      
-      {500, _} ->
-        Error.api_error(500, "Internal server error", %{body: body})
-      
-      {502, _} ->
-        Error.api_error(502, "Bad gateway", %{body: body})
-      
-      {503, _} ->
-        Error.api_error(503, "Service unavailable", %{body: body})
-      
-      {status, %{"error" => message}} ->
-        Error.api_error(status, message, %{body: body})
-      
-      {status, _} ->
-        Error.http_error(status, "HTTP #{status}", %{body: body})
-    end
+    error =
+      case {status, body} do
+        {400, %{"error" => message}} ->
+          Error.validation_error(message, %{status: status, body: body})
 
-    error = 
+        {401, _} ->
+          Error.api_error(401, "Unauthorized - invalid or expired token", %{body: body})
+
+        {403, _} ->
+          Error.api_error(403, "Forbidden - insufficient permissions", %{body: body})
+
+        {404, _} ->
+          Error.api_error(404, "Not found", %{body: body})
+
+        {420, _} ->
+          Error.api_error(420, "Error limited - too many requests", %{body: body})
+
+        {500, _} ->
+          Error.api_error(500, "Internal server error", %{body: body})
+
+        {502, _} ->
+          Error.api_error(502, "Bad gateway", %{body: body})
+
+        {503, _} ->
+          Error.api_error(503, "Service unavailable", %{body: body})
+
+        {status, %{"error" => message}} ->
+          Error.api_error(status, message, %{body: body})
+
+        {status, _} ->
+          Error.http_error(status, "HTTP #{status}", %{body: body})
+      end
+
+    error =
       error
       |> maybe_add_request_id(request_id)
       |> maybe_add_retry_after(retry_after)
 
     {:error, error}
   end
+
+  defp handle_response_with_headers(status, body, headers, response_specs) when status in 200..299 do
+    # Parse x-pages header for pagination
+    max_pages = parse_x_pages_header(headers)
+
+    # Find matching response spec
+    case find_response_spec(status, response_specs) do
+      {^status, {_module, _type_func}} ->
+        # TODO: Implement proper response deserialization based on module/type
+        # For now, just return the body as-is
+        {:ok, body, max_pages}
+
+      {^status, [:integer]} ->
+        # Handle list of integers response
+        {:ok, body, max_pages}
+
+      {^status, :ok} ->
+        {:ok, body, max_pages}
+
+      {^status, _other_type} ->
+        # Handle any other response type specification
+        {:ok, body, max_pages}
+
+      {:default, _} ->
+        # Default response spec
+        {:ok, body, max_pages}
+
+      :default ->
+        # Simple default
+        {:ok, body, max_pages}
+
+      nil ->
+        # Fallback for successful responses without specific spec
+        {:ok, body, max_pages}
+    end
+  end
+
+  defp handle_response_with_headers(status, body, headers, _response_specs) do
+    request_id = get_header_value(headers, "x-esi-request-id")
+    retry_after = get_header_value(headers, "retry-after") |> parse_retry_after()
+
+    error =
+      case {status, body} do
+        {400, %{"error" => message}} ->
+          Error.validation_error(message, %{status: status, body: body})
+
+        {401, _} ->
+          Error.api_error(401, "Unauthorized - invalid or expired token", %{body: body})
+
+        {403, _} ->
+          Error.api_error(403, "Forbidden - insufficient permissions", %{body: body})
+
+        {404, _} ->
+          Error.api_error(404, "Not found", %{body: body})
+
+        {420, _} ->
+          Error.api_error(420, "Error limited - too many requests", %{body: body})
+
+        {500, _} ->
+          Error.api_error(500, "Internal server error", %{body: body})
+
+        {502, _} ->
+          Error.api_error(502, "Bad gateway", %{body: body})
+
+        {503, _} ->
+          Error.api_error(503, "Service unavailable", %{body: body})
+
+        {status, %{"error" => message}} ->
+          Error.api_error(status, message, %{body: body})
+
+        {status, _} ->
+          Error.http_error(status, "HTTP #{status}", %{body: body})
+      end
+
+    error =
+      error
+      |> maybe_add_request_id(request_id)
+      |> maybe_add_retry_after(retry_after)
+
+    {:error, error}
+  end
+
 
   defp find_response_spec(status, response_specs) do
     Enum.find(response_specs, fn
@@ -252,12 +436,16 @@ defmodule Esi.Client do
     headers
     |> Enum.find(fn {name, _value} -> String.downcase(name) == String.downcase(header_name) end)
     |> case do
-      {_name, value} -> value
-      nil -> nil
+      # Handle list of values
+      {_name, [value | _]} when is_binary(value) -> value
+      # Handle single value
+      {_name, value} when is_binary(value) -> value
+      _ -> nil
     end
   end
 
   defp parse_retry_after(nil), do: nil
+
   defp parse_retry_after(value) when is_binary(value) do
     case Integer.parse(value) do
       {seconds, ""} -> seconds
@@ -270,4 +458,16 @@ defmodule Esi.Client do
 
   defp maybe_add_retry_after(error, nil), do: error
   defp maybe_add_retry_after(error, retry_after), do: Error.with_retry_after(error, retry_after)
+
+  defp parse_x_pages_header(headers) do
+    case get_header_value(headers, "x-pages") do
+      nil -> 1
+      value when is_binary(value) ->
+        case Integer.parse(value) do
+          {max_pages, ""} -> max_pages
+          _ -> 1
+        end
+      _ -> 1
+    end
+  end
 end

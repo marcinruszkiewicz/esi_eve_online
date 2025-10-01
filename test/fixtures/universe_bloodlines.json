@@ -1,0 +1,122 @@
+{
+  "captured_at": "2025-10-01T09:13:28.100770Z",
+  "data": [
+    {
+      "bloodline_id": 1,
+      "description": "A bloodline of the Caldari",
+      "name": "Deteis",
+      "race_id": 1
+    },
+    {
+      "bloodline_id": 2,
+      "description": "A bloodline of the Caldari",
+      "name": "Civire",
+      "race_id": 1
+    },
+    {
+      "bloodline_id": 3,
+      "description": "A bloodline of the Caldari",
+      "name": "Achura",
+      "race_id": 1
+    },
+    {
+      "bloodline_id": 4,
+      "description": "A bloodline of the Gallente",
+      "name": "Gallente",
+      "race_id": 2
+    },
+    {
+      "bloodline_id": 5,
+      "description": "A bloodline of the Gallente",
+      "name": "Intaki",
+      "race_id": 2
+    },
+    {
+      "bloodline_id": 6,
+      "description": "A bloodline of the Gallente",
+      "name": "Jin-Mei",
+      "race_id": 2
+    },
+    {
+      "bloodline_id": 7,
+      "description": "A bloodline of the Amarr",
+      "name": "Amarr",
+      "race_id": 4
+    },
+    {
+      "bloodline_id": 8,
+      "description": "A bloodline of the Amarr",
+      "name": "Khanid",
+      "race_id": 4
+    },
+    {
+      "bloodline_id": 9,
+      "description": "A bloodline of the Amarr",
+      "name": "Ni-Kunni",
+      "race_id": 4
+    },
+    {
+      "bloodline_id": 10,
+      "description": "A bloodline of the Minmatar",
+      "name": "Minmatar",
+      "race_id": 8
+    },
+    {
+      "bloodline_id": 11,
+      "description": "A bloodline of the Minmatar",
+      "name": "Brutor",
+      "race_id": 8
+    },
+    {
+      "bloodline_id": 12,
+      "description": "A bloodline of the Minmatar",
+      "name": "Sebiestor",
+      "race_id": 8
+    },
+    {
+      "bloodline_id": 13,
+      "description": "A bloodline of the Minmatar",
+      "name": "Vherokior",
+      "race_id": 8
+    },
+    {
+      "bloodline_id": 14,
+      "description": "A bloodline of the Amarr",
+      "name": "Sani Sabik",
+      "race_id": 4
+    },
+    {
+      "bloodline_id": 15,
+      "description": "A bloodline of the Minmatar",
+      "name": "Drifter",
+      "race_id": 8
+    },
+    {
+      "bloodline_id": 16,
+      "description": "A bloodline of the Amarr",
+      "name": "EoM",
+      "race_id": 4
+    },
+    {
+      "bloodline_id": 17,
+      "description": "A bloodline of the Minmatar",
+      "name": "Sansha",
+      "race_id": 8
+    },
+    {
+      "bloodline_id": 18,
+      "description": "A bloodline of the Minmatar",
+      "name": "Rogue Drone",
+      "race_id": 8
+    }
+  ],
+  "endpoint": "/universe/bloodlines/",
+  "headers": {
+    "x-esi-error-limit-remain": "100",
+    "x-esi-error-limit-reset": "1640995200",
+    "x-esi-request-id": "mock-request-2370",
+    "x-pages": "1"
+  },
+  "note": "This is mock data for testing",
+  "page": null
+}

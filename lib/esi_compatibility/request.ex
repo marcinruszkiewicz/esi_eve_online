@@ -145,12 +145,51 @@ defmodule ESI.Request do
 
   # Execute request with headers for pagination support
   defp do_run_with_headers(request) do
-    case do_run(%{request | opts: Map.put(request.opts, :return_headers, true)}) do
-      {:ok, data} ->
-        # For compatibility, assume max pages = 1 if no pagination headers
-        {:ok, data, 1}
-      {:error, error} ->
-        {:error, error}
+    client_opts = map_legacy_opts_to_client_opts(request.opts)
+    
+    case request.verb do
+      :get ->
+        EsiEveOnline.get_with_headers(request.path, client_opts)
+      :post ->
+        body = extract_body_from_opts(request)
+        # For POST requests, we need to use the general request_with_headers
+        request_spec = %{
+          url: request.path,
+          method: :post,
+          args: [body: body],
+          response: [{200, :ok}, {:default, {Esi.Error, :t}}],
+          call: {__MODULE__, :do_run_with_headers}
+        }
+        EsiEveOnline.request_with_headers(request_spec, client_opts)
+      :put ->
+        body = extract_body_from_opts(request)
+        request_spec = %{
+          url: request.path,
+          method: :put,
+          args: [body: body],
+          response: [{200, :ok}, {:default, {Esi.Error, :t}}],
+          call: {__MODULE__, :do_run_with_headers}
+        }
+        EsiEveOnline.request_with_headers(request_spec, client_opts)
+      :delete ->
+        request_spec = %{
+          url: request.path,
+          method: :delete,
+          args: [],
+          response: [{200, :ok}, {:default, {Esi.Error, :t}}],
+          call: {__MODULE__, :do_run_with_headers}
+        }
+        EsiEveOnline.request_with_headers(request_spec, client_opts)
+      :patch ->
+        body = extract_body_from_opts(request)
+        request_spec = %{
+          url: request.path,
+          method: :patch,
+          args: [body: body],
+          response: [{200, :ok}, {:default, {Esi.Error, :t}}],
+          call: {__MODULE__, :do_run_with_headers}
+        }
+        EsiEveOnline.request_with_headers(request_spec, client_opts)
     end
   end
 

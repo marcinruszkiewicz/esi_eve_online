@@ -41,9 +41,11 @@ defmodule EsiEveOnline do
 
   @type request_options :: Client.request_options()
   @type response :: Client.response()
+  @type response_with_headers :: Client.response_with_headers()
 
   # Re-export the API modules for convenience
   defdelegate request(request_spec, opts \\ []), to: Client
+  defdelegate request_with_headers(request_spec, opts \\ []), to: Client
 
   @doc """
   Makes a GET request to the specified ESI endpoint.
@@ -67,6 +69,33 @@ defmodule EsiEveOnline do
     }
     
     Client.request(request_spec, opts)
+  end
+
+  @doc """
+  Makes a GET request to the specified ESI endpoint and returns response with headers.
+  
+  This is primarily used for paginated requests where you need access
+  to pagination headers like `x-pages`.
+  
+  ## Examples
+  
+      iex> EsiEveOnline.get_with_headers("/universe/groups")
+      {:ok, [1, 2, 3], 2}
+      
+      iex> EsiEveOnline.get_with_headers("/characters/1234", token: "access_token")
+      {:ok, %{...}, 1}
+  """
+  @spec get_with_headers(String.t(), request_options()) :: response_with_headers()
+  def get_with_headers(path, opts \\ []) do
+    request_spec = %{
+      url: path,
+      method: :get,
+      args: [],
+      response: [{200, :ok}, {:default, {Esi.Error, :t}}],
+      call: {__MODULE__, :get_with_headers}
+    }
+    
+    Client.request_with_headers(request_spec, opts)
   end
 
   @doc """

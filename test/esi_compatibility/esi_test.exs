@@ -107,7 +107,7 @@ defmodule ESI.Test do
         opts_schema: %{page: {:query, :optional}}
       }
 
-      with_mock EsiEveOnline, [get: fn(_path, _opts) -> {:ok, [1, 2, 3]} end] do
+      with_mock EsiEveOnline, [get_with_headers: fn(_path, _opts) -> {:ok, [1, 2, 3], 1} end] do
         assert {:ok, [1, 2, 3], 1} = ESI.request_with_headers(request)
       end
     end
@@ -121,7 +121,7 @@ defmodule ESI.Test do
         opts_schema: %{}
       }
 
-      with_mock EsiEveOnline, [get: fn(_path, _opts) -> {:ok, [1, 2, 3]} end] do
+      with_mock EsiEveOnline, [get_with_headers: fn(_path, _opts) -> {:ok, [1, 2, 3], 1} end] do
         assert {[1, 2, 3], 1} = ESI.request_with_headers!(request)
       end
     end
@@ -134,7 +134,7 @@ defmodule ESI.Test do
       }
 
       error = %Esi.Error{type: :api_error, status: 404, message: "Not found"}
-      with_mock EsiEveOnline, [get: fn(_path, _opts) -> {:error, error} end] do
+      with_mock EsiEveOnline, [get_with_headers: fn(_path, _opts) -> {:error, error} end] do
         assert_raise RuntimeError, "Request failed: Not found", fn ->
           ESI.request_with_headers!(request)
         end

@@ -135,12 +135,12 @@ defmodule ESI.LegacyIntegrationTest do
         %{"contact_id" => 2112625428, "contact_type" => "character", "standing" => 9.9}
       ]
 
-      with_mock EsiEveOnline, [get: fn(_path, _opts) -> {:ok, contacts_data} end] do
+      with_mock EsiEveOnline, [get_with_headers: fn(_path, _opts) -> {:ok, contacts_data, 1} end] do
         # This shows how to get pagination information
         result = ESI.API.Alliance.contacts(99005443, page: 1) |> ESI.request_with_headers(token: "test_token")
         
         assert {:ok, ^contacts_data, 1} = result
-        assert called(EsiEveOnline.get("/alliances/99005443/contacts/", [page: 1, token: "test_token"]))
+        assert called(EsiEveOnline.get_with_headers("/alliances/99005443/contacts/", [page: 1, token: "test_token"]))
       end
     end
 

@@ -1,0 +1,830 @@
+{
+  "captured_at": "2025-10-01T09:13:28.088490Z",
+  "data": [
+    {
+      "item_id": 1000000001999,
+      "location_flag": "Hangar",
+      "location_id": 60003769,
+      "location_type": "station",
+      "quantity": 100,
+      "type_id": 10999
+    },
+    {
+      "item_id": 1000000002000,
+      "location_flag": "Hangar",
+      "location_id": 60003760,
+      "location_type": "structure",
+      "quantity": 1,
+      "type_id": 10000
+    },
+    {
+      "item_id": 1000000002001,
+      "location_flag": "Cargo",
+      "location_id": 60003761,
+      "location_type": "station",
+      "quantity": 2,
+      "type_id": 10001
+    },
+    {
+      "item_id": 1000000002002,
+      "location_flag": "Hangar",
+      "location_id": 60003762,
+      "location_type": "station",
+      "quantity": 3,
+      "type_id": 10002
+    },
+    {
+      "item_id": 1000000002003,
+      "location_flag": "Hangar",
+      "location_id": 60003763,
+      "location_type": "station",
+      "quantity": 4,
+      "type_id": 10003
+    },
+    {
+      "item_id": 1000000002004,
+      "location_flag": "Cargo",
+      "location_id": 60003764,
+      "location_type": "station",
+      "quantity": 5,
+      "type_id": 10004
+    },
+    {
+      "item_id": 1000000002005,
+      "location_flag": "Hangar",
+      "location_id": 60003765,
+      "location_type": "structure",
+      "quantity": 6,
+      "type_id": 10005
+    },
+    {
+      "item_id": 1000000002006,
+      "location_flag": "Hangar",
+      "location_id": 60003766,
+      "location_type": "station",
+      "quantity": 7,
+      "type_id": 10006
+    },
+    {
+      "item_id": 1000000002007,
+      "location_flag": "Cargo",
+      "location_id": 60003767,
+      "location_type": "station",
+      "quantity": 8,
+      "type_id": 10007
+    },
+    {
+      "item_id": 1000000002008,
+      "location_flag": "Hangar",
+      "location_id": 60003768,
+      "location_type": "station",
+      "quantity": 9,
+      "type_id": 10008
+    },
+    {
+      "item_id": 1000000002009,
+      "location_flag": "Hangar",
+      "location_id": 60003769,
+      "location_type": "station",
+      "quantity": 10,
+      "type_id": 10009
+    },
+    {
+      "item_id": 1000000002010,
+      "location_flag": "Cargo",
+      "location_id": 60003760,
+      "location_type": "structure",
+      "quantity": 11,
+      "type_id": 10010
+    },
+    {
+      "item_id": 1000000002011,
+      "location_flag": "Hangar",
+      "location_id": 60003761,
+      "location_type": "station",
+      "quantity": 12,
+      "type_id": 10011
+    },
+    {
+      "item_id": 1000000002012,
+      "location_flag": "Hangar",
+      "location_id": 60003762,
+      "location_type": "station",
+      "quantity": 13,
+      "type_id": 10012
+    },
+    {
+      "item_id": 1000000002013,
+      "location_flag": "Cargo",
+      "location_id": 60003763,
+      "location_type": "station",
+      "quantity": 14,
+      "type_id": 10013
+    },
+    {
+      "item_id": 1000000002014,
+      "location_flag": "Hangar",
+      "location_id": 60003764,
+      "location_type": "station",
+      "quantity": 15,
+      "type_id": 10014
+    },
+    {
+      "item_id": 1000000002015,
+      "location_flag": "Hangar",
+      "location_id": 60003765,
+      "location_type": "structure",
+      "quantity": 16,
+      "type_id": 10015
+    },
+    {
+      "item_id": 1000000002016,
+      "location_flag": "Cargo",
+      "location_id": 60003766,
+      "location_type": "station",
+      "quantity": 17,
+      "type_id": 10016
+    },
+    {
+      "item_id": 1000000002017,
+      "location_flag": "Hangar",
+      "location_id": 60003767,
+      "location_type": "station",
+      "quantity": 18,
+      "type_id": 10017
+    },
+    {
+      "item_id": 1000000002018,
+      "location_flag": "Hangar",
+      "location_id": 60003768,
+      "location_type": "station",
+      "quantity": 19,
+      "type_id": 10018
+    },
+    {
+      "item_id": 1000000002019,
+      "location_flag": "Cargo",
+      "location_id": 60003769,
+      "location_type": "station",
+      "quantity": 20,
+      "type_id": 10019
+    },
+    {
+      "item_id": 1000000002020,
+      "location_flag": "Hangar",
+      "location_id": 60003760,
+      "location_type": "structure",
+      "quantity": 21,
+      "type_id": 10020
+    },
+    {
+      "item_id": 1000000002021,
+      "location_flag": "Hangar",
+      "location_id": 60003761,
+      "location_type": "station",
+      "quantity": 22,
+      "type_id": 10021
+    },
+    {
+      "item_id": 1000000002022,
+      "location_flag": "Cargo",
+      "location_id": 60003762,
+      "location_type": "station",
+      "quantity": 23,
+      "type_id": 10022
+    },
+    {
+      "item_id": 1000000002023,
+      "location_flag": "Hangar",
+      "location_id": 60003763,
+      "location_type": "station",
+      "quantity": 24,
+      "type_id": 10023
+    },
+    {
+      "item_id": 1000000002024,
+      "location_flag": "Hangar",
+      "location_id": 60003764,
+      "location_type": "station",
+      "quantity": 25,
+      "type_id": 10024
+    },
+    {
+      "item_id": 1000000002025,
+      "location_flag": "Cargo",
+      "location_id": 60003765,
+      "location_type": "structure",
+      "quantity": 26,
+      "type_id": 10025
+    },
+    {
+      "item_id": 1000000002026,
+      "location_flag": "Hangar",
+      "location_id": 60003766,
+      "location_type": "station",
+      "quantity": 27,
+      "type_id": 10026
+    },
+    {
+      "item_id": 1000000002027,
+      "location_flag": "Hangar",
+      "location_id": 60003767,
+      "location_type": "station",
+      "quantity": 28,
+      "type_id": 10027
+    },
+    {
+      "item_id": 1000000002028,
+      "location_flag": "Cargo",
+      "location_id": 60003768,
+      "location_type": "station",
+      "quantity": 29,
+      "type_id": 10028
+    },
+    {
+      "item_id": 1000000002029,
+      "location_flag": "Hangar",
+      "location_id": 60003769,
+      "location_type": "station",
+      "quantity": 30,
+      "type_id": 10029
+    },
+    {
+      "item_id": 1000000002030,
+      "location_flag": "Hangar",
+      "location_id": 60003760,
+      "location_type": "structure",
+      "quantity": 31,
+      "type_id": 10030
+    },
+    {
+      "item_id": 1000000002031,
+      "location_flag": "Cargo",
+      "location_id": 60003761,
+      "location_type": "station",
+      "quantity": 32,
+      "type_id": 10031
+    },
+    {
+      "item_id": 1000000002032,
+      "location_flag": "Hangar",
+      "location_id": 60003762,
+      "location_type": "station",
+      "quantity": 33,
+      "type_id": 10032
+    },
+    {
+      "item_id": 1000000002033,
+      "location_flag": "Hangar",
+      "location_id": 60003763,
+      "location_type": "station",
+      "quantity": 34,
+      "type_id": 10033
+    },
+    {
+      "item_id": 1000000002034,
+      "location_flag": "Cargo",
+      "location_id": 60003764,
+      "location_type": "station",
+      "quantity": 35,
+      "type_id": 10034
+    },
+    {
+      "item_id": 1000000002035,
+      "location_flag": "Hangar",
+      "location_id": 60003765,
+      "location_type": "structure",
+      "quantity": 36,
+      "type_id": 10035
+    },
+    {
+      "item_id": 1000000002036,
+      "location_flag": "Hangar",
+      "location_id": 60003766,
+      "location_type": "station",
+      "quantity": 37,
+      "type_id": 10036
+    },
+    {
+      "item_id": 1000000002037,
+      "location_flag": "Cargo",
+      "location_id": 60003767,
+      "location_type": "station",
+      "quantity": 38,
+      "type_id": 10037
+    },
+    {
+      "item_id": 1000000002038,
+      "location_flag": "Hangar",
+      "location_id": 60003768,
+      "location_type": "station",
+      "quantity": 39,
+      "type_id": 10038
+    },
+    {
+      "item_id": 1000000002039,
+      "location_flag": "Hangar",
+      "location_id": 60003769,
+      "location_type": "station",
+      "quantity": 40,
+      "type_id": 10039
+    },
+    {
+      "item_id": 1000000002040,
+      "location_flag": "Cargo",
+      "location_id": 60003760,
+      "location_type": "structure",
+      "quantity": 41,
+      "type_id": 10040
+    },
+    {
+      "item_id": 1000000002041,
+      "location_flag": "Hangar",
+      "location_id": 60003761,
+      "location_type": "station",
+      "quantity": 42,
+      "type_id": 10041
+    },
+    {
+      "item_id": 1000000002042,
+      "location_flag": "Hangar",
+      "location_id": 60003762,
+      "location_type": "station",
+      "quantity": 43,
+      "type_id": 10042
+    },
+    {
+      "item_id": 1000000002043,
+      "location_flag": "Cargo",
+      "location_id": 60003763,
+      "location_type": "station",
+      "quantity": 44,
+      "type_id": 10043
+    },
+    {
+      "item_id": 1000000002044,
+      "location_flag": "Hangar",
+      "location_id": 60003764,
+      "location_type": "station",
+      "quantity": 45,
+      "type_id": 10044
+    },
+    {
+      "item_id": 1000000002045,
+      "location_flag": "Hangar",
+      "location_id": 60003765,
+      "location_type": "structure",
+      "quantity": 46,
+      "type_id": 10045
+    },
+    {
+      "item_id": 1000000002046,
+      "location_flag": "Cargo",
+      "location_id": 60003766,
+      "location_type": "station",
+      "quantity": 47,
+      "type_id": 10046
+    },
+    {
+      "item_id": 1000000002047,
+      "location_flag": "Hangar",
+      "location_id": 60003767,
+      "location_type": "station",
+      "quantity": 48,
+      "type_id": 10047
+    },
+    {
+      "item_id": 1000000002048,
+      "location_flag": "Hangar",
+      "location_id": 60003768,
+      "location_type": "station",
+      "quantity": 49,
+      "type_id": 10048
+    },
+    {
+      "item_id": 1000000002049,
+      "location_flag": "Cargo",
+      "location_id": 60003769,
+      "location_type": "station",
+      "quantity": 50,
+      "type_id": 10049
+    },
+    {
+      "item_id": 1000000002050,
+      "location_flag": "Hangar",
+      "location_id": 60003760,
+      "location_type": "structure",
+      "quantity": 51,
+      "type_id": 10050
+    },
+    {
+      "item_id": 1000000002051,
+      "location_flag": "Hangar",
+      "location_id": 60003761,
+      "location_type": "station",
+      "quantity": 52,
+      "type_id": 10051
+    },
+    {
+      "item_id": 1000000002052,
+      "location_flag": "Cargo",
+      "location_id": 60003762,
+      "location_type": "station",
+      "quantity": 53,
+      "type_id": 10052
+    },
+    {
+      "item_id": 1000000002053,
+      "location_flag": "Hangar",
+      "location_id": 60003763,
+      "location_type": "station",
+      "quantity": 54,
+      "type_id": 10053
+    },
+    {
+      "item_id": 1000000002054,
+      "location_flag": "Hangar",
+      "location_id": 60003764,
+      "location_type": "station",
+      "quantity": 55,
+      "type_id": 10054
+    },
+    {
+      "item_id": 1000000002055,
+      "location_flag": "Cargo",
+      "location_id": 60003765,
+      "location_type": "structure",
+      "quantity": 56,
+      "type_id": 10055
+    },
+    {
+      "item_id": 1000000002056,
+      "location_flag": "Hangar",
+      "location_id": 60003766,
+      "location_type": "station",
+      "quantity": 57,
+      "type_id": 10056
+    },
+    {
+      "item_id": 1000000002057,
+      "location_flag": "Hangar",
+      "location_id": 60003767,
+      "location_type": "station",
+      "quantity": 58,
+      "type_id": 10057
+    },
+    {
+      "item_id": 1000000002058,
+      "location_flag": "Cargo",
+      "location_id": 60003768,
+      "location_type": "station",
+      "quantity": 59,
+      "type_id": 10058
+    },
+    {
+      "item_id": 1000000002059,
+      "location_flag": "Hangar",
+      "location_id": 60003769,
+      "location_type": "station",
+      "quantity": 60,
+      "type_id": 10059
+    },
+    {
+      "item_id": 1000000002060,
+      "location_flag": "Hangar",
+      "location_id": 60003760,
+      "location_type": "structure",
+      "quantity": 61,
+      "type_id": 10060
+    },
+    {
+      "item_id": 1000000002061,
+      "location_flag": "Cargo",
+      "location_id": 60003761,
+      "location_type": "station",
+      "quantity": 62,
+      "type_id": 10061
+    },
+    {
+      "item_id": 1000000002062,
+      "location_flag": "Hangar",
+      "location_id": 60003762,
+      "location_type": "station",
+      "quantity": 63,
+      "type_id": 10062
+    },
+    {
+      "item_id": 1000000002063,
+      "location_flag": "Hangar",
+      "location_id": 60003763,
+      "location_type": "station",
+      "quantity": 64,
+      "type_id": 10063
+    },
+    {
+      "item_id": 1000000002064,
+      "location_flag": "Cargo",
+      "location_id": 60003764,
+      "location_type": "station",
+      "quantity": 65,
+      "type_id": 10064
+    },
+    {
+      "item_id": 1000000002065,
+      "location_flag": "Hangar",
+      "location_id": 60003765,
+      "location_type": "structure",
+      "quantity": 66,
+      "type_id": 10065
+    },
+    {
+      "item_id": 1000000002066,
+      "location_flag": "Hangar",
+      "location_id": 60003766,
+      "location_type": "station",
+      "quantity": 67,
+      "type_id": 10066
+    },
+    {
+      "item_id": 1000000002067,
+      "location_flag": "Cargo",
+      "location_id": 60003767,
+      "location_type": "station",
+      "quantity": 68,
+      "type_id": 10067
+    },
+    {
+      "item_id": 1000000002068,
+      "location_flag": "Hangar",
+      "location_id": 60003768,
+      "location_type": "station",
+      "quantity": 69,
+      "type_id": 10068
+    },
+    {
+      "item_id": 1000000002069,
+      "location_flag": "Hangar",
+      "location_id": 60003769,
+      "location_type": "station",
+      "quantity": 70,
+      "type_id": 10069
+    },
+    {
+      "item_id": 1000000002070,
+      "location_flag": "Cargo",
+      "location_id": 60003760,
+      "location_type": "structure",
+      "quantity": 71,
+      "type_id": 10070
+    },
+    {
+      "item_id": 1000000002071,
+      "location_flag": "Hangar",
+      "location_id": 60003761,
+      "location_type": "station",
+      "quantity": 72,
+      "type_id": 10071
+    },
+    {
+      "item_id": 1000000002072,
+      "location_flag": "Hangar",
+      "location_id": 60003762,
+      "location_type": "station",
+      "quantity": 73,
+      "type_id": 10072
+    },
+    {
+      "item_id": 1000000002073,
+      "location_flag": "Cargo",
+      "location_id": 60003763,
+      "location_type": "station",
+      "quantity": 74,
+      "type_id": 10073
+    },
+    {
+      "item_id": 1000000002074,
+      "location_flag": "Hangar",
+      "location_id": 60003764,
+      "location_type": "station",
+      "quantity": 75,
+      "type_id": 10074
+    },
+    {
+      "item_id": 1000000002075,
+      "location_flag": "Hangar",
+      "location_id": 60003765,
+      "location_type": "structure",
+      "quantity": 76,
+      "type_id": 10075
+    },
+    {
+      "item_id": 1000000002076,
+      "location_flag": "Cargo",
+      "location_id": 60003766,
+      "location_type": "station",
+      "quantity": 77,
+      "type_id": 10076
+    },
+    {
+      "item_id": 1000000002077,
+      "location_flag": "Hangar",
+      "location_id": 60003767,
+      "location_type": "station",
+      "quantity": 78,
+      "type_id": 10077
+    },
+    {
+      "item_id": 1000000002078,
+      "location_flag": "Hangar",
+      "location_id": 60003768,
+      "location_type": "station",
+      "quantity": 79,
+      "type_id": 10078
+    },
+    {
+      "item_id": 1000000002079,
+      "location_flag": "Cargo",
+      "location_id": 60003769,
+      "location_type": "station",
+      "quantity": 80,
+      "type_id": 10079
+    },
+    {
+      "item_id": 1000000002080,
+      "location_flag": "Hangar",
+      "location_id": 60003760,
+      "location_type": "structure",
+      "quantity": 81,
+      "type_id": 10080
+    },
+    {
+      "item_id": 1000000002081,
+      "location_flag": "Hangar",
+      "location_id": 60003761,
+      "location_type": "station",
+      "quantity": 82,
+      "type_id": 10081
+    },
+    {
+      "item_id": 1000000002082,
+      "location_flag": "Cargo",
+      "location_id": 60003762,
+      "location_type": "station",
+      "quantity": 83,
+      "type_id": 10082
+    },
+    {
+      "item_id": 1000000002083,
+      "location_flag": "Hangar",
+      "location_id": 60003763,
+      "location_type": "station",
+      "quantity": 84,
+      "type_id": 10083
+    },
+    {
+      "item_id": 1000000002084,
+      "location_flag": "Hangar",
+      "location_id": 60003764,
+      "location_type": "station",
+      "quantity": 85,
+      "type_id": 10084
+    },
+    {
+      "item_id": 1000000002085,
+      "location_flag": "Cargo",
+      "location_id": 60003765,
+      "location_type": "structure",
+      "quantity": 86,
+      "type_id": 10085
+    },
+    {
+      "item_id": 1000000002086,
+      "location_flag": "Hangar",
+      "location_id": 60003766,
+      "location_type": "station",
+      "quantity": 87,
+      "type_id": 10086
+    },
+    {
+      "item_id": 1000000002087,
+      "location_flag": "Hangar",
+      "location_id": 60003767,
+      "location_type": "station",
+      "quantity": 88,
+      "type_id": 10087
+    },
+    {
+      "item_id": 1000000002088,
+      "location_flag": "Cargo",
+      "location_id": 60003768,
+      "location_type": "station",
+      "quantity": 89,
+      "type_id": 10088
+    },
+    {
+      "item_id": 1000000002089,
+      "location_flag": "Hangar",
+      "location_id": 60003769,
+      "location_type": "station",
+      "quantity": 90,
+      "type_id": 10089
+    },
+    {
+      "item_id": 1000000002090,
+      "location_flag": "Hangar",
+      "location_id": 60003760,
+      "location_type": "structure",
+      "quantity": 91,
+      "type_id": 10090
+    },
+    {
+      "item_id": 1000000002091,
+      "location_flag": "Cargo",
+      "location_id": 60003761,
+      "location_type": "station",
+      "quantity": 92,
+      "type_id": 10091
+    },
+    {
+      "item_id": 1000000002092,
+      "location_flag": "Hangar",
+      "location_id": 60003762,
+      "location_type": "station",
+      "quantity": 93,
+      "type_id": 10092
+    },
+    {
+      "item_id": 1000000002093,
+      "location_flag": "Hangar",
+      "location_id": 60003763,
+      "location_type": "station",
+      "quantity": 94,
+      "type_id": 10093
+    },
+    {
+      "item_id": 1000000002094,
+      "location_flag": "Cargo",
+      "location_id": 60003764,
+      "location_type": "station",
+      "quantity": 95,
+      "type_id": 10094
+    },
+    {
+      "item_id": 1000000002095,
+      "location_flag": "Hangar",
+      "location_id": 60003765,
+      "location_type": "structure",
+      "quantity": 96,
+      "type_id": 10095
+    },
+    {
+      "item_id": 1000000002096,
+      "location_flag": "Hangar",
+      "location_id": 60003766,
+      "location_type": "station",
+      "quantity": 97,
+      "type_id": 10096
+    },
+    {
+      "item_id": 1000000002097,
+      "location_flag": "Cargo",
+      "location_id": 60003767,
+      "location_type": "station",
+      "quantity": 98,
+      "type_id": 10097
+    },
+    {
+      "item_id": 1000000002098,
+      "location_flag": "Hangar",
+      "location_id": 60003768,
+      "location_type": "station",
+      "quantity": 99,
+      "type_id": 10098
+    },
+    {
+      "item_id": 1000000002099,
+      "location_flag": "Hangar",
+      "location_id": 60003769,
+      "location_type": "station",
+      "quantity": 100,
+      "type_id": 10099
+    },
+    {
+      "item_id": 1000000002100,
+      "location_flag": "Cargo",
+      "location_id": 60003760,
+      "location_type": "structure",
+      "quantity": 1,
+      "type_id": 10100
+    }
+  ],
+  "endpoint": "/characters/123456789/assets/",
+  "headers": {
+    "x-esi-error-limit-remain": "100",
+    "x-esi-error-limit-reset": "1640995200",
+    "x-esi-request-id": "mock-request-2274",
+    "x-pages": "3"
+  },
+  "note": "This is mock data for testing",
+  "page": 3
+}

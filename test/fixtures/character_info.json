@@ -1,0 +1,27 @@
+{
+  "captured_at": "2025-10-01T09:13:28.101115Z",
+  "data": {
+    "alliance_id": 111222333,
+    "ancestry_id": 1,
+    "birthday": "2015-05-25T00:00:00Z",
+    "bloodline_id": 1,
+    "character_id": 123456789,
+    "corporation_id": 987654321,
+    "description": "A test character for API testing",
+    "faction_id": null,
+    "gender": "male",
+    "name": "Test Character",
+    "race_id": 1,
+    "security_status": 0.5,
+    "title": "Test Pilot"
+  },
+  "endpoint": "/characters/123456789/",
+  "headers": {
+    "x-esi-error-limit-remain": "100",
+    "x-esi-error-limit-reset": "1640995200",
+    "x-esi-request-id": "mock-request-2402",
+    "x-pages": "1"
+  },
+  "note": "This is mock data for testing",
+  "page": null
+}
