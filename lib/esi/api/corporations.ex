@@ -34,29 +34,21 @@ defmodule Esi.Api.Corporations do
 
   Return a list of the corporation assets
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec assets(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdAssetsGet.t()]} | {:error, Esi.Api.Error.t()}
+  @spec assets(integer, keyword) :: Enumerable.t()
   def assets(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :assets},
-      url: "/corporations/#{corporation_id}/assets",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdAssetsGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/assets", opts)
   end
 
   @doc """
@@ -116,30 +108,21 @@ defmodule Esi.Api.Corporations do
 
   Returns a list of blueprints the corporation owns
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec blueprints(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdBlueprintsGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec blueprints(integer, keyword) :: Enumerable.t()
   def blueprints(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :blueprints},
-      url: "/corporations/#{corporation_id}/blueprints",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdBlueprintsGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/blueprints", opts)
   end
 
   @doc """
@@ -147,29 +130,21 @@ defmodule Esi.Api.Corporations do
 
   Return contacts of a corporation
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec contacts(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdContactsGet.t()]} | {:error, Esi.Api.Error.t()}
+  @spec contacts(integer, keyword) :: Enumerable.t()
   def contacts(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :contacts},
-      url: "/corporations/#{corporation_id}/contacts",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdContactsGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/contacts", opts)
   end
 
   @doc """
@@ -201,30 +176,21 @@ defmodule Esi.Api.Corporations do
 
   Returns logs recorded in the past seven days from all audit log secure containers (ALSC) owned by a given corporation
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec containers_logs(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdContainersLogsGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec containers_logs(integer, keyword) :: Enumerable.t()
   def containers_logs(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :containers_logs},
-      url: "/corporations/#{corporation_id}/containers/logs",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdContainersLogsGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/containers/logs", opts)
   end
 
   @doc """
@@ -232,29 +198,21 @@ defmodule Esi.Api.Corporations do
 
   Returns contracts available to a corporation, only if the corporation is issuer, acceptor or assignee. Only returns contracts no older than 30 days, or if the status is "in_progress".
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec contracts(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdContractsGet.t()]} | {:error, Esi.Api.Error.t()}
+  @spec contracts(integer, keyword) :: Enumerable.t()
   def contracts(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :contracts},
-      url: "/corporations/#{corporation_id}/contracts",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdContractsGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/contracts", opts)
   end
 
   @doc """
@@ -262,30 +220,24 @@ defmodule Esi.Api.Corporations do
 
   Lists bids on a particular auction contract
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec contracts_bids(integer, integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdContractsContractIdBidsGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec contracts_bids(integer, integer, keyword) :: Enumerable.t()
   def contracts_bids(contract_id, corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [contract_id: contract_id, corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :contracts_bids},
-      url: "/corporations/#{corporation_id}/contracts/#{contract_id}/bids",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdContractsContractIdBidsGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated(
+      "/corporations/#{corporation_id}/contracts/#{contract_id}/bids",
+      opts
+    )
   end
 
   @doc """
@@ -337,30 +289,21 @@ defmodule Esi.Api.Corporations do
 
   List customs offices owned by a corporation
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec customs_offices(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdCustomsOfficesGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec customs_offices(integer, keyword) :: Enumerable.t()
   def customs_offices(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :customs_offices},
-      url: "/corporations/#{corporation_id}/customs_offices",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdCustomsOfficesGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/customs_offices", opts)
   end
 
   @doc """
@@ -466,28 +409,25 @@ defmodule Esi.Api.Corporations do
   ## Options
 
     * `include_completed`
-    * `page`
 
+
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
+
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
+
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec industry_jobs(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdIndustryJobsGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec industry_jobs(integer, keyword) :: Enumerable.t()
   def industry_jobs(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:include_completed, :page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :industry_jobs},
-      url: "/corporations/#{corporation_id}/industry/jobs",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdIndustryJobsGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    query_opts = Keyword.take(opts, [:include_completed])
+    all_opts = Keyword.merge(query_opts, opts)
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/industry/jobs", all_opts)
   end
 
   @doc """
@@ -495,30 +435,21 @@ defmodule Esi.Api.Corporations do
 
   Get a list of a corporation's kills and losses going back 90 days
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec killmails_recent(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdKillmailsRecentGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec killmails_recent(integer, keyword) :: Enumerable.t()
   def killmails_recent(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :killmails_recent},
-      url: "/corporations/#{corporation_id}/killmails/recent",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdKillmailsRecentGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/killmails/recent", opts)
   end
 
   @doc """
@@ -526,29 +457,21 @@ defmodule Esi.Api.Corporations do
 
   Returns a corporation's medals
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec medals(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdMedalsGet.t()]} | {:error, Esi.Api.Error.t()}
+  @spec medals(integer, keyword) :: Enumerable.t()
   def medals(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :medals},
-      url: "/corporations/#{corporation_id}/medals",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdMedalsGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/medals", opts)
   end
 
   @doc """
@@ -556,30 +479,21 @@ defmodule Esi.Api.Corporations do
 
   Returns medals issued by a corporation
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec medals_issued(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdMedalsIssuedGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec medals_issued(integer, keyword) :: Enumerable.t()
   def medals_issued(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :medals_issued},
-      url: "/corporations/#{corporation_id}/medals/issued",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdMedalsIssuedGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/medals/issued", opts)
   end
 
   @doc """
@@ -694,29 +608,21 @@ defmodule Esi.Api.Corporations do
 
   List open market orders placed on behalf of a corporation
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec orders(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdOrdersGet.t()]} | {:error, Esi.Api.Error.t()}
+  @spec orders(integer, keyword) :: Enumerable.t()
   def orders(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :orders},
-      url: "/corporations/#{corporation_id}/orders",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdOrdersGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/orders", opts)
   end
 
   @doc """
@@ -724,30 +630,21 @@ defmodule Esi.Api.Corporations do
 
   List cancelled and expired market orders placed on behalf of a corporation up to 90 days in the past.
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec orders_history(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdOrdersHistoryGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec orders_history(integer, keyword) :: Enumerable.t()
   def orders_history(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :orders_history},
-      url: "/corporations/#{corporation_id}/orders/history",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdOrdersHistoryGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/orders/history", opts)
   end
 
   @doc """
@@ -883,30 +780,21 @@ defmodule Esi.Api.Corporations do
 
   Return how roles have changed for a coporation's members, up to a month
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec roles_history(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdRolesHistoryGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec roles_history(integer, keyword) :: Enumerable.t()
   def roles_history(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :roles_history},
-      url: "/corporations/#{corporation_id}/roles/history",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdRolesHistoryGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/roles/history", opts)
   end
 
   @doc """
@@ -914,30 +802,21 @@ defmodule Esi.Api.Corporations do
 
   Return the current shareholders of a corporation.
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec shareholders(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdShareholdersGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec shareholders(integer, keyword) :: Enumerable.t()
   def shareholders(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :shareholders},
-      url: "/corporations/#{corporation_id}/shareholders",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdShareholdersGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/shareholders", opts)
   end
 
   @doc """
@@ -945,29 +824,21 @@ defmodule Esi.Api.Corporations do
 
   Return corporation standings from agents, NPC corporations, and factions
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec standings(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdStandingsGet.t()]} | {:error, Esi.Api.Error.t()}
+  @spec standings(integer, keyword) :: Enumerable.t()
   def standings(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :standings},
-      url: "/corporations/#{corporation_id}/standings",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdStandingsGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/standings", opts)
   end
 
   @doc """
@@ -1006,29 +877,21 @@ defmodule Esi.Api.Corporations do
 
   Returns list of corporation starbases (POSes)
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec starbases(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdStarbasesGet.t()]} | {:error, Esi.Api.Error.t()}
+  @spec starbases(integer, keyword) :: Enumerable.t()
   def starbases(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :starbases},
-      url: "/corporations/#{corporation_id}/starbases",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdStarbasesGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/starbases", opts)
   end
 
   @doc """
@@ -1036,30 +899,21 @@ defmodule Esi.Api.Corporations do
 
   Get a list of corporation structures. This route's version includes the changes to structures detailed in this blog: https://www.eveonline.com/article/upwell-2.0-structures-changes-coming-on-february-13th
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec structures(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdStructuresGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec structures(integer, keyword) :: Enumerable.t()
   def structures(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporations, :structures},
-      url: "/corporations/#{corporation_id}/structures",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdStructuresGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporations/#{corporation_id}/structures", opts)
   end
 
   @doc """
@@ -1113,30 +967,24 @@ defmodule Esi.Api.Corporations do
 
   Retrieve the given corporation's wallet journal for the given division going 30 days back
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec wallets_journal(integer, integer, keyword) ::
-          {:ok, [Esi.Api.CorporationsCorporationIdWalletsDivisionJournalGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec wallets_journal(integer, integer, keyword) :: Enumerable.t()
   def wallets_journal(corporation_id, division, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id, division: division],
-      call: {Esi.Api.Corporations, :wallets_journal},
-      url: "/corporations/#{corporation_id}/wallets/#{division}/journal",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationsCorporationIdWalletsDivisionJournalGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated(
+      "/corporations/#{corporation_id}/wallets/#{division}/journal",
+      opts
+    )
   end
 
   @doc """

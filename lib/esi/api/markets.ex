@@ -85,25 +85,25 @@ defmodule Esi.Api.Markets do
   ## Options
 
     * `order_type`
-    * `page`
     * `type_id`
 
-  """
-  @spec orders(integer, keyword) ::
-          {:ok, [Esi.Api.MarketsRegionIdOrdersGet.t()]} | {:error, Esi.Api.Error.t()}
-  def orders(region_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:order_type, :page, :type_id])
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    client.request(%{
-      args: [region_id: region_id],
-      call: {Esi.Api.Markets, :orders},
-      url: "/markets/#{region_id}/orders",
-      method: :get,
-      query: query,
-      response: [{200, [{Esi.Api.MarketsRegionIdOrdersGet, :t}]}, default: {Esi.Api.Error, :t}],
-      opts: opts
-    })
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
+
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
+  """
+  @spec orders(integer, keyword) :: Enumerable.t()
+  def orders(region_id, opts \\ []) do
+    query_opts = Keyword.take(opts, [:order_type, :type_id])
+    all_opts = Keyword.merge(query_opts, opts)
+    EsiEveOnline.stream_paginated("/markets/#{region_id}/orders", all_opts)
   end
 
   @doc """
@@ -130,29 +130,21 @@ defmodule Esi.Api.Markets do
 
   Return all orders in a structure
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec structure(integer, keyword) ::
-          {:ok, [Esi.Api.MarketsStructuresStructureIdGet.t()]} | {:error, Esi.Api.Error.t()}
+  @spec structure(integer, keyword) :: Enumerable.t()
   def structure(structure_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [structure_id: structure_id],
-      call: {Esi.Api.Markets, :structure},
-      url: "/markets/structures/#{structure_id}",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.MarketsStructuresStructureIdGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/markets/structures/#{structure_id}", opts)
   end
 
   @doc """
@@ -160,24 +152,20 @@ defmodule Esi.Api.Markets do
 
   Return a list of type IDs that have active orders in the region, for efficient market indexing.
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec types(integer, keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  @spec types(integer, keyword) :: Enumerable.t()
   def types(region_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [region_id: region_id],
-      call: {Esi.Api.Markets, :types},
-      url: "/markets/#{region_id}/types",
-      method: :get,
-      query: query,
-      response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/markets/#{region_id}/types", opts)
   end
 end

@@ -10,26 +10,21 @@ defmodule Esi.Api.Wars do
 
   Return a list of kills related to a war
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec killmails(integer, keyword) ::
-          {:ok, [Esi.Api.WarsWarIdKillmailsGet.t()]} | {:error, Esi.Api.Error.t()}
+  @spec killmails(integer, keyword) :: Enumerable.t()
   def killmails(war_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [war_id: war_id],
-      call: {Esi.Api.Wars, :killmails},
-      url: "/wars/#{war_id}/killmails",
-      method: :get,
-      query: query,
-      response: [{200, [{Esi.Api.WarsWarIdKillmailsGet, :t}]}, default: {Esi.Api.Error, :t}],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/wars/#{war_id}/killmails", opts)
   end
 
   @doc """

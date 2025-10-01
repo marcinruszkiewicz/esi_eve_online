@@ -49,29 +49,21 @@ defmodule Esi.Api.Alliances do
 
   Return contacts of an alliance
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec contacts(integer, keyword) ::
-          {:ok, [Esi.Api.AlliancesAllianceIdContactsGet.t()]} | {:error, Esi.Api.Error.t()}
+  @spec contacts(integer, keyword) :: Enumerable.t()
   def contacts(alliance_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [alliance_id: alliance_id],
-      call: {Esi.Api.Alliances, :contacts},
-      url: "/alliances/#{alliance_id}/contacts",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.AlliancesAllianceIdContactsGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/alliances/#{alliance_id}/contacts", opts)
   end
 
   @doc """

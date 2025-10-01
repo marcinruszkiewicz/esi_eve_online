@@ -1,6 +1,7 @@
 if Code.ensure_loaded?(OpenAPI.Processor) do
   defmodule Esi.CustomProcessor do
     use OpenAPI.Processor
+    use OpenAPI.Renderer
 
   defp singularize(word) do
     cond do
@@ -183,6 +184,180 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
         string
         |> String.replace("-", "_")
         |> String.to_atom()
+    end
+  end
+
+  # Renderer Callbacks - Generate stream functions for paginated endpoints
+
+  @impl OpenAPI.Renderer
+  def render_operation_function(state, operation) do
+    if is_paginated_endpoint?(operation) do
+      render_stream_function(operation)
+    else
+      # Use default implementation for non-paginated endpoints
+      OpenAPI.Renderer.render_operation_function(state, operation)
+    end
+  end
+
+  @impl OpenAPI.Renderer
+  def render_default_client(state, file) do
+    # Only render @default_client if there are non-paginated operations
+    has_non_paginated = 
+      file.operations
+      |> Enum.any?(fn operation -> not is_paginated_endpoint?(operation) end)
+
+    if has_non_paginated do
+      # Use default implementation
+      OpenAPI.Renderer.render_default_client(state, file)
+    else
+      # Don't render @default_client if all operations are paginated
+      nil
+    end
+  end
+
+  @impl OpenAPI.Renderer
+  def render_operation_doc(_state, operation) do
+    alias OpenAPI.Processor.Operation
+
+    %Operation{docstring: docstring} = operation
+
+    # Update docstring for paginated endpoints to mention streaming
+    updated_docstring =
+      if is_paginated_endpoint?(operation) do
+        base_doc = String.trim_trailing(docstring)
+        
+        # Remove the page parameter from options if present
+        base_doc = 
+          base_doc
+          # Remove "  * `page`" line
+          |> String.replace(~r/\n\s*\* `page`\n?/, "\n")
+          # Remove empty "## Options" section if only page was there
+          |> String.replace(~r/\n\n## Options\n+$/, "")
+
+        base_doc <> ~S"""
+
+
+        **Note:** This endpoint is paginated and returns a stream. The stream automatically
+        fetches all pages. Use `Enum` or `Stream` functions to consume the results.
+
+        Example:
+        ```elixir
+        # Get all results
+        results = function_name(...) |> Enum.to_list()
+
+        # Process in chunks
+        function_name(...) |> Stream.each(&process/1) |> Stream.run()
+        ```
+        """
+      else
+        docstring
+      end
+
+    quote do
+      @doc unquote(updated_docstring)
+    end
+  end
+
+  @impl OpenAPI.Renderer
+  def render_operation_spec(state, operation) do
+    alias OpenAPI.Processor.Operation
+    alias OpenAPI.Processor.Operation.Param
+    alias OpenAPI.Renderer.Util
+
+    if is_paginated_endpoint?(operation) do
+      # Generate custom spec for stream return type
+      %Operation{
+        function_name: name,
+        request_path_parameters: path_params
+      } = operation
+
+      path_parameters =
+        for %Param{value_type: type} <- path_params do
+          quote(do: unquote(Util.to_type(state, type)))
+        end
+
+      opts = quote(do: keyword)
+      arguments = path_parameters ++ [opts]
+
+      # Return type is Enumerable.t() for streams
+      return_type = quote(do: Enumerable.t())
+
+      quote do
+        @spec unquote(name)(unquote_splicing(arguments)) :: unquote(return_type)
+      end
+    else
+      # Use default implementation for non-paginated endpoints
+      OpenAPI.Renderer.render_operation_spec(state, operation)
+    end
+  end
+
+  # Check if an operation has a page query parameter
+  defp is_paginated_endpoint?(operation) do
+    Enum.any?(operation.request_query_parameters, fn param ->
+      param.name == "page"
+    end)
+  end
+
+  # Generate a stream function that uses EsiEveOnline.stream_paginated
+  defp render_stream_function(operation) do
+    alias OpenAPI.Processor.Operation.Param
+
+    %{
+      function_name: name,
+      request_path: request_path,
+      request_path_parameters: path_params,
+      request_query_parameters: query_params
+    } = operation
+
+    # Build function arguments
+    path_parameter_arguments =
+      for %Param{name: param_name} <- path_params do
+        {String.to_atom(param_name), [], nil}
+      end
+
+    opts_argument = quote do: opts \\ []
+    arguments = path_parameter_arguments ++ [opts_argument]
+
+    # Build the path with proper interpolation
+    # This uses the same approach as the default renderer  
+    url_string = String.replace(request_path, ~r/\{([[:word:]]+)\}/, ~S'#{' <> ~S'\1}')
+    url_quoted = "\"" <> url_string <> "\""
+    path_with_interpolation = Code.string_to_quoted!(url_quoted)
+
+    # Get non-page query parameters (page will be handled by stream_paginated)
+    non_page_params =
+      query_params
+      |> Enum.reject(&(&1.name == "page"))
+      |> Enum.map(fn %Param{name: param_name} -> String.to_atom(param_name) end)
+
+    # Generate the function body
+    function_body =
+      if length(non_page_params) > 0 do
+        # If there are other query params, we need to handle them
+        quote do
+          query_opts = Keyword.take(opts, unquote(non_page_params))
+          all_opts = Keyword.merge(query_opts, opts)
+          
+          EsiEveOnline.stream_paginated(
+            unquote(path_with_interpolation),
+            all_opts
+          )
+        end
+      else
+        # No extra query params, just pass opts directly
+        quote do
+          EsiEveOnline.stream_paginated(
+            unquote(path_with_interpolation),
+            opts
+          )
+        end
+      end
+
+    # Generate the complete function definition
+    quote do
+      def unquote(name)(unquote_splicing(arguments)) do
+        unquote(function_body)
+      end
     end
   end
   end

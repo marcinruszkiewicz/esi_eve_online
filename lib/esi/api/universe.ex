@@ -261,25 +261,21 @@ defmodule Esi.Api.Universe do
 
   This route expires daily at 11:05
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec groups(keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  @spec groups(keyword) :: Enumerable.t()
   def groups(opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [],
-      call: {Esi.Api.Universe, :groups},
-      url: "/universe/groups",
-      method: :get,
-      query: query,
-      response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/universe/groups", opts)
   end
 
   @doc """
@@ -687,24 +683,20 @@ defmodule Esi.Api.Universe do
 
   This route expires daily at 11:05
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec types(keyword) :: {:ok, [integer]} | {:error, Esi.Api.Error.t()}
+  @spec types(keyword) :: Enumerable.t()
   def types(opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [],
-      call: {Esi.Api.Universe, :types},
-      url: "/universe/types",
-      method: :get,
-      query: query,
-      response: [{200, [:integer]}, default: {Esi.Api.Error, :t}],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/universe/types", opts)
   end
 end

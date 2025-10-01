@@ -62,58 +62,37 @@ fitting_data = %{
 {:ok, fitting_id} = Esi.Api.Characters.create_fittings(character_id, fitting_data, opts)
 ```
 
-### Working with Paginated Data
+### Automatic Streaming for Paginated Endpoints
 
-Many ESI endpoints return paginated results. Use the legacy `stream!` function for automatic pagination:
-
-```elixir
-# Get all universe groups (paginated endpoint)
-# This automatically handles pagination and returns a stream
-all_groups = ESI.API.Universe.groups() |> ESI.stream!() |> Enum.to_list()
-IO.puts("Found #{length(all_groups)} universe groups")
-
-# Take only the first 100 groups
-first_100_groups = ESI.API.Universe.groups() |> ESI.stream!() |> Enum.take(100)
-
-# Get all market groups with pagination
-market_groups = ESI.API.Market.groups() |> ESI.stream!() |> Enum.to_list()
-
-# Works with any paginated endpoint
-all_systems = ESI.API.Universe.systems() |> ESI.stream!() |> Enum.to_list()
-```
-
-### Modern Streaming API
-
-The new client provides convenient streaming functions for paginated endpoints:
+All paginated endpoints automatically return streams that handle pagination for you. The generated API functions detect endpoints with pagination and return `Enumerable.t()` streams instead of regular responses.
 
 ```elixir
+# Paginated endpoints automatically return streams - no manual pagination needed!
 # Stream all character assets with automatic pagination
-assets = EsiEveOnline.stream("/characters/12345/assets", token: "access_token")
+assets = Esi.Api.Characters.assets(12345, token: "access_token")
 |> Enum.to_list()
 
-# Stream universe groups (no authentication required)
-groups = EsiEveOnline.stream("/universe/groups")
-|> Stream.take(50)
+# Stream market orders for a region
+market_orders = Esi.Api.Markets.orders(10000002, order_type: "all")
 |> Enum.to_list()
 
-# Process assets as they come in (lazy evaluation)
-unique_types = EsiEveOnline.stream("/characters/12345/assets", token: "access_token")
+# Process data lazily as it streams in (doesn't load everything into memory)
+unique_types = Esi.Api.Characters.assets(12345, token: "access_token")
 |> Stream.flat_map(& &1)  # Flatten all pages
 |> Stream.map(& &1.type_id)  # Extract type IDs
 |> Enum.uniq()
 
-# Using convenience functions from the Streaming module
-character_assets = EsiEveOnline.Streaming.character_assets(12345, token: "access_token")
-|> Enum.to_list()
-
-corporation_assets = EsiEveOnline.Streaming.corporation_assets(67890, token: "access_token")
-|> Enum.to_list()
-
-# Stream universe groups (no authentication required)
-universe_groups = EsiEveOnline.Streaming.universe_groups()
+# Take only what you need - stops fetching once limit is reached
+first_100_contracts = Esi.Api.Characters.contracts(12345, token: "access_token")
 |> Stream.take(100)
 |> Enum.to_list()
+
+# Low-level streaming API still available if needed
+stream = EsiEveOnline.stream_paginated("/characters/12345/assets", token: "access_token")
+|> Enum.to_list()
 ```
+
+**Note:** Non-paginated endpoints work as before, returning `{:ok, result}` or `{:error, error}` tuples.
 
 ### POST Requests with Data
 
@@ -224,6 +203,26 @@ ESI.API.Character.character(char_id) |> ESI.request!(token: token)
 
 # Or using the unified interface
 {:ok, character} = EsiEveOnline.get("/characters/#{char_id}", token: token)
+```
+
+### Working with Paginated Data
+
+Many ESI endpoints return paginated results. Use the legacy `stream!` function for automatic pagination:
+
+```elixir
+# Get all universe groups (paginated endpoint)
+# This automatically handles pagination and returns a stream
+all_groups = ESI.API.Universe.groups() |> ESI.stream!() |> Enum.to_list()
+IO.puts("Found #{length(all_groups)} universe groups")
+
+# Take only the first 100 groups
+first_100_groups = ESI.API.Universe.groups() |> ESI.stream!() |> Enum.take(100)
+
+# Get all market groups with pagination
+market_groups = ESI.API.Market.groups() |> ESI.stream!() |> Enum.to_list()
+
+# Works with any paginated endpoint
+all_systems = ESI.API.Universe.systems() |> ESI.stream!() |> Enum.to_list()
 ```
 
 ## Development

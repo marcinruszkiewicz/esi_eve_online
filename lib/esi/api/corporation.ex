@@ -3,37 +3,26 @@ defmodule Esi.Api.Corporation do
   Provides API endpoints related to corporation
   """
 
-  @default_client Esi.Client
-
   @doc """
   Moon extraction timers
 
   Extraction timers for all moon chunks being extracted by refineries belonging to a corporation.
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec mining_extractions(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationCorporationIdMiningExtractionsGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec mining_extractions(integer, keyword) :: Enumerable.t()
   def mining_extractions(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :mining_extractions},
-      url: "/corporation/#{corporation_id}/mining/extractions",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationCorporationIdMiningExtractionsGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporation/#{corporation_id}/mining/extractions", opts)
   end
 
   @doc """
@@ -41,30 +30,24 @@ defmodule Esi.Api.Corporation do
 
   Paginated record of all mining seen by an observer
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec mining_observer(integer, integer, keyword) ::
-          {:ok, [Esi.Api.CorporationCorporationIdMiningObserversObserverIdGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec mining_observer(integer, integer, keyword) :: Enumerable.t()
   def mining_observer(corporation_id, observer_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id, observer_id: observer_id],
-      call: {Esi.Api.Corporation, :mining_observer},
-      url: "/corporation/#{corporation_id}/mining/observers/#{observer_id}",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationCorporationIdMiningObserversObserverIdGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated(
+      "/corporation/#{corporation_id}/mining/observers/#{observer_id}",
+      opts
+    )
   end
 
   @doc """
@@ -72,29 +55,20 @@ defmodule Esi.Api.Corporation do
 
   Paginated list of all entities capable of observing and recording mining for a corporation
 
-  ## Options
+  **Note:** This endpoint is paginated and returns a stream. The stream automatically
+  fetches all pages. Use `Enum` or `Stream` functions to consume the results.
 
-    * `page`
+  Example:
+  ```elixir
+  # Get all results
+  results = function_name(...) |> Enum.to_list()
 
+  # Process in chunks
+  function_name(...) |> Stream.each(&process/1) |> Stream.run()
+  ```
   """
-  @spec mining_observers(integer, keyword) ::
-          {:ok, [Esi.Api.CorporationCorporationIdMiningObserversGet.t()]}
-          | {:error, Esi.Api.Error.t()}
+  @spec mining_observers(integer, keyword) :: Enumerable.t()
   def mining_observers(corporation_id, opts \\ []) do
-    client = opts[:client] || @default_client
-    query = Keyword.take(opts, [:page])
-
-    client.request(%{
-      args: [corporation_id: corporation_id],
-      call: {Esi.Api.Corporation, :mining_observers},
-      url: "/corporation/#{corporation_id}/mining/observers",
-      method: :get,
-      query: query,
-      response: [
-        {200, [{Esi.Api.CorporationCorporationIdMiningObserversGet, :t}]},
-        default: {Esi.Api.Error, :t}
-      ],
-      opts: opts
-    })
+    EsiEveOnline.stream_paginated("/corporation/#{corporation_id}/mining/observers", opts)
   end
 end

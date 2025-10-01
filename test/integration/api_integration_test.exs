@@ -60,13 +60,16 @@ defmodule Integration.ApiIntegrationTest do
             "type_id" => 3516
           }
         ],
-        headers: []
+        headers: [{"x-pages", "1"}]
       }
 
       with_mock Req, [request: fn(_opts) -> {:ok, mock_response} end] do
-        # Test authenticated endpoint
+        # Test authenticated endpoint (assets is now a paginated stream)
         opts = [token: "test-access-token"]
-        assert {:ok, assets} = Esi.Api.Characters.assets(1234567890, opts)
+        assets_stream = Esi.Api.Characters.assets(1234567890, opts)
+        
+        # Consume the stream to get the actual assets
+        assets = assets_stream |> Enum.to_list() |> List.flatten()
         
         assert is_list(assets)
         assert length(assets) == 1

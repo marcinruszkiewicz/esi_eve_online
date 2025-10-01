@@ -2,6 +2,7 @@ import Config
 
 config :oapi_generator, default: [
   processor: Esi.CustomProcessor,
+  renderer: Esi.CustomProcessor,
   naming: [
     operation_use_tags: false
   ],
