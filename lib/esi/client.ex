@@ -264,35 +264,48 @@ defmodule Esi.Client do
   end
 
   defp handle_response(status, body, _headers, response_specs) when status in 200..299 do
+    # Parse JSON response body
+    parsed_body = case body do
+      body when is_binary(body) ->
+        case Jason.decode(body) do
+          {:ok, data} -> data
+          {:error, _} -> body  # Fallback to raw body if JSON parsing fails
+        end
+      body when is_list(body) or is_map(body) ->
+        # Body is already parsed (list or map)
+        body
+      _ ->
+        # Unknown body type, return as-is
+        body
+    end
+
     # Find matching response spec
     case find_response_spec(status, response_specs) do
       {^status, {_module, _type_func}} ->
-        # TODO: Implement proper response deserialization based on module/type
-        # For now, just return the body as-is
-        {:ok, body}
+        {:ok, parsed_body}
 
       {^status, [:integer]} ->
         # Handle list of integers response
-        {:ok, body}
+        {:ok, parsed_body}
 
       {^status, :ok} ->
-        {:ok, body}
+        {:ok, parsed_body}
 
       {^status, _other_type} ->
         # Handle any other response type specification
-        {:ok, body}
+        {:ok, parsed_body}
 
       {:default, _} ->
         # Default response spec
-        {:ok, body}
+        {:ok, parsed_body}
 
       :default ->
         # Simple default
-        {:ok, body}
+        {:ok, parsed_body}
 
       nil ->
         # Fallback for successful responses without specific spec
-        {:ok, body}
+        {:ok, parsed_body}
     end
   end
 
@@ -345,35 +358,49 @@ defmodule Esi.Client do
     # Parse x-pages header for pagination
     max_pages = parse_x_pages_header(headers)
 
+    # Parse JSON response body
+    parsed_body = case body do
+      body when is_binary(body) ->
+        case Jason.decode(body) do
+          {:ok, data} -> data
+          {:error, _} -> body  # Fallback to raw body if JSON parsing fails
+        end
+      body when is_list(body) or is_map(body) ->
+        # Body is already parsed (list or map)
+        body
+      _ ->
+        # Unknown body type, return as-is
+        body
+    end
+
+
     # Find matching response spec
     case find_response_spec(status, response_specs) do
       {^status, {_module, _type_func}} ->
-        # TODO: Implement proper response deserialization based on module/type
-        # For now, just return the body as-is
-        {:ok, body, max_pages}
+        {:ok, parsed_body, max_pages}
 
       {^status, [:integer]} ->
         # Handle list of integers response
-        {:ok, body, max_pages}
+        {:ok, parsed_body, max_pages}
 
       {^status, :ok} ->
-        {:ok, body, max_pages}
+        {:ok, parsed_body, max_pages}
 
       {^status, _other_type} ->
         # Handle any other response type specification
-        {:ok, body, max_pages}
+        {:ok, parsed_body, max_pages}
 
       {:default, _} ->
         # Default response spec
-        {:ok, body, max_pages}
+        {:ok, parsed_body, max_pages}
 
       :default ->
         # Simple default
-        {:ok, body, max_pages}
+        {:ok, parsed_body, max_pages}
 
       nil ->
         # Fallback for successful responses without specific spec
-        {:ok, body, max_pages}
+        {:ok, parsed_body, max_pages}
     end
   end
 

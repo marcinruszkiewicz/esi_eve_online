@@ -6,7 +6,7 @@ defmodule EsiEveOnline.Test.MockDataTest do
   mock API response data, including proper pagination handling.
   """
 
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
   import Mock
   alias EsiEveOnline.Test.FixtureLoader
 

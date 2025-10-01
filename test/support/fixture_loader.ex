@@ -167,18 +167,18 @@ defmodule EsiEveOnline.Test.FixtureLoader do
     end)
     
     # Create a mock function that returns responses in order
-    # We'll use a simple counter approach
-    counter = :erlang.make_ref()
+    # Use a unique reference to avoid conflicts between concurrent tests
+    counter_ref = :erlang.make_ref()
     
     [get_with_headers: fn(_path, _opts) -> 
-      # Get the current counter value
-      current = Process.get(counter, 0)
+      # Get the current counter value for this specific test instance
+      current = Process.get(counter_ref, 0)
       
       # Return the response at the current index
       response = Enum.at(responses, current, {:ok, [], 1})
       
-      # Increment the counter
-      Process.put(counter, current + 1)
+      # Increment the counter for the next call
+      Process.put(counter_ref, current + 1)
       
       response
     end]

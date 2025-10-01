@@ -1,5 +1,5 @@
 defmodule ESI.Test do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
   import Mock
 
   # Note: Doctests disabled since they require full API setup
