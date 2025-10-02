@@ -89,10 +89,10 @@ defmodule EsiEveOnline.Test.FixtureLoader do
       {:ok, %{"headers" => headers}} ->
         # Extract pagination info from headers
         pagination = %{
-          x_pages: headers["x-pages"],
-          x_esi_request_id: headers["x-esi-request-id"],
           x_esi_error_limit_remain: headers["x-esi-error-limit-remain"],
-          x_esi_error_limit_reset: headers["x-esi-error-limit-reset"]
+          x_esi_error_limit_reset: headers["x-esi-error-limit-reset"],
+          x_esi_request_id: headers["x-esi-request-id"],
+          x_pages: headers["x-pages"]
         }
 
         {:ok, pagination}

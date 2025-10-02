@@ -1,4 +1,65 @@
 defmodule ESI.API.Universe do
+  @moduledoc """
+  Legacy compatibility module for Universe API endpoints.
+
+  Provides access to universe data including systems, stations, structures, types, and various static game data.
+
+  This module provides the same interface as the legacy ESI.API.Universe module,
+  returning ESI.Request structs that work with the legacy request pattern.
+
+  ## Available Functions
+
+  This module contains 31 functions:
+
+  - `group/0` or `group/1`
+      - `stargate/0` or `stargate/1`
+      - `graphic/0` or `graphic/1`
+      - `categories/0` or `categories/1`
+      - `constellation/0` or `constellation/1`
+      - `planet/0` or `planet/1`
+      - `structure/0` or `structure/1`
+      - `factions/0` or `factions/1`
+      - `moon/0` or `moon/1`
+      - `regions/0` or `regions/1`
+      - `station/0` or `station/1`
+      - `asteroid_belt/0` or `asteroid_belt/1`
+      - `constellations/0` or `constellations/1`
+      - `graphics/0` or `graphics/1`
+      - `system_jumps/0` or `system_jumps/1`
+      - `schematic/0` or `schematic/1`
+      - `systems/0` or `systems/1`
+      - `structures/0` or `structures/1`
+      - `create_ids/0` or `create_ids/1`
+      - `types/0` or `types/1`
+      - `star/0` or `star/1`
+      - `region/0` or `region/1`
+      - `category/0` or `category/1`
+      - `groups/0` or `groups/1`
+      - `create_names/0` or `create_names/1`
+      - `type/0` or `type/1`
+      - `ancestries/0` or `ancestries/1`
+      - `system/0` or `system/1`
+      - `bloodlines/0` or `bloodlines/1`
+      - `system_kills/0` or `system_kills/1`
+      - `races/0` or `races/1`
+
+  ## Usage
+
+  All functions return `ESI.Request` structs that can be executed using the standard
+  ESI request pattern:
+
+      iex> request = ESI.API.Universe.some_function(opts)
+      iex> ESI.request(request)
+
+  ## Compatibility
+
+  This module maintains exact compatibility with the legacy ESI library while
+  internally mapping to the new Esi.Api.* modules. All function names, arguments,
+  and return types are preserved.
+
+  Generated from the legacy ESI library for perfect compatibility.
+  """
+
   @typedoc """
   Options for [`Universe.group/2`](#group/2).
 

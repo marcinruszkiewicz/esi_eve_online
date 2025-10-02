@@ -1,4 +1,37 @@
 defmodule ESI.API.War do
+  @moduledoc """
+  Legacy compatibility module for War API endpoints.
+
+  Provides access to war declarations, participants, and killmail statistics.
+
+  This module provides the same interface as the legacy ESI.API.War module,
+  returning ESI.Request structs that work with the legacy request pattern.
+
+  ## Available Functions
+
+  This module contains 3 functions:
+
+  - `wars/0` or `wars/1`
+      - `war/0` or `war/1`
+      - `killmails/0` or `killmails/1`
+
+  ## Usage
+
+  All functions return `ESI.Request` structs that can be executed using the standard
+  ESI request pattern:
+
+      iex> request = ESI.API.War.some_function(opts)
+      iex> ESI.request(request)
+
+  ## Compatibility
+
+  This module maintains exact compatibility with the legacy ESI library while
+  internally mapping to the new Esi.Api.* modules. All function names, arguments,
+  and return types are preserved.
+
+  Generated from the legacy ESI library for perfect compatibility.
+  """
+
   @typedoc """
   Options for [`War.wars/1`](#wars/1).
 

@@ -8,12 +8,12 @@ defmodule Esi.ErrorTest do
       error = Error.http_error(404, "Not found", %{extra: "info"})
 
       assert %Error{
-               type: :http_error,
-               status: 404,
-               message: "Not found",
                details: %{extra: "info"},
+               message: "Not found",
                request_id: nil,
-               retry_after: nil
+               retry_after: nil,
+               status: 404,
+               type: :http_error
              } = error
     end
 
@@ -21,10 +21,10 @@ defmodule Esi.ErrorTest do
       error = Error.api_error(400, "Bad request", %{field: "invalid"})
 
       assert %Error{
-               type: :api_error,
-               status: 400,
+               details: %{field: "invalid"},
                message: "Bad request",
-               details: %{field: "invalid"}
+               status: 400,
+               type: :api_error
              } = error
     end
 
@@ -32,10 +32,10 @@ defmodule Esi.ErrorTest do
       error = Error.validation_error("Invalid parameter", %{param: "character_id"})
 
       assert %Error{
-               type: :validation_error,
-               status: nil,
+               details: %{param: "character_id"},
                message: "Invalid parameter",
-               details: %{param: "character_id"}
+               status: nil,
+               type: :validation_error
              } = error
     end
 
@@ -43,10 +43,10 @@ defmodule Esi.ErrorTest do
       error = Error.network_error("Connection timeout")
 
       assert %Error{
-               type: :network_error,
-               status: nil,
+               details: %{},
                message: "Connection timeout",
-               details: %{}
+               status: nil,
+               type: :network_error
              } = error
     end
 
@@ -54,10 +54,10 @@ defmodule Esi.ErrorTest do
       error = Error.timeout_error("Request timed out", %{timeout: 30_000})
 
       assert %Error{
-               type: :timeout_error,
-               status: nil,
+               details: %{timeout: 30_000},
                message: "Request timed out",
-               details: %{timeout: 30_000}
+               status: nil,
+               type: :timeout_error
              } = error
     end
 
@@ -65,9 +65,9 @@ defmodule Esi.ErrorTest do
       error = Error.timeout_error()
 
       assert %Error{
-               type: :timeout_error,
+               details: %{},
                message: "Request timed out",
-               details: %{}
+               type: :timeout_error
              } = error
     end
   end

@@ -1,4 +1,40 @@
 defmodule ESI.API.Alliance do
+  @moduledoc """
+  Legacy compatibility module for Alliance API endpoints.
+
+  Provides access to alliance information, member corporations, contacts, and icons.
+
+  This module provides the same interface as the legacy ESI.API.Alliance module,
+  returning ESI.Request structs that work with the legacy request pattern.
+
+  ## Available Functions
+
+  This module contains 6 functions:
+
+  - `corporations/0` or `corporations/1`
+      - `alliance/0` or `alliance/1`
+      - `contact_labels/0` or `contact_labels/1`
+      - `contacts/0` or `contacts/1`
+      - `alliances/0` or `alliances/1`
+      - `icons/0` or `icons/1`
+
+  ## Usage
+
+  All functions return `ESI.Request` structs that can be executed using the standard
+  ESI request pattern:
+
+      iex> request = ESI.API.Alliance.some_function(opts)
+      iex> ESI.request(request)
+
+  ## Compatibility
+
+  This module maintains exact compatibility with the legacy ESI library while
+  internally mapping to the new Esi.Api.* modules. All function names, arguments,
+  and return types are preserved.
+
+  Generated from the legacy ESI library for perfect compatibility.
+  """
+
   @doc """
   List all current member corporations of an alliance.
 

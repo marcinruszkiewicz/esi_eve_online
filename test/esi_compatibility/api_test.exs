@@ -85,7 +85,7 @@ defmodule ESI.APITest do
       assert request.path == "/alliances/99005443/contacts/"
       assert Map.has_key?(request.opts_schema, :token)
       assert Map.has_key?(request.opts_schema, :page)
-      assert request.opts == %{token: "test_token", page: 1}
+      assert request.opts == %{page: 1, token: "test_token"}
     end
   end
 
@@ -107,7 +107,7 @@ defmodule ESI.APITest do
       assert request.path == "/characters/12345/assets/"
       assert Map.has_key?(request.opts_schema, :token)
       assert Map.has_key?(request.opts_schema, :page)
-      assert request.opts == %{token: "test_token", page: 2}
+      assert request.opts == %{page: 2, token: "test_token"}
     end
 
     test "mail/2 returns valid ESI.Request with complex options" do
@@ -120,7 +120,7 @@ defmodule ESI.APITest do
       assert Map.has_key?(request.opts_schema, :token)
       assert Map.has_key?(request.opts_schema, :labels)
       assert Map.has_key?(request.opts_schema, :last_mail_id)
-      assert request.opts == %{token: "test_token", labels: [1, 2], last_mail_id: 100}
+      assert request.opts == %{labels: [1, 2], last_mail_id: 100, token: "test_token"}
     end
   end
 
@@ -142,7 +142,7 @@ defmodule ESI.APITest do
       assert request.verb == :get
       assert request.path == "/universe/bloodlines/"
       # Should not have page in schema since bloodlines doesn't paginate
-      assert !Map.has_key?(request.opts_schema, :page)
+      refute Map.has_key?(request.opts_schema, :page)
     end
 
     test "create_names/1 returns POST ESI.Request with body" do
@@ -175,7 +175,7 @@ defmodule ESI.APITest do
       assert %ESI.Request{} = request
       assert request.verb == :get
       assert request.path == "/universe/systems/"
-      assert !Map.has_key?(request.opts_schema, :page)
+      refute Map.has_key?(request.opts_schema, :page)
       assert request.opts == %{}
     end
 

@@ -1,4 +1,37 @@
 defmodule ESI.API.Contract do
+  @moduledoc """
+  Legacy compatibility module for Contract API endpoints.
+
+  Provides access to contract information and bidding functionality.
+
+  This module provides the same interface as the legacy ESI.API.Contract module,
+  returning ESI.Request structs that work with the legacy request pattern.
+
+  ## Available Functions
+
+  This module contains 3 functions:
+
+  - `public_item/0` or `public_item/1`
+      - `public_bid/0` or `public_bid/1`
+      - `public_region/0` or `public_region/1`
+
+  ## Usage
+
+  All functions return `ESI.Request` structs that can be executed using the standard
+  ESI request pattern:
+
+      iex> request = ESI.API.Contract.some_function(opts)
+      iex> ESI.request(request)
+
+  ## Compatibility
+
+  This module maintains exact compatibility with the legacy ESI library while
+  internally mapping to the new Esi.Api.* modules. All function names, arguments,
+  and return types are preserved.
+
+  Generated from the legacy ESI library for perfect compatibility.
+  """
+
   @typedoc """
   Options for [`Contract.public_item/2`](#public_item/2).
 

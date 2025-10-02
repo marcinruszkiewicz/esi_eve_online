@@ -1,4 +1,35 @@
 defmodule ESI.API.Loyalty do
+  @moduledoc """
+  Legacy compatibility module for Loyalty API endpoints.
+
+  Provides access to loyalty point store offers and information.
+
+  This module provides the same interface as the legacy ESI.API.Loyalty module,
+  returning ESI.Request structs that work with the legacy request pattern.
+
+  ## Available Functions
+
+  This module contains 1 function:
+
+  - `offers/0` or `offers/1`
+
+  ## Usage
+
+  All functions return `ESI.Request` structs that can be executed using the standard
+  ESI request pattern:
+
+      iex> request = ESI.API.Loyalty.some_function(opts)
+      iex> ESI.request(request)
+
+  ## Compatibility
+
+  This module maintains exact compatibility with the legacy ESI library while
+  internally mapping to the new Esi.Api.* modules. All function names, arguments,
+  and return types are preserved.
+
+  Generated from the legacy ESI library for perfect compatibility.
+  """
+
   @doc """
   Return a list of offers from a specific corporation's loyalty store.
 

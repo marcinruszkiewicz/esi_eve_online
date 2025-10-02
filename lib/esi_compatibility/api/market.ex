@@ -1,4 +1,41 @@
 defmodule ESI.API.Market do
+  @moduledoc """
+  Legacy compatibility module for Market API endpoints.
+
+  Provides access to market data, orders, prices, history, and regional market information.
+
+  This module provides the same interface as the legacy ESI.API.Market module,
+  returning ESI.Request structs that work with the legacy request pattern.
+
+  ## Available Functions
+
+  This module contains 7 functions:
+
+  - `prices/0` or `prices/1`
+      - `types/0` or `types/1`
+      - `group_market_group/0` or `group_market_group/1`
+      - `history/0` or `history/1`
+      - `orders/0` or `orders/1`
+      - `structure/0` or `structure/1`
+      - `groups/0` or `groups/1`
+
+  ## Usage
+
+  All functions return `ESI.Request` structs that can be executed using the standard
+  ESI request pattern:
+
+      iex> request = ESI.API.Market.some_function(opts)
+      iex> ESI.request(request)
+
+  ## Compatibility
+
+  This module maintains exact compatibility with the legacy ESI library while
+  internally mapping to the new Esi.Api.* modules. All function names, arguments,
+  and return types are preserved.
+
+  Generated from the legacy ESI library for perfect compatibility.
+  """
+
   @doc """
   Return a list of prices.
 

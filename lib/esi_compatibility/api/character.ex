@@ -1,4 +1,97 @@
 defmodule ESI.API.Character do
+  @moduledoc """
+  Legacy compatibility module for Character API endpoints.
+
+  Provides access to character information, skills, assets, contacts, and various character-related data.
+
+  This module provides the same interface as the legacy ESI.API.Character module,
+  returning ESI.Request structs that work with the legacy request pattern.
+
+  ## Available Functions
+
+  This module contains 63 functions:
+
+  - `search/0` or `search/1`
+      - `order_history/0` or `order_history/1`
+      - `attributes/0` or `attributes/1`
+      - `medals/0` or `medals/1`
+      - `planet/0` or `planet/1`
+      - `contact_labels/0` or `contact_labels/1`
+      - `killmail_recent/0` or `killmail_recent/1`
+      - `fw_stats/0` or `fw_stats/1`
+      - `fatigue/0` or `fatigue/1`
+      - `notifications/0` or `notifications/1`
+      - `wallet/0` or `wallet/1`
+      - `delete_contacts/0` or `delete_contacts/1`
+      - `contacts/0` or `contacts/1`
+      - `create_contacts/0` or `create_contacts/1`
+      - `update_contacts/0` or `update_contacts/1`
+      - `portrait/0` or `portrait/1`
+      - `skillqueue/0` or `skillqueue/1`
+      - `planets/0` or `planets/1`
+      - `delete_mail_item/0` or `delete_mail_item/1`
+      - `mail_item/0` or `mail_item/1`
+      - `update_mail_item/0` or `update_mail_item/1`
+      - `titles/0` or `titles/1`
+      - `assets/0` or `assets/1`
+      - `agents_research/0` or `agents_research/1`
+      - `clones/0` or `clones/1`
+      - `mail/0` or `mail/1`
+      - `create_mail/0` or `create_mail/1`
+      - `delete_mail_label/0` or `delete_mail_label/1`
+      - `notification_contacts/0` or `notification_contacts/1`
+      - `mining/0` or `mining/1`
+      - `ship/0` or `ship/1`
+      - `industry_jobs/0` or `industry_jobs/1`
+      - `mail_lists/0` or `mail_lists/1`
+      - `bids/0` or `bids/1`
+      - `loyalty_points/0` or `loyalty_points/1`
+      - `implants/0` or `implants/1`
+      - `contracts/0` or `contracts/1`
+      - `fleet/0` or `fleet/1`
+      - `roles/0` or `roles/1`
+      - `attendees/0` or `attendees/1`
+      - `create_asset_locations/0` or `create_asset_locations/1`
+      - `skills/0` or `skills/1`
+      - `wallet_journal/0` or `wallet_journal/1`
+      - `wallet_transactions/0` or `wallet_transactions/1`
+      - `corporation_history/0` or `corporation_history/1`
+      - `standings/0` or `standings/1`
+      - `create_asset_names/0` or `create_asset_names/1`
+      - `mail_labels/0` or `mail_labels/1`
+      - `create_mail_labels/0` or `create_mail_labels/1`
+      - `calendar/0` or `calendar/1`
+      - `orders/0` or `orders/1`
+      - `fittings/0` or `fittings/1`
+      - `create_fittings/0` or `create_fittings/1`
+      - `character/0` or `character/1`
+      - `create_cspa/0` or `create_cspa/1`
+      - `location/0` or `location/1`
+      - `blueprints/0` or `blueprints/1`
+      - `delete_fitting/0` or `delete_fitting/1`
+      - `calendar_event/0` or `calendar_event/1`
+      - `update_calendar_event/0` or `update_calendar_event/1`
+      - `online/0` or `online/1`
+      - `create_affiliation/0` or `create_affiliation/1`
+      - `items/0` or `items/1`
+
+  ## Usage
+
+  All functions return `ESI.Request` structs that can be executed using the standard
+  ESI request pattern:
+
+      iex> request = ESI.API.Character.some_function(opts)
+      iex> ESI.request(request)
+
+  ## Compatibility
+
+  This module maintains exact compatibility with the legacy ESI library while
+  internally mapping to the new Esi.Api.* modules. All function names, arguments,
+  and return types are preserved.
+
+  Generated from the legacy ESI library for perfect compatibility.
+  """
+
   @typedoc """
   Options for [`Character.search/2`](#search/2).
 

@@ -145,9 +145,24 @@ defmodule Mix.Tasks.CopyLegacyApi do
     # Extract the module definition and convert it
     lines = String.split(content, "\n")
 
-    # Find the module definition line
+    # Find the module definition line - handle different naming conventions
+    possible_module_names = [
+      # e.g., "Ui"
+      module_name,
+      # e.g., "UI"
+      String.upcase(module_name),
+      # e.g., "Factionwarfare"
+      String.replace(module_name, "_", ""),
+      # e.g., "FactionWarfare"
+      module_name |> String.split("_") |> Enum.map_join("", &String.capitalize/1)
+    ]
+
     module_line_index =
-      Enum.find_index(lines, &String.contains?(&1, "defmodule ESI.API.#{module_name}"))
+      Enum.find_index(lines, fn line ->
+        Enum.any?(possible_module_names, fn name ->
+          String.contains?(line, "defmodule ESI.API.#{name}")
+        end)
+      end)
 
     if module_line_index do
       # Process the module content
@@ -160,9 +175,10 @@ defmodule Mix.Tasks.CopyLegacyApi do
   end
 
   defp process_module_lines(lines, module_name) do
-    lines
-    |> Enum.map(&process_line(&1, module_name))
-    |> update_module_documentation(module_name)
+    processed_lines = lines |> Enum.map(&process_line(&1, module_name))
+
+    # Add moduledoc after the module definition if it doesn't exist
+    add_moduledoc_if_missing(processed_lines, module_name)
   end
 
   defp process_line(line, _module_name) do
@@ -175,36 +191,96 @@ defmodule Mix.Tasks.CopyLegacyApi do
     end
   end
 
-  defp update_module_documentation(lines, module_name) do
+  defp add_moduledoc_if_missing(lines, module_name) do
+    original_content = Enum.join(lines, "\n")
+    has_moduledoc = Enum.any?(lines, &String.contains?(&1, "@moduledoc"))
+
+    if has_moduledoc do
+      # Update existing moduledoc
+      update_module_documentation(lines, module_name, original_content)
+    else
+      # Add moduledoc after module definition
+      insert_moduledoc_after_module_def(lines, module_name, original_content)
+    end
+  end
+
+  defp update_module_documentation(lines, module_name, original_content) do
     # Find and update the module documentation
     Enum.map(lines, fn line ->
-      cond do
-        String.contains?(line, "@moduledoc") ->
-          add_compatibility_moduledoc(module_name)
-
-        String.contains?(line, "defmodule ESI.API.#{module_name}") ->
-          line
-
-        true ->
-          line
+      if String.contains?(line, "@moduledoc") do
+        add_compatibility_moduledoc(module_name, original_content)
+      else
+        line
       end
     end)
   end
 
-  defp add_compatibility_moduledoc(module_name) do
+  defp insert_moduledoc_after_module_def(lines, module_name, original_content) do
+    # Find the module definition line and insert moduledoc after it
+    module_def_index =
+      Enum.find_index(lines, fn line ->
+        String.contains?(line, "defmodule ESI.API.")
+      end)
+
+    if module_def_index do
+      {before, after_module} = Enum.split(lines, module_def_index + 1)
+
+      moduledoc_lines =
+        add_compatibility_moduledoc(module_name, original_content)
+        |> String.split("\n")
+
+      before ++ moduledoc_lines ++ [""] ++ after_module
+    else
+      lines
+    end
+  end
+
+  defp add_compatibility_moduledoc(module_name, original_content) do
+    # Extract function names and their purposes
+    functions = extract_function_info(original_content)
+    function_count = length(functions)
+
+    # Generate module description based on module name
+    module_description = generate_module_description(module_name)
+
+    # Generate function list
+    function_list = generate_function_list(functions)
+
     """
     @moduledoc \"\"\"
-    Legacy compatibility module for #{module_name} API endpoints.
+    #{module_description}
 
-    This module provides the same interface as the legacy ESI.API.#{module_name} module,
+    This module provides the same interface as the legacy ESI.API.#{format_module_name(module_name)} module,
     returning ESI.Request structs that work with the legacy request pattern.
 
-    All functions maintain exact compatibility with the legacy library while
-    internally mapping to the new Esi.Api.* modules.
+    ## Available Functions
 
-    Copied and adapted from the legacy ESI library for perfect compatibility.
+    This module contains #{function_count} function#{if function_count == 1, do: "", else: "s"}:
+
+    #{function_list}
+
+    ## Usage
+
+    All functions return `ESI.Request` structs that can be executed using the standard
+    ESI request pattern:
+
+        iex> request = ESI.API.#{format_module_name(module_name)}.some_function(opts)
+        iex> ESI.request(request)
+
+    ## Compatibility
+
+    This module maintains exact compatibility with the legacy ESI library while
+    internally mapping to the new Esi.Api.* modules. All function names, arguments,
+    and return types are preserved.
+
+    Generated from the legacy ESI library for perfect compatibility.
     \"\"\"
     """
+  end
+
+  # Add the old function as a fallback for create_basic_module
+  defp add_compatibility_moduledoc(module_name) do
+    add_compatibility_moduledoc(module_name, "")
   end
 
   defp create_basic_module(module_name, original_content) do
@@ -243,5 +319,117 @@ defmodule Mix.Tasks.CopyLegacyApi do
   defp count_functions(content) do
     # Count function definitions
     Regex.scan(~r/def\s+\w+/, content) |> length()
+  end
+
+  defp extract_function_info(content) do
+    # Extract function names and their @doc strings
+    # Pattern matches @doc followed by @spec, capturing the doc content and function name
+    function_pattern = ~r/@doc\s+"""(.*?)"""\s+@spec\s+(\w+)/ms
+
+    matches = Regex.scan(function_pattern, content, capture: :all_but_first)
+
+    if Enum.empty?(matches) do
+      # Fallback: just extract function names from @spec declarations
+      spec_pattern = ~r/@spec\s+(\w+)/
+
+      Regex.scan(spec_pattern, content, capture: :all_but_first)
+      |> Enum.map(fn [name] -> {name, "EVE Online ESI API function"} end)
+      |> Enum.uniq_by(fn {name, _} -> name end)
+    else
+      matches
+      |> Enum.map(fn [doc, name] ->
+        # Extract the first line of the doc as a summary
+        summary = doc |> String.split("\n") |> List.first() |> String.trim()
+        {name, summary}
+      end)
+      |> Enum.uniq_by(fn {name, _} -> name end)
+    end
+  end
+
+  defp generate_module_description(module_name) do
+    case String.downcase(module_name) do
+      "alliance" ->
+        "Legacy compatibility module for Alliance API endpoints.\n\nProvides access to alliance information, member corporations, contacts, and icons."
+
+      "character" ->
+        "Legacy compatibility module for Character API endpoints.\n\nProvides access to character information, skills, assets, contacts, and various character-related data."
+
+      "contract" ->
+        "Legacy compatibility module for Contract API endpoints.\n\nProvides access to contract information and bidding functionality."
+
+      "corporation" ->
+        "Legacy compatibility module for Corporation API endpoints.\n\nProvides access to corporation information, members, structures, assets, and various corp-related data."
+
+      "dogma" ->
+        "Legacy compatibility module for Dogma API endpoints.\n\nProvides access to EVE Online's dogma system including attributes and effects."
+
+      "faction_warfare" ->
+        "Legacy compatibility module for Faction Warfare API endpoints.\n\nProvides access to faction warfare statistics, leaderboards, system ownership, and war information."
+
+      "fleet" ->
+        "Legacy compatibility module for Fleet API endpoints.\n\nProvides access to fleet information, members, wings, squads, and fleet management functionality."
+
+      "incursion" ->
+        "Legacy compatibility module for Incursion API endpoints.\n\nProvides access to current incursion information and affected systems."
+
+      "industry" ->
+        "Legacy compatibility module for Industry API endpoints.\n\nProvides access to industry jobs, facilities, and manufacturing information."
+
+      "insurance" ->
+        "Legacy compatibility module for Insurance API endpoints.\n\nProvides access to ship insurance pricing information."
+
+      "killmail" ->
+        "Legacy compatibility module for Killmail API endpoints.\n\nProvides access to killmail data and hashes."
+
+      "loyalty" ->
+        "Legacy compatibility module for Loyalty API endpoints.\n\nProvides access to loyalty point store offers and information."
+
+      "market" ->
+        "Legacy compatibility module for Market API endpoints.\n\nProvides access to market data, orders, prices, history, and regional market information."
+
+      "route" ->
+        "Legacy compatibility module for Route API endpoints.\n\nProvides access to route calculation and navigation information."
+
+      "sovereignty" ->
+        "Legacy compatibility module for Sovereignty API endpoints.\n\nProvides access to sovereignty information, campaigns, and structure data."
+
+      "status" ->
+        "Legacy compatibility module for Status API endpoints.\n\nProvides access to EVE Online server status and player count information."
+
+      "ui" ->
+        "Legacy compatibility module for UI API endpoints.\n\nProvides access to in-game UI interaction functionality including opening windows and setting waypoints."
+
+      "universe" ->
+        "Legacy compatibility module for Universe API endpoints.\n\nProvides access to universe data including systems, stations, structures, types, and various static game data."
+
+      "war" ->
+        "Legacy compatibility module for War API endpoints.\n\nProvides access to war declarations, participants, and killmail statistics."
+
+      _ ->
+        "Legacy compatibility module for #{module_name} API endpoints.\n\nProvides access to #{String.downcase(module_name)}-related EVE Online ESI functionality."
+    end
+  end
+
+  defp generate_function_list(functions) when functions == [] do
+    "- (Functions will be listed after successful extraction)"
+  end
+
+  defp generate_function_list(functions) do
+    functions
+    |> Enum.map_join("\n    ", fn {name, summary} ->
+      if summary == "" do
+        "- `#{name}/0` or `#{name}/1`"
+      else
+        "- `#{name}/0` or `#{name}/1` - #{summary}"
+      end
+    end)
+  end
+
+  defp format_module_name(module_name) do
+    case module_name do
+      "Faction_warfare" -> "FactionWarfare"
+      "Ui" -> "UI"
+      _ -> module_name
+    end
   end
 end

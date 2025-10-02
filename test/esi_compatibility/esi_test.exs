@@ -1,5 +1,6 @@
 defmodule ESI.Test do
   use ExUnit.Case, async: false
+
   import Mock
 
   # Note: Doctests disabled since they require full API setup
@@ -8,9 +9,9 @@ defmodule ESI.Test do
   describe "request/2" do
     test "executes a basic request successfully" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{datasource: {:query, :optional}},
         path: "/alliances/",
-        opts_schema: %{datasource: {:query, :optional}}
+        verb: :get
       }
 
       with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, [99_005_443, 99_005_784]} end do
@@ -21,9 +22,9 @@ defmodule ESI.Test do
 
     test "passes through options correctly" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{token: {:query, :optional}},
         path: "/characters/12345/",
-        opts_schema: %{token: {:query, :optional}}
+        verb: :get
       }
 
       with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, %{"name" => "Test Character"}} end do
@@ -34,10 +35,10 @@ defmodule ESI.Test do
 
     test "handles POST requests with body" do
       request = %ESI.Request{
-        verb: :post,
-        path: "/universe/names/",
+        opts: %{ids: [12345, 67890]},
         opts_schema: %{ids: {:body, :required}},
-        opts: %{ids: [12345, 67890]}
+        path: "/universe/names/",
+        verb: :post
       }
 
       with_mock EsiEveOnline,
@@ -49,12 +50,12 @@ defmodule ESI.Test do
 
     test "returns error when request fails" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{},
         path: "/invalid/",
-        opts_schema: %{}
+        verb: :get
       }
 
-      error = %Esi.Error{type: :api_error, status: 404, message: "Not found"}
+      error = %Esi.Error{message: "Not found", status: 404, type: :api_error}
 
       with_mock EsiEveOnline, get: fn _path, _opts -> {:error, error} end do
         assert {:error, ^error} = ESI.request(request)
@@ -63,9 +64,9 @@ defmodule ESI.Test do
 
     test "validates required options" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{required_param: {:query, :required}},
         path: "/test/",
-        opts_schema: %{required_param: {:query, :required}}
+        verb: :get
       }
 
       assert {:error, "missing option `:required_param`"} = ESI.request(request)
@@ -75,9 +76,9 @@ defmodule ESI.Test do
   describe "request!/2" do
     test "returns result directly on success" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{},
         path: "/alliances/",
-        opts_schema: %{}
+        verb: :get
       }
 
       with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, [99_005_443]} end do
@@ -87,12 +88,12 @@ defmodule ESI.Test do
 
     test "raises error on failure" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{},
         path: "/invalid/",
-        opts_schema: %{}
+        verb: :get
       }
 
-      error = %Esi.Error{type: :api_error, status: 404, message: "Not found"}
+      error = %Esi.Error{message: "Not found", status: 404, type: :api_error}
 
       with_mock EsiEveOnline, get: fn _path, _opts -> {:error, error} end do
         assert_raise RuntimeError, "Request failed: Not found", fn ->
@@ -105,9 +106,9 @@ defmodule ESI.Test do
   describe "request_with_headers/2" do
     test "returns data with max pages for paginated requests" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{page: {:query, :optional}},
         path: "/universe/groups/",
-        opts_schema: %{page: {:query, :optional}}
+        verb: :get
       }
 
       with_mock EsiEveOnline, get_with_headers: fn _path, _opts -> {:ok, [1, 2, 3], 1} end do
@@ -119,9 +120,9 @@ defmodule ESI.Test do
   describe "request_with_headers!/2" do
     test "returns tuple with data and max pages" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{},
         path: "/universe/groups/",
-        opts_schema: %{}
+        verb: :get
       }
 
       with_mock EsiEveOnline, get_with_headers: fn _path, _opts -> {:ok, [1, 2, 3], 1} end do
@@ -131,12 +132,12 @@ defmodule ESI.Test do
 
     test "raises error on failure" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{},
         path: "/invalid/",
-        opts_schema: %{}
+        verb: :get
       }
 
-      error = %Esi.Error{type: :api_error, status: 404, message: "Not found"}
+      error = %Esi.Error{message: "Not found", status: 404, type: :api_error}
 
       with_mock EsiEveOnline, get_with_headers: fn _path, _opts -> {:error, error} end do
         assert_raise RuntimeError, "Request failed: Not found", fn ->
@@ -149,9 +150,9 @@ defmodule ESI.Test do
   describe "stream!/2" do
     test "creates stream for paginated endpoints" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{page: {:query, :optional}},
         path: "/universe/groups/",
-        opts_schema: %{page: {:query, :optional}}
+        verb: :get
       }
 
       # Mock the paginated responses
@@ -170,9 +171,9 @@ defmodule ESI.Test do
 
     test "creates stream for non-paginated endpoints" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{},
         path: "/universe/bloodlines/",
-        opts_schema: %{}
+        verb: :get
       }
 
       with_mock ESI.Request,
@@ -187,9 +188,9 @@ defmodule ESI.Test do
 
     test "raises error when stream encounters failure" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{},
         path: "/invalid/",
-        opts_schema: %{}
+        verb: :get
       }
 
       with_mock ESI.Request,
@@ -229,9 +230,9 @@ defmodule ESI.Test do
 
     test "supports the legacy stream pattern" do
       request = %ESI.Request{
-        verb: :get,
+        opts_schema: %{page: {:query, :optional}},
         path: "/universe/groups/",
-        opts_schema: %{page: {:query, :optional}}
+        verb: :get
       }
 
       with_mock ESI.Request,

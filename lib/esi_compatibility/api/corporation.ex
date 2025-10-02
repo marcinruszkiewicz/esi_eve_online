@@ -1,4 +1,76 @@
 defmodule ESI.API.Corporation do
+  @moduledoc """
+  Legacy compatibility module for Corporation API endpoints.
+
+  Provides access to corporation information, members, structures, assets, and various corp-related data.
+
+  This module provides the same interface as the legacy ESI.API.Corporation module,
+  returning ESI.Request structs that work with the legacy request pattern.
+
+  ## Available Functions
+
+  This module contains 42 functions:
+
+  - `roles/0` or `roles/1`
+      - `order_history/0` or `order_history/1`
+      - `create_asset_names/0` or `create_asset_names/1`
+      - `member_titles/0` or `member_titles/1`
+      - `starbases/0` or `starbases/1`
+      - `orders/0` or `orders/1`
+      - `transactions/0` or `transactions/1`
+      - `membertracking/0` or `membertracking/1`
+      - `assets/0` or `assets/1`
+      - `starbase/0` or `starbase/1`
+      - `killmail_recent/0` or `killmail_recent/1`
+      - `customs_offices/0` or `customs_offices/1`
+      - `members/0` or `members/1`
+      - `member_limit/0` or `member_limit/1`
+      - `industry_jobs/0` or `industry_jobs/1`
+      - `journal/0` or `journal/1`
+      - `mining_observers/0` or `mining_observers/1`
+      - `create_asset_locations/0` or `create_asset_locations/1`
+      - `titles/0` or `titles/1`
+      - `divisions/0` or `divisions/1`
+      - `structures/0` or `structures/1`
+      - `standings/0` or `standings/1`
+      - `contracts/0` or `contracts/1`
+      - `medals/0` or `medals/1`
+      - `blueprints/0` or `blueprints/1`
+      - `icons/0` or `icons/1`
+      - `bids/0` or `bids/1`
+      - `npccorps/0` or `npccorps/1`
+      - `alliance_history/0` or `alliance_history/1`
+      - `contact_labels/0` or `contact_labels/1`
+      - `wallets/0` or `wallets/1`
+      - `mining_extractions/0` or `mining_extractions/1`
+      - `mining_observer/0` or `mining_observer/1`
+      - `fw_stats/0` or `fw_stats/1`
+      - `shareholders/0` or `shareholders/1`
+      - `medal_issued/0` or `medal_issued/1`
+      - `container_logs/0` or `container_logs/1`
+      - `role_history/0` or `role_history/1`
+      - `contacts/0` or `contacts/1`
+      - `corporation/0` or `corporation/1`
+      - `facilities/0` or `facilities/1`
+      - `items/0` or `items/1`
+
+  ## Usage
+
+  All functions return `ESI.Request` structs that can be executed using the standard
+  ESI request pattern:
+
+      iex> request = ESI.API.Corporation.some_function(opts)
+      iex> ESI.request(request)
+
+  ## Compatibility
+
+  This module maintains exact compatibility with the legacy ESI library while
+  internally mapping to the new Esi.Api.* modules. All function names, arguments,
+  and return types are preserved.
+
+  Generated from the legacy ESI library for perfect compatibility.
+  """
+
   @typedoc """
   Options for [`Corporation.roles/2`](#roles/2).
 

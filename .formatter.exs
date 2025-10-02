@@ -6,7 +6,9 @@
     autosort: [:map, :defstruct, :schema],
     files: %{
       included: [
-        "lib/"
+        "lib/",
+        "config/",
+        "test/"
       ],
       excluded: [
         "lib/esi/api/",

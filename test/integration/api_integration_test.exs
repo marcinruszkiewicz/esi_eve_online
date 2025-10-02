@@ -1,5 +1,6 @@
 defmodule Integration.ApiIntegrationTest do
   use ExUnit.Case, async: false
+
   import Mock
 
   alias Esi.Error
@@ -10,7 +11,6 @@ defmodule Integration.ApiIntegrationTest do
     test "Alliance API works with client" do
       # Mock a successful response
       mock_response = %Req.Response{
-        status: 200,
         body: %{
           "creator_corporation_id" => 98_356_193,
           "creator_id" => 1_234_567_890,
@@ -20,7 +20,8 @@ defmodule Integration.ApiIntegrationTest do
           "name" => "Test Alliance",
           "ticker" => "TEST"
         },
-        headers: [{"content-type", "application/json"}]
+        headers: [{"content-type", "application/json"}],
+        status: 200
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
@@ -52,7 +53,6 @@ defmodule Integration.ApiIntegrationTest do
 
     test "Character API with authentication" do
       mock_response = %Req.Response{
-        status: 200,
         body: [
           %{
             "item_id" => 1_000_000_016_835,
@@ -63,7 +63,8 @@ defmodule Integration.ApiIntegrationTest do
             "type_id" => 3516
           }
         ],
-        headers: [{"x-pages", "1"}]
+        headers: [{"x-pages", "1"}],
+        status: 200
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
@@ -100,7 +101,6 @@ defmodule Integration.ApiIntegrationTest do
 
     test "POST request with body (Universe names)" do
       mock_response = %Req.Response{
-        status: 200,
         body: [
           %{
             "category" => "character",
@@ -113,7 +113,8 @@ defmodule Integration.ApiIntegrationTest do
             "name" => "Test Alliance"
           }
         ],
-        headers: []
+        headers: [],
+        status: 200
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
@@ -148,9 +149,9 @@ defmodule Integration.ApiIntegrationTest do
 
     test "Fleet invite special case" do
       mock_response = %Req.Response{
-        status: 204,
         body: "",
-        headers: []
+        headers: [],
+        status: 204
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
@@ -187,9 +188,9 @@ defmodule Integration.ApiIntegrationTest do
 
     test "Error handling in generated modules" do
       mock_response = %Req.Response{
-        status: 404,
         body: %{"error" => "Alliance not found"},
-        headers: [{"x-esi-request-id", "req-test-123"}]
+        headers: [{"x-esi-request-id", "req-test-123"}],
+        status: 404
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
@@ -197,10 +198,10 @@ defmodule Integration.ApiIntegrationTest do
         assert {:error, error} = Esi.Api.Alliances.alliance(99_999_999)
 
         assert %Error{
-                 type: :api_error,
-                 status: 404,
                  message: "Not found",
-                 request_id: "req-test-123"
+                 request_id: "req-test-123",
+                 status: 404,
+                 type: :api_error
                } = error
       end
     end
@@ -208,7 +209,6 @@ defmodule Integration.ApiIntegrationTest do
     test "Singular/plural naming works correctly" do
       # Test categories (plural)
       mock_response = %Req.Response{
-        status: 200,
         body: [
           6,
           7,
@@ -239,7 +239,8 @@ defmodule Integration.ApiIntegrationTest do
           87,
           91
         ],
-        headers: []
+        headers: [],
+        status: 200
       }
 
       with_mock Req,
@@ -253,14 +254,14 @@ defmodule Integration.ApiIntegrationTest do
 
       # Test category (singular)  
       mock_response = %Req.Response{
-        status: 200,
         body: %{
           "category_id" => 6,
+          "groups" => [25, 26, 27, 28, 29, 30, 31],
           "name" => "Ship",
-          "published" => true,
-          "groups" => [25, 26, 27, 28, 29, 30, 31]
+          "published" => true
         },
-        headers: []
+        headers: [],
+        status: 200
       }
 
       with_mock Req,
@@ -277,13 +278,13 @@ defmodule Integration.ApiIntegrationTest do
   describe "unified interface integration" do
     test "EsiEveOnline.get/2 works end-to-end" do
       mock_response = %Req.Response{
-        status: 200,
         body: %{
           "players" => 25000,
           "server_version" => "1234567",
           "start_time" => "2023-01-01T12:00:00Z"
         },
-        headers: []
+        headers: [],
+        status: 200
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
@@ -296,9 +297,9 @@ defmodule Integration.ApiIntegrationTest do
 
     test "EsiEveOnline.post/3 works end-to-end" do
       mock_response = %Req.Response{
-        status: 200,
-        body: [%{"id" => 1234, "name" => "Test", "category" => "character"}],
-        headers: []
+        body: [%{"category" => "character", "id" => 1234, "name" => "Test"}],
+        headers: [],
+        status: 200
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do

@@ -1,5 +1,6 @@
 defmodule ESI.LegacyIntegrationTest do
   use ExUnit.Case, async: false
+
   import Mock
 
   @moduletag :integration
@@ -17,11 +18,11 @@ defmodule ESI.LegacyIntegrationTest do
 
     test "ESI.API.Alliance.alliance(id) |> ESI.request!() pattern works" do
       alliance_data = %{
-        "name" => "Goonswarm Federation",
-        "ticker" => "CONDI",
         "creator_corporation_id" => 1_344_654_522,
         "creator_id" => 55_465_499,
-        "date_founded" => "2010-06-01T05:20:00Z"
+        "date_founded" => "2010-06-01T05:20:00Z",
+        "name" => "Goonswarm Federation",
+        "ticker" => "CONDI"
       }
 
       with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, alliance_data} end do
@@ -35,9 +36,9 @@ defmodule ESI.LegacyIntegrationTest do
 
     test "ESI.API.Character.character(id) |> ESI.request(token: token) pattern works" do
       character_data = %{
-        "name" => "CCP Bartender",
-        "corporation_id" => 109_299_958,
         "alliance_id" => 99_005_443,
+        "corporation_id" => 109_299_958,
+        "name" => "CCP Bartender",
         "security_status" => -0.07
       }
 
@@ -79,8 +80,8 @@ defmodule ESI.LegacyIntegrationTest do
 
     test "ESI.API.Universe.create_names(ids: ids) |> ESI.request() POST pattern works" do
       names_data = [
-        %{"id" => 95_465_499, "name" => "CCP Bartender", "category" => "character"},
-        %{"id" => 99_005_443, "name" => "Goonswarm Federation", "category" => "alliance"}
+        %{"category" => "character", "id" => 95_465_499, "name" => "CCP Bartender"},
+        %{"category" => "alliance", "id" => 99_005_443, "name" => "Goonswarm Federation"}
       ]
 
       with_mock EsiEveOnline, post: fn _path, _body, _opts -> {:ok, names_data} end do
@@ -174,7 +175,7 @@ defmodule ESI.LegacyIntegrationTest do
     end
 
     test "error handling maintains legacy behavior" do
-      error = %Esi.Error{type: :api_error, status: 404, message: "Character not found"}
+      error = %Esi.Error{message: "Character not found", status: 404, type: :api_error}
 
       with_mock EsiEveOnline, get: fn _path, _opts -> {:error, error} end do
         # Error should be returned as-is for ESI.request

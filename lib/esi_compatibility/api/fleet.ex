@@ -1,4 +1,47 @@
 defmodule ESI.API.Fleet do
+  @moduledoc """
+  Legacy compatibility module for Fleet API endpoints.
+
+  Provides access to fleet information, members, wings, squads, and fleet management functionality.
+
+  This module provides the same interface as the legacy ESI.API.Fleet module,
+  returning ESI.Request structs that work with the legacy request pattern.
+
+  ## Available Functions
+
+  This module contains 13 functions:
+
+  - `create_squads/0` or `create_squads/1`
+      - `fleet/0` or `fleet/1`
+      - `update_fleet/0` or `update_fleet/1`
+      - `delete_wing/0` or `delete_wing/1`
+      - `update_wing/0` or `update_wing/1`
+      - `delete_squad/0` or `delete_squad/1`
+      - `update_squad/0` or `update_squad/1`
+      - `members/0` or `members/1`
+      - `create_members/0` or `create_members/1`
+      - `wings/0` or `wings/1`
+      - `create_wings/0` or `create_wings/1`
+      - `delete_member/0` or `delete_member/1`
+      - `update_member/0` or `update_member/1`
+
+  ## Usage
+
+  All functions return `ESI.Request` structs that can be executed using the standard
+  ESI request pattern:
+
+      iex> request = ESI.API.Fleet.some_function(opts)
+      iex> ESI.request(request)
+
+  ## Compatibility
+
+  This module maintains exact compatibility with the legacy ESI library while
+  internally mapping to the new Esi.Api.* modules. All function names, arguments,
+  and return types are preserved.
+
+  Generated from the legacy ESI library for perfect compatibility.
+  """
+
   @typedoc """
   Options for [`Fleet.create_squads/3`](#create_squads/3).
 

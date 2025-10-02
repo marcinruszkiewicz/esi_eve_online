@@ -1,4 +1,37 @@
 defmodule ESI.API.Sovereignty do
+  @moduledoc """
+  Legacy compatibility module for Sovereignty API endpoints.
+
+  Provides access to sovereignty information, campaigns, and structure data.
+
+  This module provides the same interface as the legacy ESI.API.Sovereignty module,
+  returning ESI.Request structs that work with the legacy request pattern.
+
+  ## Available Functions
+
+  This module contains 3 functions:
+
+  - `campaigns/0` or `campaigns/1`
+      - `map/0` or `map/1`
+      - `structures/0` or `structures/1`
+
+  ## Usage
+
+  All functions return `ESI.Request` structs that can be executed using the standard
+  ESI request pattern:
+
+      iex> request = ESI.API.Sovereignty.some_function(opts)
+      iex> ESI.request(request)
+
+  ## Compatibility
+
+  This module maintains exact compatibility with the legacy ESI library while
+  internally mapping to the new Esi.Api.* modules. All function names, arguments,
+  and return types are preserved.
+
+  Generated from the legacy ESI library for perfect compatibility.
+  """
+
   @doc """
   Shows sovereignty data for campaigns..
 

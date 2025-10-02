@@ -1,5 +1,6 @@
 defmodule ESI.RequestTest do
   use ExUnit.Case, async: false
+
   import Mock
 
   doctest ESI.Request
@@ -7,10 +8,10 @@ defmodule ESI.RequestTest do
   describe "struct creation" do
     test "creates a basic request struct" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{},
         opts_schema: %{},
-        opts: %{}
+        path: "/test/",
+        verb: :get
       }
 
       assert request.verb == :get
@@ -29,22 +30,22 @@ defmodule ESI.RequestTest do
   describe "options/2" do
     test "adds options to request" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{},
         opts_schema: %{},
-        opts: %{}
+        path: "/test/",
+        verb: :get
       }
 
       updated = ESI.Request.options(request, token: "test_token", page: 1)
-      assert updated.opts == %{token: "test_token", page: 1}
+      assert updated.opts == %{page: 1, token: "test_token"}
     end
 
     test "merges with existing options" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{existing: "value"},
         opts_schema: %{},
-        opts: %{existing: "value"}
+        path: "/test/",
+        verb: :get
       }
 
       updated = ESI.Request.options(request, token: "test_token")
@@ -53,10 +54,10 @@ defmodule ESI.RequestTest do
 
     test "handles empty options list" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{existing: "value"},
         opts_schema: %{},
-        opts: %{existing: "value"}
+        path: "/test/",
+        verb: :get
       }
 
       updated = ESI.Request.options(request, [])
@@ -67,10 +68,10 @@ defmodule ESI.RequestTest do
   describe "validate/1" do
     test "returns :ok when all required options are present" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{required_param: "value"},
         opts_schema: %{required_param: {:query, :required}},
-        opts: %{required_param: "value"}
+        path: "/test/",
+        verb: :get
       }
 
       assert ESI.Request.validate(request) == :ok
@@ -78,10 +79,10 @@ defmodule ESI.RequestTest do
 
     test "returns error for single missing required option" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{},
         opts_schema: %{required_param: {:query, :required}},
-        opts: %{}
+        path: "/test/",
+        verb: :get
       }
 
       assert ESI.Request.validate(request) == {:error, "missing option `:required_param`"}
@@ -89,13 +90,13 @@ defmodule ESI.RequestTest do
 
     test "returns error for multiple missing required options" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{},
         opts_schema: %{
           param1: {:query, :required},
           param2: {:body, :required}
         },
-        opts: %{}
+        path: "/test/",
+        verb: :get
       }
 
       assert {:error, error_msg} = ESI.Request.validate(request)
@@ -106,13 +107,13 @@ defmodule ESI.RequestTest do
 
     test "ignores optional parameters" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{required_param: "value"},
         opts_schema: %{
-          required_param: {:query, :required},
-          optional_param: {:query, :optional}
+          optional_param: {:query, :optional},
+          required_param: {:query, :required}
         },
-        opts: %{required_param: "value"}
+        path: "/test/",
+        verb: :get
       }
 
       assert ESI.Request.validate(request) == :ok
@@ -122,10 +123,10 @@ defmodule ESI.RequestTest do
   describe "run/1" do
     test "calls EsiEveOnline.get for GET requests" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{token: "test_token"},
         opts_schema: %{},
-        opts: %{token: "test_token"}
+        path: "/test/",
+        verb: :get
       }
 
       with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, "success"} end do
@@ -136,10 +137,10 @@ defmodule ESI.RequestTest do
 
     test "calls EsiEveOnline.post for POST requests" do
       request = %ESI.Request{
-        verb: :post,
-        path: "/test/",
+        opts: %{data: %{"test" => "value"}},
         opts_schema: %{data: {:body, :required}},
-        opts: %{data: %{"test" => "value"}}
+        path: "/test/",
+        verb: :post
       }
 
       with_mock EsiEveOnline, post: fn _path, _body, _opts -> {:ok, "success"} end do
@@ -150,10 +151,10 @@ defmodule ESI.RequestTest do
 
     test "calls EsiEveOnline.put for PUT requests" do
       request = %ESI.Request{
-        verb: :put,
-        path: "/test/",
+        opts: %{data: %{"test" => "value"}},
         opts_schema: %{data: {:body, :required}},
-        opts: %{data: %{"test" => "value"}}
+        path: "/test/",
+        verb: :put
       }
 
       with_mock EsiEveOnline, put: fn _path, _body, _opts -> {:ok, "success"} end do
@@ -164,10 +165,10 @@ defmodule ESI.RequestTest do
 
     test "calls EsiEveOnline.delete for DELETE requests" do
       request = %ESI.Request{
-        verb: :delete,
-        path: "/test/",
+        opts: %{token: "test_token"},
         opts_schema: %{},
-        opts: %{token: "test_token"}
+        path: "/test/",
+        verb: :delete
       }
 
       with_mock EsiEveOnline, delete: fn _path, _opts -> {:ok, "success"} end do
@@ -178,10 +179,10 @@ defmodule ESI.RequestTest do
 
     test "returns validation error for invalid request" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{},
         opts_schema: %{required_param: {:query, :required}},
-        opts: %{}
+        path: "/test/",
+        verb: :get
       }
 
       assert {:error, "missing option `:required_param`"} = ESI.Request.run(request)
@@ -191,10 +192,10 @@ defmodule ESI.RequestTest do
   describe "option mapping" do
     test "maps legacy token option to client option" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{token: "test_token", user_agent: "TestAgent/1.0"},
         opts_schema: %{},
-        opts: %{token: "test_token", user_agent: "TestAgent/1.0"}
+        path: "/test/",
+        verb: :get
       }
 
       with_mock EsiEveOnline,
@@ -209,10 +210,10 @@ defmodule ESI.RequestTest do
 
     test "filters out datasource option" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{datasource: :tranquility, token: "test_token"},
         opts_schema: %{},
-        opts: %{datasource: :tranquility, token: "test_token"}
+        path: "/test/",
+        verb: :get
       }
 
       with_mock EsiEveOnline,
@@ -227,13 +228,13 @@ defmodule ESI.RequestTest do
 
     test "extracts body from body-type options" do
       request = %ESI.Request{
-        verb: :post,
-        path: "/test/",
+        opts: %{data: [1, 2, 3], token: "test_token"},
         opts_schema: %{
           data: {:body, :required},
           token: {:query, :optional}
         },
-        opts: %{data: [1, 2, 3], token: "test_token"}
+        path: "/test/",
+        verb: :post
       }
 
       with_mock EsiEveOnline,
@@ -250,10 +251,10 @@ defmodule ESI.RequestTest do
   describe "stream!/1" do
     test "creates paginated stream for requests with page option" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{},
         opts_schema: %{page: {:query, :optional}},
-        opts: %{}
+        path: "/test/",
+        verb: :get
       }
 
       # Mock run_with_headers to simulate pagination
@@ -272,10 +273,10 @@ defmodule ESI.RequestTest do
 
     test "creates single-result stream for non-paginated requests" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{},
         opts_schema: %{},
-        opts: %{}
+        path: "/test/",
+        verb: :get
       }
 
       with_mock ESI.Request,
@@ -289,10 +290,10 @@ defmodule ESI.RequestTest do
 
     test "stops pagination when empty page is returned" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{},
         opts_schema: %{page: {:query, :optional}},
-        opts: %{}
+        path: "/test/",
+        verb: :get
       }
 
       with_mock ESI.Request,
@@ -310,10 +311,10 @@ defmodule ESI.RequestTest do
 
     test "raises error when pagination fails" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/test/",
+        opts: %{},
         opts_schema: %{page: {:query, :optional}},
-        opts: %{}
+        path: "/test/",
+        verb: :get
       }
 
       with_mock ESI.Request,

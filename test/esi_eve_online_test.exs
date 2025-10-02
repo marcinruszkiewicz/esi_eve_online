@@ -1,5 +1,6 @@
 defmodule EsiEveOnlineTest do
   use ExUnit.Case, async: false
+
   import Mock
 
   alias Esi.Client
@@ -15,11 +16,11 @@ defmodule EsiEveOnlineTest do
         assert_called(
           Client.request(
             %{
-              url: "/alliances/1234",
-              method: :get,
               args: [],
+              call: {EsiEveOnline, :get},
+              method: :get,
               response: [{200, :ok}, {:default, {Esi.Error, :t}}],
-              call: {EsiEveOnline, :get}
+              url: "/alliances/1234"
             },
             []
           )
@@ -102,7 +103,7 @@ defmodule EsiEveOnlineTest do
     end
 
     test "get!/2 raises on error" do
-      error = %Error{type: :api_error, status: 404, message: "Not found"}
+      error = %Error{message: "Not found", status: 404, type: :api_error}
 
       with_mock Client, request: fn _spec, _opts -> {:error, error} end do
         assert_raise RuntimeError, "API request failed: Not found", fn ->
@@ -118,7 +119,7 @@ defmodule EsiEveOnlineTest do
     end
 
     test "post!/3 raises on error" do
-      error = %Error{type: :validation_error, message: "Invalid input"}
+      error = %Error{message: "Invalid input", type: :validation_error}
 
       with_mock Client, request: fn _spec, _opts -> {:error, error} end do
         assert_raise RuntimeError, "API request failed: Invalid input", fn ->
@@ -128,7 +129,7 @@ defmodule EsiEveOnlineTest do
     end
 
     test "put!/3 raises on error" do
-      error = %Error{type: :api_error, status: 403, message: "Forbidden"}
+      error = %Error{message: "Forbidden", status: 403, type: :api_error}
 
       with_mock Client, request: fn _spec, _opts -> {:error, error} end do
         assert_raise RuntimeError, "API request failed: Forbidden", fn ->
@@ -138,7 +139,7 @@ defmodule EsiEveOnlineTest do
     end
 
     test "delete!/2 raises on error" do
-      error = %Error{type: :network_error, message: "Connection failed"}
+      error = %Error{message: "Connection failed", type: :network_error}
 
       with_mock Client, request: fn _spec, _opts -> {:error, error} end do
         assert_raise RuntimeError, "API request failed: Connection failed", fn ->
@@ -148,7 +149,7 @@ defmodule EsiEveOnlineTest do
     end
 
     test "patch!/3 raises on error" do
-      error = %Error{type: :timeout_error, message: "Request timed out"}
+      error = %Error{message: "Request timed out", type: :timeout_error}
 
       with_mock Client, request: fn _spec, _opts -> {:error, error} end do
         assert_raise RuntimeError, "API request failed: Request timed out", fn ->
@@ -161,11 +162,11 @@ defmodule EsiEveOnlineTest do
   describe "request delegation" do
     test "delegates request/2 to Client" do
       request_spec = %{
-        url: "/test",
-        method: :get,
         args: [],
+        call: {TestModule, :test},
+        method: :get,
         response: [{200, :ok}],
-        call: {TestModule, :test}
+        url: "/test"
       }
 
       opts = [token: "test"]
@@ -183,11 +184,11 @@ defmodule EsiEveOnlineTest do
 
     test "delegates request/1 to Client with empty opts" do
       request_spec = %{
-        url: "/test",
-        method: :get,
         args: [],
+        call: {TestModule, :test},
+        method: :get,
         response: [],
-        call: {TestModule, :test}
+        url: "/test"
       }
 
       mock_response = {:ok, "result"}

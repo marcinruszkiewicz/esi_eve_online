@@ -343,8 +343,17 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
 
       # Generate the function body
       function_body =
-        if not Enum.empty?(non_page_params) do
-          # If there are other query params, we need to handle them
+        if Enum.empty?(non_page_params) do
+          # No extra query params, just pass opts directly
+          quote do
+            EsiEveOnline.stream_paginated(
+              unquote(path_with_interpolation),
+              opts
+            )
+
+            # If there are other query params, we need to handle them
+          end
+        else
           quote do
             query_opts = Keyword.take(opts, unquote(non_page_params))
             all_opts = Keyword.merge(query_opts, opts)
@@ -352,14 +361,6 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
             EsiEveOnline.stream_paginated(
               unquote(path_with_interpolation),
               all_opts
-            )
-          end
-        else
-          # No extra query params, just pass opts directly
-          quote do
-            EsiEveOnline.stream_paginated(
-              unquote(path_with_interpolation),
-              opts
             )
           end
         end

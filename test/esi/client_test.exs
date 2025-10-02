@@ -1,5 +1,6 @@
 defmodule Esi.ClientTest do
   use ExUnit.Case, async: false
+
   import Mock
 
   alias Esi.Client
@@ -8,17 +9,17 @@ defmodule Esi.ClientTest do
   describe "request/2" do
     test "successful GET request" do
       request_spec = %{
-        url: "/alliances/1234",
-        method: :get,
         args: [],
+        call: {Esi.Api.Alliance, :alliance},
+        method: :get,
         response: [{200, :ok}],
-        call: {Esi.Api.Alliance, :alliance}
+        url: "/alliances/1234"
       }
 
       mock_response = %Req.Response{
-        status: 200,
         body: %{"name" => "Test Alliance"},
-        headers: [{"content-type", "application/json"}]
+        headers: [{"content-type", "application/json"}],
+        status: 200
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
@@ -45,17 +46,17 @@ defmodule Esi.ClientTest do
 
     test "successful POST request with body" do
       request_spec = %{
-        url: "/universe/names",
-        method: :post,
         args: [body: [1234, 5678]],
+        call: {Esi.Api.Universe, :names},
+        method: :post,
         response: [{200, :ok}],
-        call: {Esi.Api.Universe, :names}
+        url: "/universe/names"
       }
 
       mock_response = %Req.Response{
-        status: 200,
         body: [%{"id" => 1234, "name" => "Test"}],
-        headers: []
+        headers: [],
+        status: 200
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
@@ -83,19 +84,19 @@ defmodule Esi.ClientTest do
 
     test "request with authentication token" do
       request_spec = %{
-        url: "/characters/1234/assets",
-        method: :get,
         args: [character_id: 1234],
+        call: {Esi.Api.Character, :assets},
+        method: :get,
         response: [{200, :ok}],
-        call: {Esi.Api.Character, :assets}
+        url: "/characters/1234/assets"
       }
 
       opts = [token: "test-token"]
 
       mock_response = %Req.Response{
-        status: 200,
         body: [],
-        headers: []
+        headers: [],
+        status: 200
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
@@ -123,11 +124,11 @@ defmodule Esi.ClientTest do
 
     test "request with custom options" do
       request_spec = %{
-        url: "/status",
-        method: :get,
         args: [],
+        call: {Esi.Api.Status, :status},
+        method: :get,
         response: [{200, :ok}],
-        call: {Esi.Api.Status, :status}
+        url: "/status"
       }
 
       opts = [
@@ -137,7 +138,7 @@ defmodule Esi.ClientTest do
         base_url: "https://custom.api.com"
       ]
 
-      mock_response = %Req.Response{status: 200, body: %{}, headers: []}
+      mock_response = %Req.Response{body: %{}, headers: [], status: 200}
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
         Client.request(request_spec, opts)
@@ -164,141 +165,141 @@ defmodule Esi.ClientTest do
   describe "error handling" do
     test "handles 404 not found" do
       request_spec = %{
-        url: "/characters/invalid",
-        method: :get,
         args: [],
+        call: {Esi.Api.Character, :character},
+        method: :get,
         response: [{200, :ok}],
-        call: {Esi.Api.Character, :character}
+        url: "/characters/invalid"
       }
 
       mock_response = %Req.Response{
-        status: 404,
         body: %{"error" => "Character not found"},
-        headers: [{"x-esi-request-id", "req-123"}]
+        headers: [{"x-esi-request-id", "req-123"}],
+        status: 404
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
         assert {:error, error} = Client.request(request_spec, [])
 
         assert %Error{
-                 type: :api_error,
-                 status: 404,
                  message: "Not found",
-                 request_id: "req-123"
+                 request_id: "req-123",
+                 status: 404,
+                 type: :api_error
                } = error
       end
     end
 
     test "handles 401 unauthorized" do
       request_spec = %{
-        url: "/characters/1234/mail",
-        method: :get,
         args: [],
+        call: {Esi.Api.Character, :mail},
+        method: :get,
         response: [{200, :ok}],
-        call: {Esi.Api.Character, :mail}
+        url: "/characters/1234/mail"
       }
 
       mock_response = %Req.Response{
-        status: 401,
         body: %{"error" => "Invalid token"},
-        headers: []
+        headers: [],
+        status: 401
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
         assert {:error, error} = Client.request(request_spec, [])
 
         assert %Error{
-                 type: :api_error,
+                 message: "Unauthorized - invalid or expired token",
                  status: 401,
-                 message: "Unauthorized - invalid or expired token"
+                 type: :api_error
                } = error
       end
     end
 
     test "handles 420 error limited with retry-after" do
       request_spec = %{
-        url: "/alliances",
-        method: :get,
         args: [],
+        call: {Esi.Api.Alliance, :alliances},
+        method: :get,
         response: [{200, :ok}],
-        call: {Esi.Api.Alliance, :alliances}
+        url: "/alliances"
       }
 
       mock_response = %Req.Response{
-        status: 420,
         body: %{"error" => "Error limited"},
         headers: [
           {"retry-after", "60"},
           {"x-esi-request-id", "req-456"}
-        ]
+        ],
+        status: 420
       }
 
       with_mock Req, request: fn _opts -> {:ok, mock_response} end do
         assert {:error, error} = Client.request(request_spec, [])
 
         assert %Error{
-                 type: :api_error,
-                 status: 420,
                  message: "Error limited - too many requests",
+                 request_id: "req-456",
                  retry_after: 60,
-                 request_id: "req-456"
+                 status: 420,
+                 type: :api_error
                } = error
       end
     end
 
     test "handles network timeout" do
       request_spec = %{
-        url: "/status",
-        method: :get,
         args: [],
+        call: {Esi.Api.Status, :status},
+        method: :get,
         response: [{200, :ok}],
-        call: {Esi.Api.Status, :status}
+        url: "/status"
       }
 
       with_mock Req, request: fn _opts -> {:error, %Req.TransportError{reason: :timeout}} end do
         assert {:error, error} = Client.request(request_spec, [])
 
         assert %Error{
-                 type: :timeout_error,
-                 message: "Request timed out"
+                 message: "Request timed out",
+                 type: :timeout_error
                } = error
       end
     end
 
     test "handles network connection error" do
       request_spec = %{
-        url: "/status",
-        method: :get,
         args: [],
+        call: {Esi.Api.Status, :status},
+        method: :get,
         response: [{200, :ok}],
-        call: {Esi.Api.Status, :status}
+        url: "/status"
       }
 
       with_mock Req, request: fn _opts -> {:error, %Req.TransportError{reason: :econnrefused}} end do
         assert {:error, error} = Client.request(request_spec, [])
 
         assert %Error{
-                 type: :network_error,
-                 message: "Network error: :econnrefused"
+                 message: "Network error: :econnrefused",
+                 type: :network_error
                } = error
       end
     end
 
     test "handles unexpected errors" do
       request_spec = %{
-        url: "/status",
-        method: :get,
         args: [],
+        call: {Esi.Api.Status, :status},
+        method: :get,
         response: [{200, :ok}],
-        call: {Esi.Api.Status, :status}
+        url: "/status"
       }
 
       with_mock Req, request: fn _opts -> raise "Something went wrong" end do
         assert {:error, error} = Client.request(request_spec, [])
 
         assert %Error{
-                 type: :network_error,
-                 message: "Unexpected error: %RuntimeError{message: \"Something went wrong\"}"
+                 message: "Unexpected error: %RuntimeError{message: \"Something went wrong\"}",
+                 type: :network_error
                } = error
       end
     end
@@ -307,14 +308,14 @@ defmodule Esi.ClientTest do
   describe "path parameter substitution" do
     test "substitutes single path parameter" do
       request_spec = %{
-        url: "/characters/{character_id}",
-        method: :get,
         args: [character_id: 1234],
+        call: {Esi.Api.Character, :character},
+        method: :get,
         response: [{200, :ok}],
-        call: {Esi.Api.Character, :character}
+        url: "/characters/{character_id}"
       }
 
-      mock_response = %Req.Response{status: 200, body: %{}, headers: []}
+      mock_response = %Req.Response{body: %{}, headers: [], status: 200}
 
       with_mock Req,
         request: fn opts ->
@@ -327,14 +328,14 @@ defmodule Esi.ClientTest do
 
     test "substitutes multiple path parameters" do
       request_spec = %{
-        url: "/characters/{character_id}/mail/{mail_id}",
-        method: :get,
         args: [character_id: 1234, mail_id: 5678],
+        call: {Esi.Api.Character, :mail_item},
+        method: :get,
         response: [{200, :ok}],
-        call: {Esi.Api.Character, :mail_item}
+        url: "/characters/{character_id}/mail/{mail_id}"
       }
 
-      mock_response = %Req.Response{status: 200, body: %{}, headers: []}
+      mock_response = %Req.Response{body: %{}, headers: [], status: 200}
 
       with_mock Req,
         request: fn opts ->

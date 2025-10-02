@@ -7,17 +7,19 @@ defmodule EsiEveOnline.Test.MockDataTest do
   """
 
   use ExUnit.Case, async: false
+
   import Mock
+
   alias EsiEveOnline.Test.FixtureLoader
 
   describe "pagination with mock data" do
     test "stream! handles multiple pages using mock character assets data" do
       # This test uses mock responses to verify pagination works correctly
       request = %ESI.Request{
-        verb: :get,
-        path: "/characters/123/assets/",
+        opts: %{},
         opts_schema: %{page: {:query, :optional}},
-        opts: %{}
+        path: "/characters/123/assets/",
+        verb: :get
       }
 
       # Mock using mock responses (3 pages: 999 + 999 + 102 = 2100 items)
@@ -34,16 +36,16 @@ defmodule EsiEveOnline.Test.MockDataTest do
         # Total items across all pages
         assert length(result) == 2100
         assert is_list(result)
-        assert length(result) > 0
+        refute Enum.empty?(result)
       end
     end
 
     test "request_with_headers returns correct pagination info from mock data" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/characters/123/assets/",
+        opts: %{},
         opts_schema: %{page: {:query, :optional}},
-        opts: %{}
+        path: "/characters/123/assets/",
+        verb: :get
       }
 
       # Extract the mock pagination info
@@ -61,10 +63,10 @@ defmodule EsiEveOnline.Test.MockDataTest do
   describe "non-paginated endpoints with mock data" do
     test "universe bloodlines with mock data" do
       request = %ESI.Request{
-        verb: :get,
-        path: "/universe/bloodlines/",
+        opts: %{},
         opts_schema: %{},
-        opts: %{}
+        path: "/universe/bloodlines/",
+        verb: :get
       }
 
       {:ok, data} = FixtureLoader.load_data("universe_bloodlines.json")
@@ -82,7 +84,7 @@ defmodule EsiEveOnline.Test.MockDataTest do
     test "loads fixture data correctly" do
       # Test the fixture loader itself
       fixtures = FixtureLoader.list_fixtures()
-      assert length(fixtures) > 0, "Should have mock fixtures available"
+      assert not Enum.empty?(fixtures), "Should have mock fixtures available"
 
       # Test loading the first available fixture
       [first_fixture | _] = fixtures

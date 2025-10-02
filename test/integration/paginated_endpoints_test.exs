@@ -6,6 +6,7 @@ defmodule Integration.PaginatedEndpointsTest do
   """
 
   use ExUnit.Case, async: false
+
   import Mock
 
   alias EsiEveOnline.Test.FixtureLoader
@@ -23,10 +24,10 @@ defmodule Integration.PaginatedEndpointsTest do
           page = opts[:params][:page] || 1
 
           case page do
-            1 -> {:ok, %Req.Response{status: 200, body: page1_data, headers: [{"x-pages", "3"}]}}
-            2 -> {:ok, %Req.Response{status: 200, body: page2_data, headers: [{"x-pages", "3"}]}}
-            3 -> {:ok, %Req.Response{status: 200, body: page3_data, headers: [{"x-pages", "3"}]}}
-            _ -> {:ok, %Req.Response{status: 200, body: [], headers: [{"x-pages", "1"}]}}
+            1 -> {:ok, %Req.Response{body: page1_data, headers: [{"x-pages", "3"}], status: 200}}
+            2 -> {:ok, %Req.Response{body: page2_data, headers: [{"x-pages", "3"}], status: 200}}
+            3 -> {:ok, %Req.Response{body: page3_data, headers: [{"x-pages", "3"}], status: 200}}
+            _ -> {:ok, %Req.Response{body: [], headers: [{"x-pages", "1"}], status: 200}}
           end
         end do
         # Test the automatically generated streaming function
@@ -35,7 +36,7 @@ defmodule Integration.PaginatedEndpointsTest do
 
         # Verify we got data from all pages
         assert is_list(result)
-        assert length(result) > 0
+        refute Enum.empty?(result)
 
         # Verify the structure of the first item
         first_item = List.first(result)
@@ -50,13 +51,13 @@ defmodule Integration.PaginatedEndpointsTest do
 
       with_mock Req,
         request: fn _opts ->
-          {:ok, %Req.Response{status: 200, body: page1_data, headers: [{"x-pages", "1"}]}}
+          {:ok, %Req.Response{body: page1_data, headers: [{"x-pages", "1"}], status: 200}}
         end do
         stream = Esi.Api.Characters.assets(12345, token: "test_token")
         result = stream |> Enum.to_list() |> List.flatten()
 
         assert is_list(result)
-        assert length(result) > 0
+        refute Enum.empty?(result)
       end
     end
 
@@ -69,9 +70,9 @@ defmodule Integration.PaginatedEndpointsTest do
           page = opts[:params][:page] || 1
 
           case page do
-            1 -> {:ok, %Req.Response{status: 200, body: page1_data, headers: [{"x-pages", "2"}]}}
-            2 -> {:ok, %Req.Response{status: 200, body: page2_data, headers: [{"x-pages", "2"}]}}
-            _ -> {:ok, %Req.Response{status: 200, body: [], headers: [{"x-pages", "1"}]}}
+            1 -> {:ok, %Req.Response{body: page1_data, headers: [{"x-pages", "2"}], status: 200}}
+            2 -> {:ok, %Req.Response{body: page2_data, headers: [{"x-pages", "2"}], status: 200}}
+            _ -> {:ok, %Req.Response{body: [], headers: [{"x-pages", "1"}], status: 200}}
           end
         end do
         # Test stream operations - verify the stream can be processed with Stream functions
@@ -92,7 +93,7 @@ defmodule Integration.PaginatedEndpointsTest do
 
       with_mock Req,
         request: fn _opts ->
-          {:ok, %Req.Response{status: 200, body: page1_data, headers: [{"x-pages", "3"}]}}
+          {:ok, %Req.Response{body: page1_data, headers: [{"x-pages", "3"}], status: 200}}
         end do
         # Take only first 5 assets - should stop fetching early
         limited_assets =
@@ -117,16 +118,16 @@ defmodule Integration.PaginatedEndpointsTest do
           page = opts[:params][:page] || 1
 
           case page do
-            1 -> {:ok, %Req.Response{status: 200, body: page1_data, headers: [{"x-pages", "2"}]}}
-            2 -> {:ok, %Req.Response{status: 200, body: page2_data, headers: [{"x-pages", "2"}]}}
-            _ -> {:ok, %Req.Response{status: 200, body: [], headers: [{"x-pages", "1"}]}}
+            1 -> {:ok, %Req.Response{body: page1_data, headers: [{"x-pages", "2"}], status: 200}}
+            2 -> {:ok, %Req.Response{body: page2_data, headers: [{"x-pages", "2"}], status: 200}}
+            _ -> {:ok, %Req.Response{body: [], headers: [{"x-pages", "1"}], status: 200}}
           end
         end do
         stream = Esi.Api.Universe.groups()
         result = stream |> Enum.to_list() |> List.flatten()
 
         assert is_list(result)
-        assert length(result) > 0
+        refute Enum.empty?(result)
 
         # Universe groups fixture returns group objects
         first_item = List.first(result)
@@ -139,7 +140,7 @@ defmodule Integration.PaginatedEndpointsTest do
 
       with_mock Req,
         request: fn _opts ->
-          {:ok, %Req.Response{status: 200, body: page1_data, headers: [{"x-pages", "2"}]}}
+          {:ok, %Req.Response{body: page1_data, headers: [{"x-pages", "2"}], status: 200}}
         end do
         # Take only first 10 groups
         limited_groups =
@@ -158,7 +159,7 @@ defmodule Integration.PaginatedEndpointsTest do
     test "raises error when API call fails" do
       with_mock Req,
         request: fn _opts ->
-          {:ok, %Req.Response{status: 500, body: %{"error" => "Internal Server Error"}}}
+          {:ok, %Req.Response{body: %{"error" => "Internal Server Error"}, status: 500}}
         end do
         assert_raise RuntimeError, fn ->
           Esi.Api.Characters.assets(12345, token: "test_token")
@@ -170,7 +171,7 @@ defmodule Integration.PaginatedEndpointsTest do
     test "handles empty response gracefully" do
       with_mock Req,
         request: fn _opts ->
-          {:ok, %Req.Response{status: 200, body: [], headers: [{"x-pages", "1"}]}}
+          {:ok, %Req.Response{body: [], headers: [{"x-pages", "1"}], status: 200}}
         end do
         result =
           Esi.Api.Characters.assets(12345, token: "test_token")
@@ -188,7 +189,7 @@ defmodule Integration.PaginatedEndpointsTest do
 
       with_mock Req,
         request: fn _opts ->
-          {:ok, %Req.Response{status: 200, body: page1_data, headers: [{"x-pages", "1"}]}}
+          {:ok, %Req.Response{body: page1_data, headers: [{"x-pages", "1"}], status: 200}}
         end do
         stream = Esi.Api.Characters.assets(12345, token: "test_token")
 
@@ -216,9 +217,9 @@ defmodule Integration.PaginatedEndpointsTest do
           page = opts[:params][:page] || 1
 
           case page do
-            1 -> {:ok, %Req.Response{status: 200, body: page1_data, headers: [{"x-pages", "2"}]}}
-            2 -> {:ok, %Req.Response{status: 200, body: page2_data, headers: [{"x-pages", "2"}]}}
-            _ -> {:ok, %Req.Response{status: 200, body: [], headers: [{"x-pages", "1"}]}}
+            1 -> {:ok, %Req.Response{body: page1_data, headers: [{"x-pages", "2"}], status: 200}}
+            2 -> {:ok, %Req.Response{body: page2_data, headers: [{"x-pages", "2"}], status: 200}}
+            _ -> {:ok, %Req.Response{body: [], headers: [{"x-pages", "1"}], status: 200}}
           end
         end do
         stream = Esi.Api.Characters.assets(12345, token: "test_token")
