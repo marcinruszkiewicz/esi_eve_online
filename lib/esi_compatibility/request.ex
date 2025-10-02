@@ -15,17 +15,17 @@ defmodule ESI.Request do
   ]
 
   defstruct [
-    :verb,
     :path,
-    opts_schema: %{},
-    opts: %{}
+    :verb,
+    opts: %{},
+    opts_schema: %{}
   ]
 
   @type t :: %__MODULE__{
-          verb: :get | :post | :put | :delete,
-          path: String.t(),
+          opts: %{atom => any},
           opts_schema: %{atom => {:body | :query, :required | :optional}},
-          opts: %{atom => any}
+          path: String.t(),
+          verb: :get | :post | :put | :delete
         }
 
   @typedoc """
@@ -43,8 +43,8 @@ defmodule ESI.Request do
   """
   @type request_opts :: [request_opt]
   @type request_opt ::
-          {:datasource, :tranquility | :singularity} 
-          | {:user_agent, String.t()} 
+          {:datasource, :tranquility | :singularity}
+          | {:user_agent, String.t()}
           | {:token, String.t()}
           | {:page, integer()}
           | {:timeout, integer()}
@@ -125,18 +125,22 @@ defmodule ESI.Request do
   # Execute request using new Esi.Client
   defp do_run(request) do
     client_opts = map_legacy_opts_to_client_opts(request.opts)
-    
+
     case request.verb do
       :get ->
         EsiEveOnline.get(request.path, client_opts)
+
       :post ->
         body = extract_body_from_opts(request)
         EsiEveOnline.post(request.path, body, client_opts)
+
       :put ->
         body = extract_body_from_opts(request)
         EsiEveOnline.put(request.path, body, client_opts)
+
       :delete ->
         EsiEveOnline.delete(request.path, client_opts)
+
       :patch ->
         body = extract_body_from_opts(request)
         EsiEveOnline.patch(request.path, body, client_opts)
@@ -146,49 +150,59 @@ defmodule ESI.Request do
   # Execute request with headers for pagination support
   defp do_run_with_headers(request) do
     client_opts = map_legacy_opts_to_client_opts(request.opts)
-    
+
     case request.verb do
       :get ->
         EsiEveOnline.get_with_headers(request.path, client_opts)
+
       :post ->
         body = extract_body_from_opts(request)
         # For POST requests, we need to use the general request_with_headers
         request_spec = %{
-          url: request.path,
-          method: :post,
           args: [body: body],
+          call: {__MODULE__, :do_run_with_headers},
+          method: :post,
           response: [{200, :ok}, {:default, {Esi.Error, :t}}],
-          call: {__MODULE__, :do_run_with_headers}
+          url: request.path
         }
+
         EsiEveOnline.request_with_headers(request_spec, client_opts)
+
       :put ->
         body = extract_body_from_opts(request)
+
         request_spec = %{
-          url: request.path,
-          method: :put,
           args: [body: body],
+          call: {__MODULE__, :do_run_with_headers},
+          method: :put,
           response: [{200, :ok}, {:default, {Esi.Error, :t}}],
-          call: {__MODULE__, :do_run_with_headers}
+          url: request.path
         }
+
         EsiEveOnline.request_with_headers(request_spec, client_opts)
+
       :delete ->
         request_spec = %{
-          url: request.path,
-          method: :delete,
           args: [],
+          call: {__MODULE__, :do_run_with_headers},
+          method: :delete,
           response: [{200, :ok}, {:default, {Esi.Error, :t}}],
-          call: {__MODULE__, :do_run_with_headers}
+          url: request.path
         }
+
         EsiEveOnline.request_with_headers(request_spec, client_opts)
+
       :patch ->
         body = extract_body_from_opts(request)
+
         request_spec = %{
-          url: request.path,
-          method: :patch,
           args: [body: body],
+          call: {__MODULE__, :do_run_with_headers},
+          method: :patch,
           response: [{200, :ok}, {:default, {Esi.Error, :t}}],
-          call: {__MODULE__, :do_run_with_headers}
+          url: request.path
         }
+
         EsiEveOnline.request_with_headers(request_spec, client_opts)
     end
   end
@@ -197,12 +211,25 @@ defmodule ESI.Request do
   defp map_legacy_opts_to_client_opts(legacy_opts) do
     legacy_opts
     |> Enum.reduce([], fn
-      {:datasource, _}, acc -> acc  # Ignore datasource for now
-      {:token, token}, acc -> [{:token, token} | acc]
-      {:user_agent, ua}, acc -> [{:user_agent, ua} | acc]
-      {:page, page}, acc -> [{:page, page} | acc]
-      {:timeout, timeout}, acc -> [{:timeout, timeout} | acc]
-      {:retries, retries}, acc -> [{:retries, retries} | acc]
+      # Ignore datasource for now
+      {:datasource, _}, acc ->
+        acc
+
+      {:token, token}, acc ->
+        [{:token, token} | acc]
+
+      {:user_agent, ua}, acc ->
+        [{:user_agent, ua} | acc]
+
+      {:page, page}, acc ->
+        [{:page, page} | acc]
+
+      {:timeout, timeout}, acc ->
+        [{:timeout, timeout} | acc]
+
+      {:retries, retries}, acc ->
+        [{:retries, retries} | acc]
+
       {key, value}, acc ->
         # Pass through other options that might be query parameters
         if is_query_param?(key) do
@@ -215,12 +242,12 @@ defmodule ESI.Request do
 
   # Extract body content from legacy request options
   defp extract_body_from_opts(request) do
-    body_opts = 
+    body_opts =
       request.opts_schema
       |> Enum.filter(fn {_, {location, _}} -> location == :body end)
       |> Enum.map(fn {key, _} -> {key, Map.get(request.opts, key)} end)
       |> Enum.reject(fn {_, value} -> is_nil(value) end)
-      |> Enum.into(%{})
+      |> Map.new()
 
     case map_size(body_opts) do
       0 -> nil
@@ -257,6 +284,7 @@ defmodule ESI.Request do
 
             {:ok, data, max_pages} when is_list(data) ->
               next_page = page + 1
+
               if next_page > max_pages do
                 {data, :quit}
               else

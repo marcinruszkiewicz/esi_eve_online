@@ -128,9 +128,9 @@ defmodule ESI.RequestTest do
         opts: %{token: "test_token"}
       }
 
-      with_mock EsiEveOnline, [get: fn(_path, _opts) -> {:ok, "success"} end] do
+      with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, "success"} end do
         assert {:ok, "success"} = ESI.Request.run(request)
-        assert called(EsiEveOnline.get("/test/", [token: "test_token"]))
+        assert called(EsiEveOnline.get("/test/", token: "test_token"))
       end
     end
 
@@ -142,7 +142,7 @@ defmodule ESI.RequestTest do
         opts: %{data: %{"test" => "value"}}
       }
 
-      with_mock EsiEveOnline, [post: fn(_path, _body, _opts) -> {:ok, "success"} end] do
+      with_mock EsiEveOnline, post: fn _path, _body, _opts -> {:ok, "success"} end do
         assert {:ok, "success"} = ESI.Request.run(request)
         assert called(EsiEveOnline.post("/test/", %{"test" => "value"}, []))
       end
@@ -156,7 +156,7 @@ defmodule ESI.RequestTest do
         opts: %{data: %{"test" => "value"}}
       }
 
-      with_mock EsiEveOnline, [put: fn(_path, _body, _opts) -> {:ok, "success"} end] do
+      with_mock EsiEveOnline, put: fn _path, _body, _opts -> {:ok, "success"} end do
         assert {:ok, "success"} = ESI.Request.run(request)
         assert called(EsiEveOnline.put("/test/", %{"test" => "value"}, []))
       end
@@ -170,9 +170,9 @@ defmodule ESI.RequestTest do
         opts: %{token: "test_token"}
       }
 
-      with_mock EsiEveOnline, [delete: fn(_path, _opts) -> {:ok, "success"} end] do
+      with_mock EsiEveOnline, delete: fn _path, _opts -> {:ok, "success"} end do
         assert {:ok, "success"} = ESI.Request.run(request)
-        assert called(EsiEveOnline.delete("/test/", [token: "test_token"]))
+        assert called(EsiEveOnline.delete("/test/", token: "test_token"))
       end
     end
 
@@ -197,11 +197,12 @@ defmodule ESI.RequestTest do
         opts: %{token: "test_token", user_agent: "TestAgent/1.0"}
       }
 
-      with_mock EsiEveOnline, [get: fn(_path, opts) -> 
-        assert Keyword.get(opts, :token) == "test_token"
-        assert Keyword.get(opts, :user_agent) == "TestAgent/1.0"
-        {:ok, "success"}
-      end] do
+      with_mock EsiEveOnline,
+        get: fn _path, opts ->
+          assert Keyword.get(opts, :token) == "test_token"
+          assert Keyword.get(opts, :user_agent) == "TestAgent/1.0"
+          {:ok, "success"}
+        end do
         ESI.Request.run(request)
       end
     end
@@ -214,11 +215,12 @@ defmodule ESI.RequestTest do
         opts: %{datasource: :tranquility, token: "test_token"}
       }
 
-      with_mock EsiEveOnline, [get: fn(_path, opts) -> 
-        assert Keyword.get(opts, :token) == "test_token"
-        assert Keyword.get(opts, :datasource) == nil
-        {:ok, "success"}
-      end] do
+      with_mock EsiEveOnline,
+        get: fn _path, opts ->
+          assert Keyword.get(opts, :token) == "test_token"
+          assert Keyword.get(opts, :datasource) == nil
+          {:ok, "success"}
+        end do
         ESI.Request.run(request)
       end
     end
@@ -234,11 +236,12 @@ defmodule ESI.RequestTest do
         opts: %{data: [1, 2, 3], token: "test_token"}
       }
 
-      with_mock EsiEveOnline, [post: fn(_path, body, opts) -> 
-        assert body == [1, 2, 3]
-        assert Keyword.get(opts, :token) == "test_token"
-        {:ok, "success"}
-      end] do
+      with_mock EsiEveOnline,
+        post: fn _path, body, opts ->
+          assert body == [1, 2, 3]
+          assert Keyword.get(opts, :token) == "test_token"
+          {:ok, "success"}
+        end do
         ESI.Request.run(request)
       end
     end
@@ -254,14 +257,13 @@ defmodule ESI.RequestTest do
       }
 
       # Mock run_with_headers to simulate pagination
-      with_mock ESI.Request, [
+      with_mock ESI.Request,
         run_with_headers: fn
           %{opts: %{page: 1}} -> {:ok, [1, 2, 3], 2}
           %{opts: %{page: 2}} -> {:ok, [4, 5, 6], 2}
         end,
-        stream!: fn(_req) -> Stream.concat([[1, 2, 3], [4, 5, 6]]) end,
-        options: fn(req, opts) -> %{req | opts: Map.merge(req.opts, Map.new(opts))} end
-      ] do
+        stream!: fn _req -> Stream.concat([[1, 2, 3], [4, 5, 6]]) end,
+        options: fn req, opts -> %{req | opts: Map.merge(req.opts, Map.new(opts))} end do
         stream = ESI.Request.stream!(request)
         result = Enum.to_list(stream)
         assert result == [1, 2, 3, 4, 5, 6]
@@ -276,10 +278,9 @@ defmodule ESI.RequestTest do
         opts: %{}
       }
 
-      with_mock ESI.Request, [
-        run: fn(_req) -> {:ok, [:result1, :result2]} end,
-        stream!: fn(_req) -> Stream.cycle([:result1, :result2]) |> Stream.take(2) end
-      ] do
+      with_mock ESI.Request,
+        run: fn _req -> {:ok, [:result1, :result2]} end,
+        stream!: fn _req -> Stream.cycle([:result1, :result2]) |> Stream.take(2) end do
         stream = ESI.Request.stream!(request)
         result = Enum.to_list(stream)
         assert result == [:result1, :result2]
@@ -294,14 +295,13 @@ defmodule ESI.RequestTest do
         opts: %{}
       }
 
-      with_mock ESI.Request, [
+      with_mock ESI.Request,
         run_with_headers: fn
           %{opts: %{page: 1}} -> {:ok, [1, 2, 3], 2}
           %{opts: %{page: 2}} -> {:ok, [], 2}
         end,
-        stream!: fn(_req) -> Stream.take([1, 2, 3], 3) end,
-        options: fn(req, opts) -> %{req | opts: Map.merge(req.opts, Map.new(opts))} end
-      ] do
+        stream!: fn _req -> Stream.take([1, 2, 3], 3) end,
+        options: fn req, opts -> %{req | opts: Map.merge(req.opts, Map.new(opts))} end do
         stream = ESI.Request.stream!(request)
         result = Enum.to_list(stream)
         assert result == [1, 2, 3]
@@ -316,18 +316,18 @@ defmodule ESI.RequestTest do
         opts: %{}
       }
 
-      with_mock ESI.Request, [
-        run_with_headers: fn(_req) -> {:error, "API error"} end,
-        stream!: fn(_req) -> 
+      with_mock ESI.Request,
+        run_with_headers: fn _req -> {:error, "API error"} end,
+        stream!: fn _req ->
           Stream.resource(
             fn -> :start end,
             fn :start -> raise RuntimeError, "Request failed: API error" end,
             fn _ -> :ok end
           )
         end,
-        options: fn(req, opts) -> %{req | opts: Map.merge(req.opts, Map.new(opts))} end
-      ] do
+        options: fn req, opts -> %{req | opts: Map.merge(req.opts, Map.new(opts))} end do
         stream = ESI.Request.stream!(request)
+
         assert_raise RuntimeError, ~r/Request failed/, fn ->
           Enum.to_list(stream)
         end

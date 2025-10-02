@@ -61,11 +61,11 @@ defmodule EsiEveOnline do
   @spec get(String.t(), request_options()) :: response()
   def get(path, opts \\ []) do
     request_spec = %{
-      url: path,
-      method: :get,
       args: [],
+      call: {__MODULE__, :get},
+      method: :get,
       response: [{200, :ok}, {:default, {Esi.Error, :t}}],
-      call: {__MODULE__, :get}
+      url: path
     }
 
     Client.request(request_spec, opts)
@@ -91,14 +91,14 @@ defmodule EsiEveOnline do
     query_params =
       opts
       |> Keyword.drop([:token, :user_agent, :timeout, :retries, :base_url])
-      |> Enum.into([])
+      |> Enum.to_list()
 
     request_spec = %{
-      url: path,
-      method: :get,
       args: query_params,
+      call: {__MODULE__, :get_with_headers},
+      method: :get,
       response: [{200, :ok}, {:default, {Esi.Error, :t}}],
-      call: {__MODULE__, :get_with_headers}
+      url: path
     }
 
     Client.request_with_headers(request_spec, opts)
@@ -115,11 +115,11 @@ defmodule EsiEveOnline do
   @spec post(String.t(), term(), request_options()) :: response()
   def post(path, body, opts \\ []) do
     request_spec = %{
-      url: path,
-      method: :post,
       args: [body: body],
+      call: {__MODULE__, :post},
+      method: :post,
       response: [{200, :ok}, {:default, {Esi.Error, :t}}],
-      call: {__MODULE__, :post}
+      url: path
     }
 
     Client.request(request_spec, opts)
@@ -131,11 +131,11 @@ defmodule EsiEveOnline do
   @spec put(String.t(), term(), request_options()) :: response()
   def put(path, body, opts \\ []) do
     request_spec = %{
-      url: path,
-      method: :put,
       args: [body: body],
+      call: {__MODULE__, :put},
+      method: :put,
       response: [{200, :ok}, {:default, {Esi.Error, :t}}],
-      call: {__MODULE__, :put}
+      url: path
     }
 
     Client.request(request_spec, opts)
@@ -147,11 +147,11 @@ defmodule EsiEveOnline do
   @spec delete(String.t(), request_options()) :: response()
   def delete(path, opts \\ []) do
     request_spec = %{
-      url: path,
-      method: :delete,
       args: [],
+      call: {__MODULE__, :delete},
+      method: :delete,
       response: [{200, :ok}, {:default, {Esi.Error, :t}}],
-      call: {__MODULE__, :delete}
+      url: path
     }
 
     Client.request(request_spec, opts)
@@ -163,11 +163,11 @@ defmodule EsiEveOnline do
   @spec patch(String.t(), term(), request_options()) :: response()
   def patch(path, body, opts \\ []) do
     request_spec = %{
-      url: path,
-      method: :patch,
       args: [body: body],
+      call: {__MODULE__, :patch},
+      method: :patch,
       response: [{200, :ok}, {:default, {Esi.Error, :t}}],
-      call: {__MODULE__, :patch}
+      url: path
     }
 
     Client.request(request_spec, opts)
@@ -275,7 +275,7 @@ defmodule EsiEveOnline do
     query_params =
       opts
       |> Keyword.drop([:token, :user_agent, :timeout, :retries, :base_url])
-      |> Enum.into([])
+      |> Enum.to_list()
 
     # Check if this endpoint supports pagination by looking for page parameter
     supports_pagination = supports_pagination?(path, opts)

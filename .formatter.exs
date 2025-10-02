@@ -1,4 +1,17 @@
 # Used by "mix format"
 [
-  inputs: ["{mix,.formatter}.exs", "{config,lib,test}/**/*.{ex,exs}"]
+  inputs: ["{mix,.formatter}.exs", "{config,lib,test}/**/*.{ex,exs}"],
+  plugins: [Quokka],
+  quokka: [
+    autosort: [:map, :defstruct, :schema],
+    files: %{
+      included: [
+        "lib/"
+      ],
+      excluded: [
+        "lib/esi/api/",
+        "lib/esi_compatibility/api/"
+      ]
+    }
+  ]
 ]

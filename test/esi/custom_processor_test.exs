@@ -44,7 +44,9 @@ defmodule Esi.CustomProcessorTest do
       assert CustomProcessor.operation_function_name(nil, operation) == :mining_observers
 
       # GET /corporation/{corporation_id}/mining/observers/{observer_id} -> mining_observer
-      operation = make_operation("/corporation/{corporation_id}/mining/observers/{observer_id}", "get")
+      operation =
+        make_operation("/corporation/{corporation_id}/mining/observers/{observer_id}", "get")
+
       assert CustomProcessor.operation_function_name(nil, operation) == :mining_observer
     end
 

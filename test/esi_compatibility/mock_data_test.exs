@@ -1,7 +1,7 @@
 defmodule EsiEveOnline.Test.MockDataTest do
   @moduledoc """
   Tests using mock API responses.
-  
+
   These tests demonstrate how to use the FixtureLoader to test with
   mock API response data, including proper pagination handling.
   """
@@ -21,16 +21,18 @@ defmodule EsiEveOnline.Test.MockDataTest do
       }
 
       # Mock using mock responses (3 pages: 999 + 999 + 102 = 2100 items)
-      with_mock EsiEveOnline, FixtureLoader.mock_get_with_headers([
-        "character_assets_page1.json",
-        "character_assets_page2.json",
-        "character_assets_page3.json"
-      ]) do
+      with_mock EsiEveOnline,
+                FixtureLoader.mock_get_with_headers([
+                  "character_assets_page1.json",
+                  "character_assets_page2.json",
+                  "character_assets_page3.json"
+                ]) do
         stream = ESI.stream!(request)
         result = Enum.to_list(stream)
-        
+
         # Verify we got data from multiple pages
-        assert length(result) == 2100  # Total items across all pages
+        # Total items across all pages
+        assert length(result) == 2100
         assert is_list(result)
         assert length(result) > 0
       end
@@ -47,10 +49,11 @@ defmodule EsiEveOnline.Test.MockDataTest do
       # Extract the mock pagination info
       {:ok, data, max_pages} = FixtureLoader.mock_response_tuple("character_assets_page1.json")
 
-      with_mock EsiEveOnline, [get_with_headers: fn(_path, _opts) -> {:ok, data, max_pages} end] do
+      with_mock EsiEveOnline, get_with_headers: fn _path, _opts -> {:ok, data, max_pages} end do
         result = ESI.request_with_headers(request)
         assert {:ok, ^data, ^max_pages} = result
-        assert max_pages == 3  # Should have 3 pages
+        # Should have 3 pages
+        assert max_pages == 3
       end
     end
   end
@@ -66,10 +69,11 @@ defmodule EsiEveOnline.Test.MockDataTest do
 
       {:ok, data} = FixtureLoader.load_data("universe_bloodlines.json")
 
-      with_mock EsiEveOnline, [get: fn(_path, _opts) -> {:ok, data} end] do
+      with_mock EsiEveOnline, get: fn _path, _opts -> {:ok, data} end do
         result = ESI.request(request)
         assert {:ok, ^data} = result
-        assert length(data) == 18  # Should have 18 bloodlines
+        # Should have 18 bloodlines
+        assert length(data) == 18
       end
     end
   end
@@ -79,10 +83,10 @@ defmodule EsiEveOnline.Test.MockDataTest do
       # Test the fixture loader itself
       fixtures = FixtureLoader.list_fixtures()
       assert length(fixtures) > 0, "Should have mock fixtures available"
-      
+
       # Test loading the first available fixture
       [first_fixture | _] = fixtures
-      
+
       case FixtureLoader.load_response(first_fixture) do
         {:ok, response} ->
           # Handle both new format (with metadata) and old format (raw data)
@@ -97,7 +101,7 @@ defmodule EsiEveOnline.Test.MockDataTest do
             assert is_list(response) or is_map(response)
             IO.puts("  ℹ️  Found legacy format fixture: #{first_fixture}")
           end
-          
+
         {:error, reason} ->
           flunk("Failed to load fixture #{first_fixture}: #{reason}")
       end
@@ -111,12 +115,13 @@ defmodule EsiEveOnline.Test.MockDataTest do
               # Verify pagination info structure
               assert Map.has_key?(pagination, :x_pages)
               assert Map.has_key?(pagination, :x_esi_request_id)
-              assert pagination.x_pages == "3"  # Should have 3 pages
-              
+              # Should have 3 pages
+              assert pagination.x_pages == "3"
+
             {:error, reason} ->
               flunk("Failed to extract pagination info: #{reason}")
           end
-          
+
         {:error, :not_found} ->
           flunk("Mock fixture character_assets_page1.json should exist")
       end

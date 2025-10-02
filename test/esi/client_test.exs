@@ -21,22 +21,25 @@ defmodule Esi.ClientTest do
         headers: [{"content-type", "application/json"}]
       }
 
-      with_mock Req, [request: fn(_opts) -> {:ok, mock_response} end] do
+      with_mock Req, request: fn _opts -> {:ok, mock_response} end do
         assert {:ok, %{"name" => "Test Alliance"}} = Client.request(request_spec)
-        
-        assert_called Req.request([
-          method: :get,
-          url: "https://esi.evetech.net/latest/alliances/1234",
-          headers: [
-            {"accept", "application/json"},
-            {"content-type", "application/json"},
-            {"user-agent", "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
-          ],
-          params: %{},
-          receive_timeout: 30_000,
-          retry: :transient,
-          max_retries: 3
-        ])
+
+        assert_called(
+          Req.request(
+            method: :get,
+            url: "https://esi.evetech.net/latest/alliances/1234",
+            headers: [
+              {"accept", "application/json"},
+              {"content-type", "application/json"},
+              {"user-agent",
+               "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
+            ],
+            params: %{},
+            receive_timeout: 30_000,
+            retry: :transient,
+            max_retries: 3
+          )
+        )
       end
     end
 
@@ -55,23 +58,26 @@ defmodule Esi.ClientTest do
         headers: []
       }
 
-      with_mock Req, [request: fn(_opts) -> {:ok, mock_response} end] do
+      with_mock Req, request: fn _opts -> {:ok, mock_response} end do
         assert {:ok, [%{"id" => 1234, "name" => "Test"}]} = Client.request(request_spec)
-        
-        assert_called Req.request([
-          method: :post,
-          url: "https://esi.evetech.net/latest/universe/names",
-          json: [1234, 5678],
-          headers: [
-            {"accept", "application/json"},
-            {"content-type", "application/json"},
-            {"user-agent", "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
-          ],
-          params: %{},
-          receive_timeout: 30_000,
-          retry: :transient,
-          max_retries: 3
-        ])
+
+        assert_called(
+          Req.request(
+            method: :post,
+            url: "https://esi.evetech.net/latest/universe/names",
+            json: [1234, 5678],
+            headers: [
+              {"accept", "application/json"},
+              {"content-type", "application/json"},
+              {"user-agent",
+               "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
+            ],
+            params: %{},
+            receive_timeout: 30_000,
+            retry: :transient,
+            max_retries: 3
+          )
+        )
       end
     end
 
@@ -92,23 +98,26 @@ defmodule Esi.ClientTest do
         headers: []
       }
 
-      with_mock Req, [request: fn(_opts) -> {:ok, mock_response} end] do
+      with_mock Req, request: fn _opts -> {:ok, mock_response} end do
         assert {:ok, []} = Client.request(request_spec, opts)
-        
-        assert_called Req.request([
-          method: :get,
-          url: "https://esi.evetech.net/latest/characters/1234/assets",
-          headers: [
-            {"authorization", "Bearer test-token"},
-            {"accept", "application/json"},
-            {"content-type", "application/json"},
-            {"user-agent", "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
-          ],
-          params: %{},
-          receive_timeout: 30_000,
-          retry: :transient,
-          max_retries: 3
-        ])
+
+        assert_called(
+          Req.request(
+            method: :get,
+            url: "https://esi.evetech.net/latest/characters/1234/assets",
+            headers: [
+              {"authorization", "Bearer test-token"},
+              {"accept", "application/json"},
+              {"content-type", "application/json"},
+              {"user-agent",
+               "EsiEveOnline/1.0 (+https://github.com/marcinruszkiewicz/esi_eve_online discord:saithir)"}
+            ],
+            params: %{},
+            receive_timeout: 30_000,
+            retry: :transient,
+            max_retries: 3
+          )
+        )
       end
     end
 
@@ -130,22 +139,24 @@ defmodule Esi.ClientTest do
 
       mock_response = %Req.Response{status: 200, body: %{}, headers: []}
 
-      with_mock Req, [request: fn(_opts) -> {:ok, mock_response} end] do
+      with_mock Req, request: fn _opts -> {:ok, mock_response} end do
         Client.request(request_spec, opts)
-        
-        assert_called Req.request([
-          method: :get,
-          url: "https://custom.api.com/status",
-          headers: [
-            {"accept", "application/json"},
-            {"content-type", "application/json"},
-            {"user-agent", "CustomApp/1.0"}
-          ],
-          params: %{},
-          receive_timeout: 60_000,
-          retry: :transient,
-          max_retries: 5
-        ])
+
+        assert_called(
+          Req.request(
+            method: :get,
+            url: "https://custom.api.com/status",
+            headers: [
+              {"accept", "application/json"},
+              {"content-type", "application/json"},
+              {"user-agent", "CustomApp/1.0"}
+            ],
+            params: %{},
+            receive_timeout: 60_000,
+            retry: :transient,
+            max_retries: 5
+          )
+        )
       end
     end
   end
@@ -166,15 +177,15 @@ defmodule Esi.ClientTest do
         headers: [{"x-esi-request-id", "req-123"}]
       }
 
-      with_mock Req, [request: fn(_opts) -> {:ok, mock_response} end] do
+      with_mock Req, request: fn _opts -> {:ok, mock_response} end do
         assert {:error, error} = Client.request(request_spec, [])
-        
+
         assert %Error{
-          type: :api_error,
-          status: 404,
-          message: "Not found",
-          request_id: "req-123"
-        } = error
+                 type: :api_error,
+                 status: 404,
+                 message: "Not found",
+                 request_id: "req-123"
+               } = error
       end
     end
 
@@ -193,14 +204,14 @@ defmodule Esi.ClientTest do
         headers: []
       }
 
-      with_mock Req, [request: fn(_opts) -> {:ok, mock_response} end] do
+      with_mock Req, request: fn _opts -> {:ok, mock_response} end do
         assert {:error, error} = Client.request(request_spec, [])
-        
+
         assert %Error{
-          type: :api_error,
-          status: 401,
-          message: "Unauthorized - invalid or expired token"
-        } = error
+                 type: :api_error,
+                 status: 401,
+                 message: "Unauthorized - invalid or expired token"
+               } = error
       end
     end
 
@@ -222,16 +233,16 @@ defmodule Esi.ClientTest do
         ]
       }
 
-      with_mock Req, [request: fn(_opts) -> {:ok, mock_response} end] do
+      with_mock Req, request: fn _opts -> {:ok, mock_response} end do
         assert {:error, error} = Client.request(request_spec, [])
-        
+
         assert %Error{
-          type: :api_error,
-          status: 420,
-          message: "Error limited - too many requests",
-          retry_after: 60,
-          request_id: "req-456"
-        } = error
+                 type: :api_error,
+                 status: 420,
+                 message: "Error limited - too many requests",
+                 retry_after: 60,
+                 request_id: "req-456"
+               } = error
       end
     end
 
@@ -244,13 +255,13 @@ defmodule Esi.ClientTest do
         call: {Esi.Api.Status, :status}
       }
 
-      with_mock Req, [request: fn(_opts) -> {:error, %Req.TransportError{reason: :timeout}} end] do
+      with_mock Req, request: fn _opts -> {:error, %Req.TransportError{reason: :timeout}} end do
         assert {:error, error} = Client.request(request_spec, [])
-        
+
         assert %Error{
-          type: :timeout_error,
-          message: "Request timed out"
-        } = error
+                 type: :timeout_error,
+                 message: "Request timed out"
+               } = error
       end
     end
 
@@ -263,13 +274,13 @@ defmodule Esi.ClientTest do
         call: {Esi.Api.Status, :status}
       }
 
-      with_mock Req, [request: fn(_opts) -> {:error, %Req.TransportError{reason: :econnrefused}} end] do
+      with_mock Req, request: fn _opts -> {:error, %Req.TransportError{reason: :econnrefused}} end do
         assert {:error, error} = Client.request(request_spec, [])
-        
+
         assert %Error{
-          type: :network_error,
-          message: "Network error: :econnrefused"
-        } = error
+                 type: :network_error,
+                 message: "Network error: :econnrefused"
+               } = error
       end
     end
 
@@ -282,13 +293,13 @@ defmodule Esi.ClientTest do
         call: {Esi.Api.Status, :status}
       }
 
-      with_mock Req, [request: fn(_opts) -> raise "Something went wrong" end] do
+      with_mock Req, request: fn _opts -> raise "Something went wrong" end do
         assert {:error, error} = Client.request(request_spec, [])
-        
+
         assert %Error{
-          type: :network_error,
-          message: "Unexpected error: %RuntimeError{message: \"Something went wrong\"}"
-        } = error
+                 type: :network_error,
+                 message: "Unexpected error: %RuntimeError{message: \"Something went wrong\"}"
+               } = error
       end
     end
   end
@@ -305,10 +316,11 @@ defmodule Esi.ClientTest do
 
       mock_response = %Req.Response{status: 200, body: %{}, headers: []}
 
-      with_mock Req, [request: fn(opts) -> 
-        assert opts[:url] == "https://esi.evetech.net/latest/characters/1234"
-        {:ok, mock_response} 
-      end] do
+      with_mock Req,
+        request: fn opts ->
+          assert opts[:url] == "https://esi.evetech.net/latest/characters/1234"
+          {:ok, mock_response}
+        end do
         Client.request(request_spec)
       end
     end
@@ -324,10 +336,11 @@ defmodule Esi.ClientTest do
 
       mock_response = %Req.Response{status: 200, body: %{}, headers: []}
 
-      with_mock Req, [request: fn(opts) -> 
-        assert opts[:url] == "https://esi.evetech.net/latest/characters/1234/mail/5678"
-        {:ok, mock_response} 
-      end] do
+      with_mock Req,
+        request: fn opts ->
+          assert opts[:url] == "https://esi.evetech.net/latest/characters/1234/mail/5678"
+          {:ok, mock_response}
+        end do
         Client.request(request_spec)
       end
     end

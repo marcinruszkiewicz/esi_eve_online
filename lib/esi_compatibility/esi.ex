@@ -112,7 +112,8 @@ defmodule ESI do
       {[1, 2, 3], 2}
 
   """
-  @spec request_with_headers!(req :: ESI.Request.t(), opts :: ESI.Request.request_opts()) :: {any, integer}
+  @spec request_with_headers!(req :: ESI.Request.t(), opts :: ESI.Request.request_opts()) ::
+          {any, integer}
   def request_with_headers!(req, opts \\ []) do
     case request_with_headers(req, opts) do
       {:ok, result, max_pages} ->

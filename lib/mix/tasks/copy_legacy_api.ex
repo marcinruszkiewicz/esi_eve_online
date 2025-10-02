@@ -1,4 +1,6 @@
 defmodule Mix.Tasks.CopyLegacyApi do
+  @shortdoc "Copies legacy ESI API modules to create perfect compatibility layer"
+
   @moduledoc """
   Copies and adapts the legacy ESI API modules to create a perfect compatibility layer.
 
@@ -26,20 +28,19 @@ defmodule Mix.Tasks.CopyLegacyApi do
 
   use Mix.Task
 
-  @shortdoc "Copies legacy ESI API modules to create perfect compatibility layer"
-
   @default_legacy_path "../esi"
   @output_path "lib/esi_compatibility/api"
 
   def run(args) do
-    {opts, _, _} = OptionParser.parse(args,
-      switches: [
-        legacy_path: :string,
-        dry_run: :boolean,
-        help: :boolean
-      ],
-      aliases: [h: :help]
-    )
+    {opts, _, _} =
+      OptionParser.parse(args,
+        switches: [
+          legacy_path: :string,
+          dry_run: :boolean,
+          help: :boolean
+        ],
+        aliases: [h: :help]
+      )
 
     if opts[:help] do
       Mix.shell().info(@moduledoc)
@@ -50,11 +51,7 @@ defmodule Mix.Tasks.CopyLegacyApi do
 
       legacy_api_path = Path.join(legacy_path, "lib/esi/api")
 
-      unless File.exists?(legacy_api_path) do
-        Mix.shell().error("Legacy ESI API path not found: #{legacy_api_path}")
-        Mix.shell().error("Please specify the correct path with --legacy-path")
-        :error
-      else
+      if File.exists?(legacy_api_path) do
         Mix.shell().info("Copying legacy compatibility from existing API modules...")
         Mix.shell().info("  Legacy path: #{legacy_api_path}")
         Mix.shell().info("  Output path: #{@output_path}")
@@ -62,36 +59,42 @@ defmodule Mix.Tasks.CopyLegacyApi do
         Mix.shell().info("")
 
         copy_legacy_modules(legacy_api_path, dry_run)
+      else
+        Mix.shell().error("Legacy ESI API path not found: #{legacy_api_path}")
+        Mix.shell().error("Please specify the correct path with --legacy-path")
+        :error
       end
     end
   end
 
   defp copy_legacy_modules(legacy_api_path, dry_run) do
     # Get all API module files
-    api_files = 
+    api_files =
       legacy_api_path
       |> File.ls!()
       |> Enum.filter(&String.ends_with?(&1, ".ex"))
       |> Enum.sort()
 
     Mix.shell().info("Found #{length(api_files)} legacy API modules:")
+
     Enum.each(api_files, fn file ->
       Mix.shell().info("  - #{file}")
     end)
+
     Mix.shell().info("")
 
     # Process each module
-    results = 
+    results =
       api_files
       |> Enum.map(fn file ->
         process_legacy_module(legacy_api_path, file, dry_run)
       end)
 
     successful = Enum.count(results, & &1)
-    
+
     Mix.shell().info("")
     Mix.shell().info("=== Copy Summary ===")
-    
+
     if dry_run do
       Mix.shell().info("Would copy #{successful} compatibility modules")
     else
@@ -105,19 +108,19 @@ defmodule Mix.Tasks.CopyLegacyApi do
   defp process_legacy_module(legacy_api_path, file, dry_run) do
     module_name = file |> String.replace(".ex", "") |> String.capitalize()
     legacy_file_path = Path.join(legacy_api_path, file)
-    
+
     Mix.shell().info("Processing #{module_name}...")
-    
+
     try do
       # Read the legacy module content
       content = File.read!(legacy_file_path)
-      
+
       # Parse and convert to compatibility format
       converted_content = convert_legacy_module(content, module_name)
-      
+
       if dry_run do
         Mix.shell().info("  [DRY RUN] Would generate #{String.length(converted_content)} bytes")
-        
+
         # Show sample functions
         function_count = count_functions(converted_content)
         Mix.shell().info("  Functions: #{function_count}")
@@ -125,11 +128,11 @@ defmodule Mix.Tasks.CopyLegacyApi do
         output_file = Path.join(@output_path, "#{String.downcase(module_name)}.ex")
         File.mkdir_p!(Path.dirname(output_file))
         File.write!(output_file, converted_content)
-        
+
         function_count = count_functions(converted_content)
         Mix.shell().info("  ✅ Generated #{function_count} functions -> #{output_file}")
       end
-      
+
       true
     rescue
       e ->
@@ -141,10 +144,11 @@ defmodule Mix.Tasks.CopyLegacyApi do
   defp convert_legacy_module(content, module_name) do
     # Extract the module definition and convert it
     lines = String.split(content, "\n")
-    
+
     # Find the module definition line
-    module_line_index = Enum.find_index(lines, &String.contains?(&1, "defmodule ESI.API.#{module_name}"))
-    
+    module_line_index =
+      Enum.find_index(lines, &String.contains?(&1, "defmodule ESI.API.#{module_name}"))
+
     if module_line_index do
       # Process the module content
       processed_lines = process_module_lines(lines, module_name)
@@ -166,7 +170,6 @@ defmodule Mix.Tasks.CopyLegacyApi do
       # Skip import statements and other non-essential lines
       String.contains?(line, "import ") -> ""
       String.contains?(line, "require ") -> ""
-      
       # Keep the line as-is for most cases
       true -> line
     end
@@ -178,11 +181,12 @@ defmodule Mix.Tasks.CopyLegacyApi do
       cond do
         String.contains?(line, "@moduledoc") ->
           add_compatibility_moduledoc(module_name)
-        
+
         String.contains?(line, "defmodule ESI.API.#{module_name}") ->
           line
-        
-        true -> line
+
+        true ->
+          line
       end
     end)
   end
@@ -206,7 +210,7 @@ defmodule Mix.Tasks.CopyLegacyApi do
   defp create_basic_module(module_name, original_content) do
     # Extract function definitions from the original content
     functions = extract_functions_from_content(original_content)
-    
+
     """
     defmodule ESI.API.#{module_name} do
     #{add_compatibility_moduledoc(module_name)}

@@ -56,11 +56,11 @@ defmodule Esi.Client do
   @spec request(map(), request_options()) :: response()
   def request(request_spec, opts \\ []) do
     %{
-      url: path,
-      method: method,
       args: args,
+      call: {_module, _function},
+      method: method,
       response: response_specs,
-      call: {_module, _function}
+      url: path
     } = request_spec
 
     # Merge options from request spec with passed options (passed options take precedence)
@@ -81,7 +81,7 @@ defmodule Esi.Client do
 
     # Make the HTTP request
     case make_http_request(method, final_url, req_opts) do
-      {:ok, %Req.Response{status: status, body: response_body, headers: headers}} ->
+      {:ok, %Req.Response{body: response_body, headers: headers, status: status}} ->
         handle_response(status, response_body, headers, response_specs)
 
       {:error, %Req.TransportError{reason: :timeout}} ->
@@ -128,11 +128,11 @@ defmodule Esi.Client do
   @spec request_with_headers(map(), request_options()) :: response_with_headers()
   def request_with_headers(request_spec, opts \\ []) do
     %{
-      url: path,
-      method: method,
       args: args,
+      call: {_module, _function},
+      method: method,
       response: response_specs,
-      call: {_module, _function}
+      url: path
     } = request_spec
 
     # Merge options from request spec with passed options (passed options take precedence)
@@ -153,7 +153,7 @@ defmodule Esi.Client do
 
     # Make the HTTP request
     case make_http_request(method, final_url, req_opts) do
-      {:ok, %Req.Response{status: status, body: response_body, headers: headers}} ->
+      {:ok, %Req.Response{body: response_body, headers: headers, status: status}} ->
         handle_response_with_headers(status, response_body, headers, response_specs)
 
       {:error, %Req.TransportError{reason: :timeout}} ->
@@ -174,7 +174,7 @@ defmodule Esi.Client do
 
   defp extract_request_components(args) do
     body = Keyword.get(args, :body)
-    query_params = Keyword.drop(args, [:body]) |> Enum.into(%{})
+    query_params = Keyword.delete(args, :body) |> Map.new()
     path_params = Map.take(query_params, get_path_param_keys(query_params))
     query_params = Map.drop(query_params, Map.keys(path_params))
 
@@ -265,19 +265,23 @@ defmodule Esi.Client do
 
   defp handle_response(status, body, _headers, response_specs) when status in 200..299 do
     # Parse JSON response body
-    parsed_body = case body do
-      body when is_binary(body) ->
-        case Jason.decode(body) do
-          {:ok, data} -> data
-          {:error, _} -> body  # Fallback to raw body if JSON parsing fails
-        end
-      body when is_list(body) or is_map(body) ->
-        # Body is already parsed (list or map)
-        body
-      _ ->
-        # Unknown body type, return as-is
-        body
-    end
+    parsed_body =
+      case body do
+        body when is_binary(body) ->
+          case Jason.decode(body) do
+            {:ok, data} -> data
+            # Fallback to raw body if JSON parsing fails
+            {:error, _} -> body
+          end
+
+        body when is_list(body) or is_map(body) ->
+          # Body is already parsed (list or map)
+          body
+
+        _ ->
+          # Unknown body type, return as-is
+          body
+      end
 
     # Find matching response spec
     case find_response_spec(status, response_specs) do
@@ -316,7 +320,7 @@ defmodule Esi.Client do
     error =
       case {status, body} do
         {400, %{"error" => message}} ->
-          Error.validation_error(message, %{status: status, body: body})
+          Error.validation_error(message, %{body: body, status: status})
 
         {401, _} ->
           Error.api_error(401, "Unauthorized - invalid or expired token", %{body: body})
@@ -354,25 +358,29 @@ defmodule Esi.Client do
     {:error, error}
   end
 
-  defp handle_response_with_headers(status, body, headers, response_specs) when status in 200..299 do
+  defp handle_response_with_headers(status, body, headers, response_specs)
+       when status in 200..299 do
     # Parse x-pages header for pagination
     max_pages = parse_x_pages_header(headers)
 
     # Parse JSON response body
-    parsed_body = case body do
-      body when is_binary(body) ->
-        case Jason.decode(body) do
-          {:ok, data} -> data
-          {:error, _} -> body  # Fallback to raw body if JSON parsing fails
-        end
-      body when is_list(body) or is_map(body) ->
-        # Body is already parsed (list or map)
-        body
-      _ ->
-        # Unknown body type, return as-is
-        body
-    end
+    parsed_body =
+      case body do
+        body when is_binary(body) ->
+          case Jason.decode(body) do
+            {:ok, data} -> data
+            # Fallback to raw body if JSON parsing fails
+            {:error, _} -> body
+          end
 
+        body when is_list(body) or is_map(body) ->
+          # Body is already parsed (list or map)
+          body
+
+        _ ->
+          # Unknown body type, return as-is
+          body
+      end
 
     # Find matching response spec
     case find_response_spec(status, response_specs) do
@@ -411,7 +419,7 @@ defmodule Esi.Client do
     error =
       case {status, body} do
         {400, %{"error" => message}} ->
-          Error.validation_error(message, %{status: status, body: body})
+          Error.validation_error(message, %{body: body, status: status})
 
         {401, _} ->
           Error.api_error(401, "Unauthorized - invalid or expired token", %{body: body})
@@ -448,7 +456,6 @@ defmodule Esi.Client do
 
     {:error, error}
   end
-
 
   defp find_response_spec(status, response_specs) do
     Enum.find(response_specs, fn
@@ -488,13 +495,17 @@ defmodule Esi.Client do
 
   defp parse_x_pages_header(headers) do
     case get_header_value(headers, "x-pages") do
-      nil -> 1
+      nil ->
+        1
+
       value when is_binary(value) ->
         case Integer.parse(value) do
           {max_pages, ""} -> max_pages
           _ -> 1
         end
-      _ -> 1
+
+      _ ->
+        1
     end
   end
 end
