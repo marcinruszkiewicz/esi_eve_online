@@ -1,5 +1,35 @@
 if Code.ensure_loaded?(OpenAPI.Processor) do
   defmodule Esi.CustomProcessor do
+    @moduledoc """
+    Custom OpenAPI processor for generating EVE Online ESI API client code.
+
+    This module provides custom processing and rendering logic for the OpenAPI generator
+    to create more idiomatic Elixir function names and handle EVE-specific API patterns.
+
+    ## Features
+
+    - **Smart Function Naming**: Generates intuitive function names based on HTTP methods and paths
+    - **Singularization**: Converts plural resource names to singular for single-item endpoints
+    - **Conflict Resolution**: Handles naming conflicts between different endpoints
+    - **Pagination Support**: Automatically generates streaming functions for paginated endpoints
+    - **EVE-Specific Patterns**: Special handling for EVE Online API conventions
+
+    ## Function Naming Examples
+
+    - `GET /alliances/{id}` → `alliance/1`
+    - `GET /alliances` → `alliances/0`
+    - `POST /ui/openwindow/contract` → `open_contract_window/1`
+    - `POST /fleets/{id}/members` → `invite/2`
+
+    ## Pagination
+
+    For endpoints with a `page` parameter, this processor generates streaming functions
+    that automatically handle pagination using `EsiEveOnline.stream_paginated/2`.
+
+    This module is only active when the `oapi_generator` dependency is available during
+    development builds. It's not needed at runtime.
+    """
+
     use OpenAPI.Processor
     use OpenAPI.Renderer
 

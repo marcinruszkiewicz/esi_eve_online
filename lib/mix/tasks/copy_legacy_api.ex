@@ -31,6 +31,29 @@ defmodule Mix.Tasks.CopyLegacyApi do
   @default_legacy_path "../esi"
   @output_path "lib/esi_compatibility/api"
 
+  @doc """
+  Runs the copy_legacy_api mix task.
+
+  This task copies and adapts legacy ESI API modules to create a perfect compatibility layer.
+  It reads the actual generated API files from the legacy ESI library and creates compatible
+  versions that use ESI.Request structs instead of direct HTTP calls.
+
+  ## Arguments
+
+  - `args` - Command line arguments including options like --legacy-path and --dry-run
+
+  ## Returns
+
+  - `:ok` - When the task completes successfully
+  - `:error` - When the task fails (e.g., legacy path not found)
+
+  ## Examples
+
+      mix copy_legacy_api
+      mix copy_legacy_api --legacy-path ../esi --dry-run
+
+  """
+  @spec run([String.t()]) :: :ok | :error
   def run(args) do
     {opts, _, _} =
       OptionParser.parse(args,

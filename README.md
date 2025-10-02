@@ -9,7 +9,7 @@ Add `esi_eve_online` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:esi_eve_online, "~> 1.0"}
+    {:esi_eve_online, "~> 0.5"}
   ]
 end
 ```
@@ -271,5 +271,5 @@ When contributing:
 
 MIT License - See LICENSE file for details.
 
-**Note**: This package is not officially supported or endorsed by CCP Games or EVE Online. It is a community-maintained utility for EVE Online developers.
+**Note**: This package is not officially supported or endorsed by CCP Games. It is a community-maintained utility for EVE Online developers.
 

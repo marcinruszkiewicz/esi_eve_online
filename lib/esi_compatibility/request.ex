@@ -263,6 +263,7 @@ defmodule ESI.Request do
   @doc """
   Generate a stream from a request, supporting automatic pagination.
   """
+  @spec stream!(t) :: Enumerable.t()
   def stream!(%{opts_schema: %{page: _}} = request) do
     request_fun = fn page ->
       options(request, page: page)
