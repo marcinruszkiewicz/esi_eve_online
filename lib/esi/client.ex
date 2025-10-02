@@ -263,54 +263,39 @@ defmodule Esi.Client do
     Req.request([method: method, url: url] ++ opts)
   end
 
-  defp handle_response(status, body, _headers, response_specs) when status in 200..299 do
-    # Parse JSON response body
-    parsed_body =
-      case body do
-        body when is_binary(body) ->
-          case Jason.decode(body) do
-            {:ok, data} -> data
-            # Fallback to raw body if JSON parsing fails
-            {:error, _} -> body
-          end
-
-        body when is_list(body) or is_map(body) ->
-          # Body is already parsed (list or map)
-          body
-
-        _ ->
-          # Unknown body type, return as-is
-          body
-      end
-
-    # Find matching response spec
-    case find_response_spec(status, response_specs) do
-      {^status, {_module, _type_func}} ->
-        {:ok, parsed_body}
-
-      {^status, [:integer]} ->
-        # Handle list of integers response
-        {:ok, parsed_body}
-
-      {^status, :ok} ->
-        {:ok, parsed_body}
-
-      {^status, _other_type} ->
-        # Handle any other response type specification
-        {:ok, parsed_body}
-
-      {:default, _} ->
-        # Default response spec
-        {:ok, parsed_body}
-
-      :default ->
-        # Simple default
-        {:ok, parsed_body}
-
-      nil ->
-        # Fallback for successful responses without specific spec
-        {:ok, parsed_body}
+  defp parse_response_body(body) when is_binary(body) do
+    case Jason.decode(body) do
+      {:ok, data} -> data
+      # Fallback to raw body if JSON parsing fails
+      {:error, _} -> body
     end
+  end
+
+  defp parse_response_body(body) when is_list(body) or is_map(body) do
+    # Body is already parsed (list or map)
+    body
+  end
+
+  defp parse_response_body(body) do
+    # Unknown body type, return as-is
+    body
+  end
+
+  defp handle_successful_response(status, parsed_body, response_specs) do
+    case find_response_spec(status, response_specs) do
+      {^status, {_module, _type_func}} -> {:ok, parsed_body}
+      {^status, [:integer]} -> {:ok, parsed_body}
+      {^status, :ok} -> {:ok, parsed_body}
+      {^status, _other_type} -> {:ok, parsed_body}
+      {:default, _} -> {:ok, parsed_body}
+      :default -> {:ok, parsed_body}
+      nil -> {:ok, parsed_body}
+    end
+  end
+
+  defp handle_response(status, body, _headers, response_specs) when status in 200..299 do
+    parsed_body = parse_response_body(body)
+    handle_successful_response(status, parsed_body, response_specs)
   end
 
   defp handle_response(status, body, headers, _response_specs) do

@@ -94,10 +94,10 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
           String.to_atom(result)
 
         # Only use "create_" prefix for operations that actually create resources
-        name_parts == [] and is_creation_operation?(base_name) ->
+        name_parts == [] and creation_operation?(base_name) ->
           :create
 
-        name_parts != [] and is_creation_operation?(base_name) ->
+        name_parts != [] and creation_operation?(base_name) ->
           String.to_atom("create_#{base_name}")
 
         # For non-creation POST operations, use the base name directly
@@ -110,7 +110,7 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
     end
 
     # Determine if a POST operation is actually creating a resource
-    defp is_creation_operation?(base_name) do
+    defp creation_operation?(base_name) do
       # Known creation operations based on EVE API patterns
       creation_patterns = [
         # Add contacts
@@ -233,7 +233,7 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
 
     @impl OpenAPI.Renderer
     def render_operation_function(state, operation) do
-      if is_paginated_endpoint?(operation) do
+      if paginated_endpoint?(operation) do
         render_stream_function(operation)
       else
         # Use default implementation for non-paginated endpoints
@@ -246,7 +246,7 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
       # Only render @default_client if there are non-paginated operations
       has_non_paginated =
         file.operations
-        |> Enum.any?(fn operation -> not is_paginated_endpoint?(operation) end)
+        |> Enum.any?(fn operation -> not paginated_endpoint?(operation) end)
 
       if has_non_paginated do
         # Use default implementation
@@ -263,7 +263,7 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
 
       # Update docstring for paginated endpoints to mention streaming
       updated_docstring =
-        if is_paginated_endpoint?(operation) do
+        if paginated_endpoint?(operation) do
           base_doc = String.trim_trailing(docstring)
 
           # Remove the page parameter from options if present
@@ -305,7 +305,7 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
       alias OpenAPI.Processor.Operation.Param
       alias OpenAPI.Renderer.Util
 
-      if is_paginated_endpoint?(operation) do
+      if paginated_endpoint?(operation) do
         # Generate custom spec for stream return type
         %Operation{
           function_name: name,
@@ -333,7 +333,7 @@ if Code.ensure_loaded?(OpenAPI.Processor) do
     end
 
     # Check if an operation has a page query parameter
-    defp is_paginated_endpoint?(operation) do
+    defp paginated_endpoint?(operation) do
       Enum.any?(operation.request_query_parameters, fn param ->
         param.name == "page"
       end)

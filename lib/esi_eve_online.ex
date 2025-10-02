@@ -323,26 +323,31 @@ defmodule EsiEveOnline do
   defp do_stream_paginated(path, query_params, opts) do
     Stream.resource(
       fn -> {path, query_params, opts, 1} end,
-      fn
-        :halt ->
-          {:halt, nil}
-
-        {path, query_params, opts, page} ->
-          case get_with_headers(path, Keyword.put(query_params, :page, page) ++ opts) do
-            {:ok, data, max_pages} ->
-              next_page = page + 1
-
-              next_state =
-                if next_page > max_pages, do: :halt, else: {path, query_params, opts, next_page}
-
-              {data, next_state}
-
-            {:error, error} ->
-              raise "Stream request failed: #{inspect(error)}"
-          end
-      end,
+      &handle_paginated_stream_step/1,
       & &1
     )
+  end
+
+  defp handle_paginated_stream_step(:halt), do: {:halt, nil}
+
+  defp handle_paginated_stream_step({path, query_params, opts, page}) do
+    case get_with_headers(path, Keyword.put(query_params, :page, page) ++ opts) do
+      {:ok, data, max_pages} ->
+        next_page = page + 1
+        next_state = determine_next_state(path, query_params, opts, next_page, max_pages)
+        {data, next_state}
+
+      {:error, error} ->
+        raise "Stream request failed: #{inspect(error)}"
+    end
+  end
+
+  defp determine_next_state(path, query_params, opts, next_page, max_pages) do
+    if next_page > max_pages do
+      :halt
+    else
+      {path, query_params, opts, next_page}
+    end
   end
 
   # Private function to create a stream for non-paginated endpoints

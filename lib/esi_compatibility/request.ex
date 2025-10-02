@@ -232,7 +232,7 @@ defmodule ESI.Request do
 
       {key, value}, acc ->
         # Pass through other options that might be query parameters
-        if is_query_param?(key) do
+        if query_param?(key) do
           [{key, value} | acc]
         else
           acc
@@ -257,8 +257,8 @@ defmodule ESI.Request do
   end
 
   # Determine if an option should be passed as a query parameter
-  defp is_query_param?(key) when key in [:if_none_match, :etag, :language], do: true
-  defp is_query_param?(_), do: false
+  defp query_param?(key) when key in [:if_none_match, :etag, :language], do: true
+  defp query_param?(_), do: false
 
   @doc """
   Generate a stream from a request, supporting automatic pagination.
@@ -274,31 +274,7 @@ defmodule ESI.Request do
 
     Stream.resource(
       fn -> {request_fun, first_page} end,
-      fn
-        :quit ->
-          {:halt, nil}
-
-        {fun, page} ->
-          case fun.(page) do
-            {:ok, [], _max_pages} ->
-              {[], :quit}
-
-            {:ok, data, max_pages} when is_list(data) ->
-              next_page = page + 1
-
-              if next_page > max_pages do
-                {data, :quit}
-              else
-                {data, {fun, next_page}}
-              end
-
-            {:ok, data, _max_pages} ->
-              {[data], :quit}
-
-            {:error, err} ->
-              raise "Request failed: #{inspect(err)}"
-          end
-      end,
+      &handle_stream_step/1,
       & &1
     )
   end
@@ -321,5 +297,25 @@ defmodule ESI.Request do
       end,
       & &1
     )
+  end
+
+  defp handle_stream_step(:quit), do: {:halt, nil}
+
+  defp handle_stream_step({fun, page}) do
+    case fun.(page) do
+      {:ok, [], _max_pages} ->
+        {[], :quit}
+
+      {:ok, data, max_pages} when is_list(data) ->
+        next_page = page + 1
+        next_state = if next_page > max_pages, do: :quit, else: {fun, next_page}
+        {data, next_state}
+
+      {:ok, data, _max_pages} ->
+        {[data], :quit}
+
+      {:error, err} ->
+        raise "Request failed: #{inspect(err)}"
+    end
   end
 end

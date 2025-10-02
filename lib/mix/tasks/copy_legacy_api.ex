@@ -31,6 +31,28 @@ defmodule Mix.Tasks.CopyLegacyApi do
   @default_legacy_path "../esi"
   @output_path "lib/esi_compatibility/api"
 
+  @module_descriptions %{
+    "alliance" => "Legacy compatibility module for Alliance API endpoints.\n\nProvides access to alliance information, member corporations, contacts, and icons.",
+    "character" => "Legacy compatibility module for Character API endpoints.\n\nProvides access to character information, skills, assets, contacts, and various character-related data.",
+    "contract" => "Legacy compatibility module for Contract API endpoints.\n\nProvides access to contract information and bidding functionality.",
+    "corporation" => "Legacy compatibility module for Corporation API endpoints.\n\nProvides access to corporation information, members, structures, assets, and various corp-related data.",
+    "dogma" => "Legacy compatibility module for Dogma API endpoints.\n\nProvides access to EVE Online's dogma system including attributes and effects.",
+    "faction_warfare" => "Legacy compatibility module for Faction Warfare API endpoints.\n\nProvides access to faction warfare statistics, leaderboards, system ownership, and war information.",
+    "fleet" => "Legacy compatibility module for Fleet API endpoints.\n\nProvides access to fleet information, members, wings, squads, and fleet management functionality.",
+    "incursion" => "Legacy compatibility module for Incursion API endpoints.\n\nProvides access to current incursion information and affected systems.",
+    "industry" => "Legacy compatibility module for Industry API endpoints.\n\nProvides access to industry jobs, facilities, and manufacturing information.",
+    "insurance" => "Legacy compatibility module for Insurance API endpoints.\n\nProvides access to ship insurance pricing information.",
+    "killmail" => "Legacy compatibility module for Killmail API endpoints.\n\nProvides access to killmail data and hashes.",
+    "loyalty" => "Legacy compatibility module for Loyalty API endpoints.\n\nProvides access to loyalty point store offers and information.",
+    "market" => "Legacy compatibility module for Market API endpoints.\n\nProvides access to market data, orders, prices, history, and regional market information.",
+    "route" => "Legacy compatibility module for Route API endpoints.\n\nProvides access to route calculation and navigation information.",
+    "sovereignty" => "Legacy compatibility module for Sovereignty API endpoints.\n\nProvides access to sovereignty information, campaigns, and structure data.",
+    "status" => "Legacy compatibility module for Status API endpoints.\n\nProvides access to EVE Online server status and player count information.",
+    "ui" => "Legacy compatibility module for UI API endpoints.\n\nProvides access to in-game UI interaction functionality including opening windows and setting waypoints.",
+    "universe" => "Legacy compatibility module for Universe API endpoints.\n\nProvides access to universe data including systems, stations, structures, types, and various static game data.",
+    "war" => "Legacy compatibility module for War API endpoints.\n\nProvides access to war declarations, participants, and killmail statistics."
+  }
+
   @doc """
   Runs the copy_legacy_api mix task.
 
@@ -370,67 +392,12 @@ defmodule Mix.Tasks.CopyLegacyApi do
   end
 
   defp generate_module_description(module_name) do
-    case String.downcase(module_name) do
-      "alliance" ->
-        "Legacy compatibility module for Alliance API endpoints.\n\nProvides access to alliance information, member corporations, contacts, and icons."
+    key = String.downcase(module_name)
+    Map.get(@module_descriptions, key, default_module_description(module_name))
+  end
 
-      "character" ->
-        "Legacy compatibility module for Character API endpoints.\n\nProvides access to character information, skills, assets, contacts, and various character-related data."
-
-      "contract" ->
-        "Legacy compatibility module for Contract API endpoints.\n\nProvides access to contract information and bidding functionality."
-
-      "corporation" ->
-        "Legacy compatibility module for Corporation API endpoints.\n\nProvides access to corporation information, members, structures, assets, and various corp-related data."
-
-      "dogma" ->
-        "Legacy compatibility module for Dogma API endpoints.\n\nProvides access to EVE Online's dogma system including attributes and effects."
-
-      "faction_warfare" ->
-        "Legacy compatibility module for Faction Warfare API endpoints.\n\nProvides access to faction warfare statistics, leaderboards, system ownership, and war information."
-
-      "fleet" ->
-        "Legacy compatibility module for Fleet API endpoints.\n\nProvides access to fleet information, members, wings, squads, and fleet management functionality."
-
-      "incursion" ->
-        "Legacy compatibility module for Incursion API endpoints.\n\nProvides access to current incursion information and affected systems."
-
-      "industry" ->
-        "Legacy compatibility module for Industry API endpoints.\n\nProvides access to industry jobs, facilities, and manufacturing information."
-
-      "insurance" ->
-        "Legacy compatibility module for Insurance API endpoints.\n\nProvides access to ship insurance pricing information."
-
-      "killmail" ->
-        "Legacy compatibility module for Killmail API endpoints.\n\nProvides access to killmail data and hashes."
-
-      "loyalty" ->
-        "Legacy compatibility module for Loyalty API endpoints.\n\nProvides access to loyalty point store offers and information."
-
-      "market" ->
-        "Legacy compatibility module for Market API endpoints.\n\nProvides access to market data, orders, prices, history, and regional market information."
-
-      "route" ->
-        "Legacy compatibility module for Route API endpoints.\n\nProvides access to route calculation and navigation information."
-
-      "sovereignty" ->
-        "Legacy compatibility module for Sovereignty API endpoints.\n\nProvides access to sovereignty information, campaigns, and structure data."
-
-      "status" ->
-        "Legacy compatibility module for Status API endpoints.\n\nProvides access to EVE Online server status and player count information."
-
-      "ui" ->
-        "Legacy compatibility module for UI API endpoints.\n\nProvides access to in-game UI interaction functionality including opening windows and setting waypoints."
-
-      "universe" ->
-        "Legacy compatibility module for Universe API endpoints.\n\nProvides access to universe data including systems, stations, structures, types, and various static game data."
-
-      "war" ->
-        "Legacy compatibility module for War API endpoints.\n\nProvides access to war declarations, participants, and killmail statistics."
-
-      _ ->
-        "Legacy compatibility module for #{module_name} API endpoints.\n\nProvides access to #{String.downcase(module_name)}-related EVE Online ESI functionality."
-    end
+  defp default_module_description(module_name) do
+    "Legacy compatibility module for #{module_name} API endpoints.\n\nProvides access to #{String.downcase(module_name)}-related EVE Online ESI functionality."
   end
 
   defp generate_function_list(functions) when functions == [] do
