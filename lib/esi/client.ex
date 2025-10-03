@@ -472,6 +472,20 @@ defmodule Esi.Client do
     end
   end
 
+  defp parse_retry_after(value) when is_list(value) do
+    # Handle case where header value is a list
+    case value do
+      [first_value | _] when is_binary(first_value) ->
+        case Integer.parse(first_value) do
+          {seconds, ""} -> seconds
+          _ -> nil
+        end
+      _ -> nil
+    end
+  end
+
+  defp parse_retry_after(_), do: nil
+
   defp maybe_add_request_id(error, nil), do: error
   defp maybe_add_request_id(error, request_id), do: Error.with_request_id(error, request_id)
 
@@ -486,6 +500,17 @@ defmodule Esi.Client do
       value when is_binary(value) ->
         case Integer.parse(value) do
           {max_pages, ""} -> max_pages
+          _ -> 1
+        end
+
+      value when is_list(value) ->
+        # Handle case where header value is a list
+        case value do
+          [first_value | _] when is_binary(first_value) ->
+            case Integer.parse(first_value) do
+              {max_pages, ""} -> max_pages
+              _ -> 1
+            end
           _ -> 1
         end
 
