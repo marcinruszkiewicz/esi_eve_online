@@ -25,16 +25,23 @@ defmodule EsiEveOnline do
 
   ## Error Handling
 
-  All functions return standardized `{:ok, result}` or `{:error, %Esi.Error{}}` tuples:
+  All functions return standardized `{:ok, result}` or `{:error, %Esi.Error{}}` tuples.
+  Always use `case` to handle both outcomes—do not use strict pattern match (`{:ok, x} = ...`)
+  or you will get a match error when the API returns an error (e.g. 503 maintenance):
 
       case EsiEveOnline.Api.Character.character(12345) do
-        {:ok, character_data} -> 
+        {:ok, character_data} ->
           IO.puts("Character name: \#{character_data.name}")
+        {:error, %Esi.Error{type: :api_error, status: 503}} ->
+          IO.puts("ESI in maintenance – try again later")
         {:error, %Esi.Error{type: :api_error, status: 404}} ->
           IO.puts("Character not found")
         {:error, error} ->
           IO.puts("Request failed: \#{error.message}")
       end
+
+  The bang versions (`get!/2`, `post!/2`, etc.) raise `Esi.ApiError` on failure so you can
+  rescue and inspect `error.error` (the `%Esi.Error{}` struct with `status`, `retry_after`, etc.).
   """
 
   alias Esi.Client
@@ -188,7 +195,7 @@ defmodule EsiEveOnline do
   def get!(path, opts \\ []) do
     case get(path, opts) do
       {:ok, result} -> result
-      {:error, error} -> raise "API request failed: #{error.message}"
+      {:error, error} -> raise Esi.ApiError, error
     end
   end
 
@@ -199,7 +206,7 @@ defmodule EsiEveOnline do
   def post!(path, body, opts \\ []) do
     case post(path, body, opts) do
       {:ok, result} -> result
-      {:error, error} -> raise "API request failed: #{error.message}"
+      {:error, error} -> raise Esi.ApiError, error
     end
   end
 
@@ -210,7 +217,7 @@ defmodule EsiEveOnline do
   def put!(path, body, opts \\ []) do
     case put(path, body, opts) do
       {:ok, result} -> result
-      {:error, error} -> raise "API request failed: #{error.message}"
+      {:error, error} -> raise Esi.ApiError, error
     end
   end
 
@@ -221,7 +228,7 @@ defmodule EsiEveOnline do
   def delete!(path, opts \\ []) do
     case delete(path, opts) do
       {:ok, result} -> result
-      {:error, error} -> raise "API request failed: #{error.message}"
+      {:error, error} -> raise Esi.ApiError, error
     end
   end
 
@@ -232,7 +239,7 @@ defmodule EsiEveOnline do
   def patch!(path, body, opts \\ []) do
     case patch(path, body, opts) do
       {:ok, result} -> result
-      {:error, error} -> raise "API request failed: #{error.message}"
+      {:error, error} -> raise Esi.ApiError, error
     end
   end
 
@@ -338,7 +345,7 @@ defmodule EsiEveOnline do
         {data, next_state}
 
       {:error, error} ->
-        raise "Stream request failed: #{inspect(error)}"
+        raise Esi.ApiError, error
     end
   end
 
@@ -364,7 +371,7 @@ defmodule EsiEveOnline do
               {List.wrap(data), :halt}
 
             {:error, error} ->
-              raise "Stream request failed: #{inspect(error)}"
+              raise Esi.ApiError, error
           end
       end,
       & &1

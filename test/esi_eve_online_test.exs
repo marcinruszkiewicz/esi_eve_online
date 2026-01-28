@@ -106,7 +106,7 @@ defmodule EsiEveOnlineTest do
       error = %Error{message: "Not found", status: 404, type: :api_error}
 
       with_mock Client, request: fn _spec, _opts -> {:error, error} end do
-        assert_raise RuntimeError, "API request failed: Not found", fn ->
+        assert_raise Esi.ApiError, fn ->
           EsiEveOnline.get!("/invalid")
         end
       end
@@ -122,7 +122,7 @@ defmodule EsiEveOnlineTest do
       error = %Error{message: "Invalid input", type: :validation_error}
 
       with_mock Client, request: fn _spec, _opts -> {:error, error} end do
-        assert_raise RuntimeError, "API request failed: Invalid input", fn ->
+        assert_raise Esi.ApiError, fn ->
           EsiEveOnline.post!("/universe/names", "invalid")
         end
       end
@@ -132,7 +132,7 @@ defmodule EsiEveOnlineTest do
       error = %Error{message: "Forbidden", status: 403, type: :api_error}
 
       with_mock Client, request: fn _spec, _opts -> {:error, error} end do
-        assert_raise RuntimeError, "API request failed: Forbidden", fn ->
+        assert_raise Esi.ApiError, fn ->
           EsiEveOnline.put!("/characters/1234/settings", %{})
         end
       end
@@ -142,7 +142,7 @@ defmodule EsiEveOnlineTest do
       error = %Error{message: "Connection failed", type: :network_error}
 
       with_mock Client, request: fn _spec, _opts -> {:error, error} end do
-        assert_raise RuntimeError, "API request failed: Connection failed", fn ->
+        assert_raise Esi.ApiError, fn ->
           EsiEveOnline.delete!("/characters/1234/contacts/5678")
         end
       end
@@ -152,7 +152,7 @@ defmodule EsiEveOnlineTest do
       error = %Error{message: "Request timed out", type: :timeout_error}
 
       with_mock Client, request: fn _spec, _opts -> {:error, error} end do
-        assert_raise RuntimeError, "API request failed: Request timed out", fn ->
+        assert_raise Esi.ApiError, fn ->
           EsiEveOnline.patch!("/characters/1234/profile", %{})
         end
       end

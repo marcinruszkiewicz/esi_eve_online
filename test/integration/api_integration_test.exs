@@ -198,7 +198,7 @@ defmodule Integration.ApiIntegrationTest do
         assert {:error, error} = Esi.Api.Alliances.alliance(99_999_999)
 
         assert %Error{
-                 message: "Not found",
+                 message: "Alliance not found",
                  request_id: "req-test-123",
                  status: 404,
                  type: :api_error

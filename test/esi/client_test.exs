@@ -182,7 +182,7 @@ defmodule Esi.ClientTest do
         assert {:error, error} = Client.request(request_spec, [])
 
         assert %Error{
-                 message: "Not found",
+                 message: "Character not found",
                  request_id: "req-123",
                  status: 404,
                  type: :api_error
@@ -209,7 +209,7 @@ defmodule Esi.ClientTest do
         assert {:error, error} = Client.request(request_spec, [])
 
         assert %Error{
-                 message: "Unauthorized - invalid or expired token",
+                 message: "Invalid token",
                  status: 401,
                  type: :api_error
                } = error
@@ -238,10 +238,36 @@ defmodule Esi.ClientTest do
         assert {:error, error} = Client.request(request_spec, [])
 
         assert %Error{
-                 message: "Error limited - too many requests",
+                 message: "Error limited",
                  request_id: "req-456",
                  retry_after: 60,
                  status: 420,
+                 type: :api_error
+               } = error
+      end
+    end
+
+    test "handles 503 maintenance with API error message" do
+      request_spec = %{
+        args: [],
+        call: {Esi.Api.Status, :status},
+        method: :get,
+        response: [{200, :ok}],
+        url: "/status"
+      }
+
+      mock_response = %Req.Response{
+        body: %{"error" => "ESI is currently in maintenance mode. Please try again later."},
+        headers: [],
+        status: 503
+      }
+
+      with_mock Req, request: fn _opts -> {:ok, mock_response} end do
+        assert {:error, error} = Client.request(request_spec, [])
+
+        assert %Error{
+                 message: "ESI is currently in maintenance mode. Please try again later.",
+                 status: 503,
                  type: :api_error
                } = error
       end

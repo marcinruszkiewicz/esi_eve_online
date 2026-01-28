@@ -161,7 +161,7 @@ defmodule Integration.PaginatedEndpointsTest do
         request: fn _opts ->
           {:ok, %Req.Response{body: %{"error" => "Internal Server Error"}, status: 500}}
         end do
-        assert_raise RuntimeError, fn ->
+        assert_raise Esi.ApiError, fn ->
           Esi.Api.Characters.assets(12345, token: "test_token")
           |> Enum.to_list()
         end

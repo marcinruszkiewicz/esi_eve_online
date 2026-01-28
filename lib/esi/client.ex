@@ -301,38 +301,60 @@ defmodule Esi.Client do
   defp handle_response(status, body, headers, _response_specs) do
     request_id = get_header_value(headers, "x-esi-request-id")
     retry_after = get_header_value(headers, "retry-after") |> parse_retry_after()
+    parsed_body = parse_response_body(body)
 
     error =
-      case {status, body} do
+      case {status, parsed_body} do
         {400, %{"error" => message}} ->
-          Error.validation_error(message, %{body: body, status: status})
+          Error.validation_error(message, %{body: parsed_body, status: status})
+
+        {401, %{"error" => message}} ->
+          Error.api_error(401, message, %{body: parsed_body})
 
         {401, _} ->
-          Error.api_error(401, "Unauthorized - invalid or expired token", %{body: body})
+          Error.api_error(401, "Unauthorized - invalid or expired token", %{body: parsed_body})
+
+        {403, %{"error" => message}} ->
+          Error.api_error(403, message, %{body: parsed_body})
 
         {403, _} ->
-          Error.api_error(403, "Forbidden - insufficient permissions", %{body: body})
+          Error.api_error(403, "Forbidden - insufficient permissions", %{body: parsed_body})
+
+        {404, %{"error" => message}} ->
+          Error.api_error(404, message, %{body: parsed_body})
 
         {404, _} ->
-          Error.api_error(404, "Not found", %{body: body})
+          Error.api_error(404, "Not found", %{body: parsed_body})
+
+        {420, %{"error" => message}} ->
+          Error.api_error(420, message, %{body: parsed_body})
 
         {420, _} ->
-          Error.api_error(420, "Error limited - too many requests", %{body: body})
+          Error.api_error(420, "Error limited - too many requests", %{body: parsed_body})
+
+        {500, %{"error" => message}} ->
+          Error.api_error(500, message, %{body: parsed_body})
 
         {500, _} ->
-          Error.api_error(500, "Internal server error", %{body: body})
+          Error.api_error(500, "Internal server error", %{body: parsed_body})
+
+        {502, %{"error" => message}} ->
+          Error.api_error(502, message, %{body: parsed_body})
 
         {502, _} ->
-          Error.api_error(502, "Bad gateway", %{body: body})
+          Error.api_error(502, "Bad gateway", %{body: parsed_body})
+
+        {503, %{"error" => message}} ->
+          Error.api_error(503, message, %{body: parsed_body})
 
         {503, _} ->
-          Error.api_error(503, "Service unavailable", %{body: body})
+          Error.api_error(503, "Service unavailable", %{body: parsed_body})
 
-        {status, %{"error" => message}} ->
-          Error.api_error(status, message, %{body: body})
+        {^status, %{"error" => message}} ->
+          Error.api_error(status, message, %{body: parsed_body})
 
-        {status, _} ->
-          Error.http_error(status, "HTTP #{status}", %{body: body})
+        {^status, _} ->
+          Error.http_error(status, "HTTP #{status}", %{body: parsed_body})
       end
 
     error =
@@ -400,38 +422,60 @@ defmodule Esi.Client do
   defp handle_response_with_headers(status, body, headers, _response_specs) do
     request_id = get_header_value(headers, "x-esi-request-id")
     retry_after = get_header_value(headers, "retry-after") |> parse_retry_after()
+    parsed_body = parse_response_body(body)
 
     error =
-      case {status, body} do
+      case {status, parsed_body} do
         {400, %{"error" => message}} ->
-          Error.validation_error(message, %{body: body, status: status})
+          Error.validation_error(message, %{body: parsed_body, status: status})
+
+        {401, %{"error" => message}} ->
+          Error.api_error(401, message, %{body: parsed_body})
 
         {401, _} ->
-          Error.api_error(401, "Unauthorized - invalid or expired token", %{body: body})
+          Error.api_error(401, "Unauthorized - invalid or expired token", %{body: parsed_body})
+
+        {403, %{"error" => message}} ->
+          Error.api_error(403, message, %{body: parsed_body})
 
         {403, _} ->
-          Error.api_error(403, "Forbidden - insufficient permissions", %{body: body})
+          Error.api_error(403, "Forbidden - insufficient permissions", %{body: parsed_body})
+
+        {404, %{"error" => message}} ->
+          Error.api_error(404, message, %{body: parsed_body})
 
         {404, _} ->
-          Error.api_error(404, "Not found", %{body: body})
+          Error.api_error(404, "Not found", %{body: parsed_body})
+
+        {420, %{"error" => message}} ->
+          Error.api_error(420, message, %{body: parsed_body})
 
         {420, _} ->
-          Error.api_error(420, "Error limited - too many requests", %{body: body})
+          Error.api_error(420, "Error limited - too many requests", %{body: parsed_body})
+
+        {500, %{"error" => message}} ->
+          Error.api_error(500, message, %{body: parsed_body})
 
         {500, _} ->
-          Error.api_error(500, "Internal server error", %{body: body})
+          Error.api_error(500, "Internal server error", %{body: parsed_body})
+
+        {502, %{"error" => message}} ->
+          Error.api_error(502, message, %{body: parsed_body})
 
         {502, _} ->
-          Error.api_error(502, "Bad gateway", %{body: body})
+          Error.api_error(502, "Bad gateway", %{body: parsed_body})
+
+        {503, %{"error" => message}} ->
+          Error.api_error(503, message, %{body: parsed_body})
 
         {503, _} ->
-          Error.api_error(503, "Service unavailable", %{body: body})
+          Error.api_error(503, "Service unavailable", %{body: parsed_body})
 
-        {status, %{"error" => message}} ->
-          Error.api_error(status, message, %{body: body})
+        {^status, %{"error" => message}} ->
+          Error.api_error(status, message, %{body: parsed_body})
 
-        {status, _} ->
-          Error.http_error(status, "HTTP #{status}", %{body: body})
+        {^status, _} ->
+          Error.http_error(status, "HTTP #{status}", %{body: parsed_body})
       end
 
     error =
